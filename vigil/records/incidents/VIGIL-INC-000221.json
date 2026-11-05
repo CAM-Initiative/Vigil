@@ -1,0 +1,595 @@
+{
+  "id": "VIGIL-INC-000221",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-11-05",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000221",
+    "record_type": "incident",
+    "title": "CRAFTY FALCON AI-assisted attacks on Indian payment and disbursement APIs",
+    "created": "2026-11-05",
+    "updated": "2026-11-05",
+    "version": "0.1.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "CRAFTY FALCON AI-assisted financial-service intrusion campaign in India, observed October–November 2026",
+    "occurred_from": "2026-10-09",
+    "occurred_to": "2026-11-04",
+    "date_precision": "date-range",
+    "date_basis": "CERT-In documented a related payment-API intrusion campaign by 9 October 2026, separately reported financially motivated offensive-agent activity on 15 October, and named the continuing CRAFTY FALCON campaign on 4 November. The opening date is the earliest public observation date, not an assertion that the first intrusion happened then. The 4 November date is the publication/evidence cutoff; the campaign was ongoing, not known to have ended."
+  },
+  "summary": "Between at least October and 4 November 2026, India's cyber emergency agency investigated an ongoing campaign against financial institutions that it named CRAFTY FALCON. CERT-In reported attackers using AI-driven offensive frameworks including ARTEX, PentAGI, Cairn and CyberStrikeAI to automate reconnaissance, exploitation and the development of tailored malicious scripts. Attackers compromised exposed applications and payment infrastructure, stole service credentials, and called payment or disbursement APIs to send funds to accounts they controlled. CERT-In described ₹1 test transfers before larger unauthorised payments, access from staging systems into production, and some theft involving cryptocurrency wallets. Further successful attacks were reported against fintechs and non-bank lenders, including repeat targeting after incomplete remediation. Attackers timed activity around weekends and holidays. The public advisories do not identify individual victims or the framework used in each intrusion, disclose transaction totals or prove that all four frameworks jointly operated in any single attack.",
+  "vigil_assessment": {
+    "factual_basis": "India's CERT-In/CSIRT-Fin first reported multiple unauthorised payment-API transfer campaigns in its 9 October critical advisory CIAD-2026-0046, with stolen gateway/bank API credentials, fraudulent calls from whitelisted infrastructure, application-level KYC and transaction-flow bypass, and funds sent to mule accounts. That advisory described AI assistance as possible, not conclusively shown in each case. On 15 October, advisory CIAD-2026-0049 separately identified financially motivated misuse of open-source offensive AI agent frameworks: autonomous multi-agent operations ran for hours or days, shrank compromise-to-impact timing and sometimes re-attacked incompletely remediated victims. That advisory ALSO discussed unrelated model-evaluation incidents; those are excluded from the present financial campaign. On 4 November, CERT-In/CSIRT-Fin assigned the actor label CRAFTY FALCON to an escalated campaign affecting non-bank lenders, digital lending firms, fintech companies, aggregators, payment services and digital-asset providers. The report names four publicly available frameworks (ARTEX, PentAGI, Cairn and CyberStrikeAI) used against affected entities, identifies autonomous attack-chain behaviour and rapid script regeneration, and describes common observed tactics: cloud-management command execution, staging-to-production pivots, altered client packages, shared third-party fetcher IP misuse, Rs 1 probing before larger fund transfer, compromised merchant settlement APIs, exploitation of web-application vulnerabilities and theft of wallet keys. CERT-In says previously alerted and partially remediated victims were deliberately re-targeted and further successful attacks occurred. Underlying per-victim forensic traces, actor identity, monetary amounts, original model logs and restricted TLP:AMBER indicators are not public.",
+    "governance_interpretation": "This case assesses the reported originating offensive agentic tooling used by the CRAFTY FALCON attacker, not the security posture or AI systems of each financial institution. CERT-In's campaign attribution and confirmation of autonomous attack-chain execution support a material AI nexus. However, the four named frameworks are independently operated products, not evidence of a single combined agent or of every framework participating in every victim compromise. Preserve campaign-level collective facts without allocating model-specific acts to a particular framework or collapsing separate victims into a fabricated single transaction. Real unauthorised money movement and credential compromise are evidenced as outcomes of the attacker-led campaign. A canonical AI Fidelity Class failure requires criterion-level evidence about the relevant AI action, its authority source and the governing boundary. The reports establish effective malicious automation but do not expose the per-framework decisions, task grants, permission checks or human/model control transfers needed to adjudicate each proposed class without conflation. The attacked firms' monitoring, remedial efforts, incomplete cleanup and later re-attacks are contextual defender evidence, not successful or failed Fidelity Class findings ascribed to the attacking AI.",
+    "significance_to_cam": "The documented exploitation of payment APIs by autonomous offensive agents demonstrates why authorisation cannot be inferred from possession of credentials, accessible endpoints, approved-network egress or technically accepted transfer requests. The repeated attacks highlight the importance of separate authority validation, credential custody, model-to-tool attribution, transaction-level safeguards and recovery integrity. These are candidate governance questions, not automatically proved model misalignment findings.",
+    "assessment_boundaries": [
+      "CRAFTY FALCON is CERT-In's investigator-assigned actor/campaign label; no real-world identities of operators or specific victim organisations are publicly disclosed.",
+      "CERT-In describes multiple firms and attacks, not one identified victim's continuous intrusion. This is a bounded agency-attributed campaign occurrence with independently separate victim episodes; do not silently aggregate loss, people, dates or control performance.",
+      "ARTEX, PentAGI, Cairn and CyberStrikeAI are four reported offensive frameworks used across affected entities; no public trace attributes individual malicious steps or victims to each framework, and joint execution by all four is not established.",
+      "No source establishes underlying model provider/version, shared orchestration, individual agent count or a single cross-framework agent session.",
+      "The 9 October advisory states possible AI involvement in its observed attacks; the 4 November analysis is more confident at the actor-campaign level. Do not retroactively assert every earlier transaction was AI-driven.",
+      "The CERT-In 15 October advisory separately describes unauthorised research/evaluation agents entering Indian systems. Those distinct incidents are not part of CRAFTY FALCON and are not adjudicated here.",
+      "The details of individual victim compromises, the number of successful transfers, identities or number of affected clients, total funds lost/recovered, and currency-denominated loss band are not disclosed.",
+      "The ₹1 transaction is a reported probe pattern, not evidence that only ₹1 was stolen or that any single transfer was executed by each named framework.",
+      "CERT-In's description of script patterns consistent with AI generation is an investigator inference and does not identify precise model-origin text or prove identical tool behaviour in every compromise.",
+      "The full indicators of compromise and case-specific evidence are distributed in restricted TLP:AMBER advisories inaccessible to this public-source review; no hidden identifiers, exploit instructions or victim details are inferred.",
+      "Only the attacking agentic system is within the incident's Fidelity Class assessment. Financial institutions, payment networks, bank APIs, CERT-In and defenders are victim/investigator/context identities, not the assessed AI platform.",
+      "The 4 November publication is a snapshot of an ongoing threat, not closure of the campaign or proof no later attacks occurred.",
+      "Framework reuse alone does not make this the same incident as VIGIL-INC-000208 (Cairn ecommerce intrusion) or VIGIL-INC-000214 (ARTEX Storm-0940 Microsoft 365 intrusions)."
+    ],
+    "source_clause_analysis": {
+      "purpose": "Source-first thematic episode inventory across a CERT-In-attributed ongoing attacker campaign. The public advisory does not give reliable per-victim ordering, so episode IDs preserve reporting/proposition sequence, not a fictitious single attack chain.",
+      "clauses": [
+        {
+          "episode_id": "E001",
+          "source_paraphrase": "On 9 October CERT-In reported attacks against Indian financial services that compromised internet-facing infrastructure, stole payment credentials and invoked fund-transfer APIs from trusted infrastructure.",
+          "recovered_invariant_interpretation": "Real malicious actor-initiated compromise and unauthorised financial transactions are reported, initially with only possible AI-tool involvement; do not treat this source alone as proof of a particular model action.",
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E002",
+          "source_paraphrase": "On 15 October CERT-In reported use of open-source offensive agentic frameworks by financially motivated attackers; it described multi-agent work running in parallel and shortening time to harm.",
+          "recovered_invariant_interpretation": "This supports deployed autonomous agentic participation in an attacker-controlled campaign, without resolving per-framework action attribution or collapsing the advisory's separately reported research-agent boundary cases.",
+          "source_record_refs": [
+            "source_records[2]"
+          ],
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000025",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Human attackers directed the wider financially motivated campaign while agent frameworks performed stages autonomously. Neither specific prompt history nor per-task attribution reveals which material decisions were agent-selected, delegated, scripted or manually controlled."
+            }
+          ],
+          "adjudication_note": "AI-framework-specific recognition evidence and/or authorisation premise remains unresolved; source preserves a campaign-level attribution only."
+        },
+        {
+          "episode_id": "E003",
+          "source_paraphrase": "On 4 November CSIRT-Fin named CRAFTY FALCON and reported continued successful attacks including firms which had received earlier restricted advisories and attempted remediation.",
+          "recovered_invariant_interpretation": "The campaign is actively reported by an investigating agency, but the number of affected entities and success conditions of any specific response are not disclosed. Prior defender actions are context, not Fidelity Class mappings to the attackers.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E004",
+          "source_paraphrase": "CERT-In identified ARTEX, PentAGI, Cairn and CyberStrikeAI as publicly available AI offensive tools used against affected entities in the campaign, with fast autonomous attack-chain and adaptive script capabilities.",
+          "recovered_invariant_interpretation": "The four frameworks are separately named technologies used across multiple attacks, not one demonstrated shared session; no public mapping from individual frameworks to victim or operative action is available.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000025",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Which AI system performed any single attributed task, and where human direction ended and autonomous control began, is not reported. Preserve four independently bounded tool identities without assigning them common actions."
+            }
+          ],
+          "adjudication_note": "AI-framework-specific recognition evidence and/or authorisation premise remains unresolved; source preserves a campaign-level attribution only."
+        },
+        {
+          "episode_id": "E005",
+          "source_paraphrase": "The attacker campaign used cloud infrastructure and legitimate cloud-management channels to run commands and deploy malicious files in affected entities.",
+          "recovered_invariant_interpretation": "Cloud command execution is reported as a common path; underlying task decisions, authority inference and which framework executed it are not separated in the public advisory.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "A compromised cloud execution capability is not itself evidence that an AI tool treated reachability as authority; this exclusion requires per-action authorization reasoning beyond the source's campaign-level TTP description."
+            }
+          ],
+          "adjudication_note": "AI-framework-specific recognition evidence and/or authorisation premise remains unresolved; source preserves a campaign-level attribution only."
+        },
+        {
+          "episode_id": "E006",
+          "source_paraphrase": "Internet-accessible test and staging applications provided entry points, after which attackers reached production through shared credentials, tokens or network routes.",
+          "recovered_invariant_interpretation": "Observed environmental separation weaknesses facilitated attacks. They describe targeted organisations' technical exposure, not automatically independent authority errors by a particular originating AI tool.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E007",
+          "source_paraphrase": "CERT-In described altered application packages and reverse engineering of codebases followed by direct unauthorised calls to financial transaction APIs.",
+          "recovered_invariant_interpretation": "App-level workflows did not constrain all attacker-issued API requests. The evidence does not show an individual model selected this particular bypass or inferred authorisation from API acceptance.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000002",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "AI-side capability-to-authority inference cannot be distinguished from unauthorised API abuse by a human attacker or scripted program at a specific victim from the public campaign description."
+            }
+          ],
+          "adjudication_note": "AI-framework-specific recognition evidence and/or authorisation premise remains unresolved; source preserves a campaign-level attribution only."
+        },
+        {
+          "episode_id": "E008",
+          "source_paraphrase": "Shared whitelisted third-party fetcher IP ranges were used to originate malicious traffic and bypass IP allow-list restrictions.",
+          "recovered_invariant_interpretation": "The reported channel shows the weakness of network-source identity as an authorization control, but the source does not link it to a specific AI tool, approved execution scope or selected tactic.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E009",
+          "source_paraphrase": "The campaign used micro-value probing, including transfers of ₹1, before attempting larger unauthorised payments.",
+          "recovered_invariant_interpretation": "Micro-transactions are observed probes and should not be treated as the total loss. A specific model's payment choice and individual financial transaction record remain unavailable.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000025",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "A campaign-level pattern of autonomous financial testing does not resolve the actor-to-agent assignment for an individual transfer or the model's control of the monetary amount."
+            }
+          ],
+          "adjudication_note": "AI-framework-specific recognition evidence and/or authorisation premise remains unresolved; source preserves a campaign-level attribution only."
+        },
+        {
+          "episode_id": "E010",
+          "source_paraphrase": "Attackers exploited or abused payment aggregators' merchant settlement APIs to move funds.",
+          "recovered_invariant_interpretation": "Funds moved in unauthorised payment flows, but the public report does not disclose bank identities, total transfers, amounts or final net losses.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E011",
+          "source_paraphrase": "Attacker-controlled transactions bypassed financial organisations' application-level loan, KYC, sanction, beneficiary and transaction-limit checks, using valid credentials and dummy reference numbers.",
+          "recovered_invariant_interpretation": "The target-side controls were circumvented or not enforced on direct API calls. They are contextual failure paths of victim systems, not automatically failed Fidelity Classes of an attacking AI agent.",
+          "source_record_refs": [
+            "source_records[1]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E012",
+          "source_paraphrase": "CERT-In identified exploitation of newly public web-app flaws, including upload and deserialisation routes producing web shells and persistence.",
+          "recovered_invariant_interpretation": "This describes a recurrent intrusion method across cases, without enough detail to attach a particular agent-generated payload to a named victim or quantify independent AI action.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E013",
+          "source_paraphrase": "CERT-In reported attacks targeting digital-asset service providers in which cryptocurrency wallet keys were stolen and funds siphoned from wallets.",
+          "recovered_invariant_interpretation": "The report establishes real non-public authentication material compromise as a campaign-level observed harm, but not which individual model performed the access nor the amount of financial loss.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Stolen wallet keys are observable authentication-custody harm, but a precise AI actor/action link is not established; do not borrow human attacker conduct as a positive canonical mapping to a specific tool."
+            }
+          ],
+          "adjudication_note": "AI-framework-specific recognition evidence and/or authorisation premise remains unresolved; source preserves a campaign-level attribution only."
+        },
+        {
+          "episode_id": "E014",
+          "source_paraphrase": "A rapid succession of tailored scripts and variants was observed, consistent with AI-assisted code generation and iterative payload adaptation.",
+          "recovered_invariant_interpretation": "The investigation supports machine-speed attack capability and a likely AI role but gives no attributable model messages or independently chosen adaptation per product.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "unresolved",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000025",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Code-generation patterns and autonomous framework functionality do not identify which model/human contributed any given script or the model-control transfer sequence."
+            }
+          ],
+          "adjudication_note": "AI-framework-specific recognition evidence and/or authorisation premise remains unresolved; source preserves a campaign-level attribution only."
+        },
+        {
+          "episode_id": "E015",
+          "source_paraphrase": "CERT-In said some entities were deliberately re-attacked after incomplete remediation, with operation windows often chosen around holidays and weekends.",
+          "recovered_invariant_interpretation": "These are adversary campaign choices and observed repeat intrusion context, not proof of autonomous AI risk selection. Incomplete defender remediation is not adjudicated as an attacking-agent success or failure.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[2]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E016",
+          "source_paraphrase": "CERT-In recommended strengthened monitoring, API verification and payment controls, security tool governance and rapid response, with full indicators shared only to restricted recipients.",
+          "recovered_invariant_interpretation": "Recommendations and restricted guidance are evidence about countermeasures and information access limitations; they do not establish which controls the attacked firms had, or how those controls behaved during each intrusion.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        }
+      ]
+    }
+  },
+  "source_records": [
+    {
+      "source_title": "CERT-In Advisory CIAD-2026-0058 — Escalation of AI-Driven Attacks on BFSI Entities by Threat Actor CRAFTY FALCON",
+      "author_or_publisher": "Indian Computer Emergency Response Team (CERT-In), CSIRT-Fin",
+      "source_date": "2026-11-04",
+      "source_url": "https://www.cert-in.org.in/s2cMainServlet?VLCODE=CIAD-2026-0058&pageid=PUBVLNOTES02",
+      "source_url_status": "available",
+      "source_type": "government report",
+      "source_platform": "CERT-In / CSIRT-Fin",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "First-party CSIRT-Fin incident-reporting, forensic analysis and attribution; public edition omits individual case artifacts and detailed indicators.",
+      "source_context": "Primary public evidence for campaign naming, observed affected sectors, four offensive tools, autonomous attack patterns and repeated successful intrusions.",
+      "interpretive_reliance": "Primary public evidence for campaign naming, observed affected sectors, four offensive tools, autonomous attack patterns and repeated successful intrusions.",
+      "relevance_note": "Primary public evidence for campaign naming, observed affected sectors, four offensive tools, autonomous attack patterns and repeated successful intrusions.",
+      "retrieved_date": "2026-11-05",
+      "incident_source_order": 1,
+      "system_or_product": "See system_context",
+      "model_or_algorithm": "See system_context",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-6",
+        "access_method": "Read CERT-In's publicly accessible original advisory text; restricted TLP:AMBER report, incident logs and actor systems not available.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Public campaign-level summary, not a source of per-victim digital-forensic evidence.",
+          "Does not publicly identify a framework-to-victim-to-attack-step mapping.",
+          "Restricted IoCs, timestamps, system telemetry and detailed remediation outcomes not reviewed."
+        ]
+      }
+    },
+    {
+      "source_title": "CERT-In Advisory CIAD-2026-0046 — Threat Actors Exploiting Payment and Disbursement APIs for Unauthorized Fund Transfers in BFSI Entities",
+      "author_or_publisher": "Indian Computer Emergency Response Team (CERT-In), CSIRT-Fin",
+      "source_date": "2026-10-09",
+      "source_url": "https://www.cert-in.org.in/s2cMainServlet?CACODE=CICA-2026-3610&pageid=PUBADV01",
+      "source_url_status": "available",
+      "source_type": "government report",
+      "source_platform": "CERT-In / CSIRT-Fin",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "First-party payment-API campaign observation with only possible AI-tool implication at this earlier date; not every attack mapped to a model.",
+      "source_context": "Earlier compromised-credential and transfer-api mechanism; financial transactions and account-control bypass without claims of autonomous model identity.",
+      "interpretive_reliance": "Earlier compromised-credential and transfer-api mechanism; financial transactions and account-control bypass without claims of autonomous model identity.",
+      "relevance_note": "Earlier compromised-credential and transfer-api mechanism; financial transactions and account-control bypass without claims of autonomous model identity.",
+      "retrieved_date": "2026-11-05",
+      "incident_source_order": 2,
+      "system_or_product": "See system_context",
+      "model_or_algorithm": "See system_context",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-6",
+        "access_method": "Read CERT-In's publicly accessible original advisory text; restricted TLP:AMBER report, incident logs and actor systems not available.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Public campaign-level summary, not a source of per-victim digital-forensic evidence.",
+          "Does not publicly identify a framework-to-victim-to-attack-step mapping.",
+          "Restricted IoCs, timestamps, system telemetry and detailed remediation outcomes not reviewed."
+        ]
+      }
+    },
+    {
+      "source_title": "CERT-In Advisory CIAD-2026-0049 — AI Agents as Attack Vectors: Unauthorized Access by Agents under Evaluation and Misuse of Open-Source Agentic AI Tools Targeting Indian ICT Assets",
+      "author_or_publisher": "Indian Computer Emergency Response Team (CERT-In), CSIRT-Fin",
+      "source_date": "2026-10-15",
+      "source_url": "https://www.cert-in.org.in/s2cMainServlet?CACODE=CICA-2026-3630&pageid=PUBADV01",
+      "source_url_status": "available",
+      "source_type": "government report",
+      "source_platform": "CERT-In / CSIRT-Fin",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "CERT-In source combines two distinct incident categories: voluntary model-evaluation excess and financially motivated attacker use; only latter applies here.",
+      "source_context": "Prior public context on attacker-directed open-source multi-agent attack tooling, speed and repeat attacks; evaluation-agent category expressly excluded.",
+      "interpretive_reliance": "Prior public context on attacker-directed open-source multi-agent attack tooling, speed and repeat attacks; evaluation-agent category expressly excluded.",
+      "relevance_note": "Prior public context on attacker-directed open-source multi-agent attack tooling, speed and repeat attacks; evaluation-agent category expressly excluded.",
+      "retrieved_date": "2026-11-05",
+      "incident_source_order": 3,
+      "system_or_product": "See system_context",
+      "model_or_algorithm": "See system_context",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-6",
+        "access_method": "Read CERT-In's publicly accessible original advisory text; restricted TLP:AMBER report, incident logs and actor systems not available.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Public campaign-level summary, not a source of per-victim digital-forensic evidence.",
+          "Does not publicly identify a framework-to-victim-to-attack-step mapping.",
+          "Restricted IoCs, timestamps, system telemetry and detailed remediation outcomes not reviewed."
+        ]
+      }
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://www.cert-in.org.in/s2cMainServlet?VLCODE=CIAD-2026-0058&pageid=PUBVLNOTES02",
+    "selection_basis": "Most recent original regulator advisory specifically identifies CRAFTY FALCON, its four frameworks and outcome patterns, while explicitly limiting public victim-specific details. Earlier regulator advisories serve bounded chronology only.",
+    "selected_on": "2026-11-05"
+  },
+  "external_incident_references": [],
+  "external_assessments": [],
+  "external_requirement_assessments": [],
+  "system_context": {
+    "platform_or_vendor": "Other",
+    "product_or_service": "Other",
+    "specific_model_or_runtime": "CERT-In-reported attacker-operated ARTEX, PentAGI, Cairn and CyberStrikeAI frameworks in one attributed offensive campaign; per-victim model/runtime and joint orchestration not disclosed.",
+    "interface_surface": "Attacker-controlled offensive-agent reconnaissance, script generation and targeted penetration/testing tool execution against live financial-service APIs, payment services and cloud infrastructure; per-tool command interface undisclosed.",
+    "component_role": [
+      "agent-runtime",
+      "orchestration",
+      "tool-interface"
+    ],
+    "agent_context": {
+      "agentic_status": "unknown",
+      "agent_count": null,
+      "agent_count_min": null,
+      "agent_count_max": null,
+      "count_basis": "unknown",
+      "evidence_basis": "CERT-In confirms use of multiple publicly available offensive AI systems and describes parallel multi-agent activity at campaign level, but does not identify the model-run topology, agent count or whether different frameworks participated in the same individual breach. Preserve unknown rather than invent one jointly coordinated multi-agent session.",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[2]"
+      ]
+    },
+    "occurrence_environment": {
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "not-applicable",
+      "environment_detail": "Publicly available offensive agent frameworks were operated by a financially motivated external attacker against real, independent financial-services organisations. This is operational attack use, not a contained evaluation or provider-internal exercise.",
+      "evidence_basis": "CERT-In's observed attack reports, successful illicit transfers and repeated compromises establish real operational use of offensive AI tooling; precise runtime and victim-to-tool attribution remain unknown.",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]",
+        "source_records[2]"
+      ]
+    }
+  },
+  "jurisdictional_context": {
+    "primary_jurisdiction": "India",
+    "secondary_jurisdictions": [],
+    "cross_border_relevance": "AI-enabled attacks concerned India-based financial-sector systems; hosting infrastructure may span multiple countries, but specific cross-border victim geography and legal jurisdiction are not established.",
+    "sector": "Financial services, fintech, non-bank lending, payment aggregation, cryptocurrency exchange",
+    "regulatory_surface": "Indian CERT-In/CSIRT-Fin cybersecurity advisories and financial transaction controls"
+  },
+  "affected_party_context": {
+    "entities": [
+      {
+        "party_id": "PARTY-001",
+        "name": "Indian financial-services institutions (unnamed)",
+        "kind": "population",
+        "roles": [
+          "affected-population"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "CERT-In reports successful attacks among NBFCs, fintech firms and other payment-sector entities without publishing names, victim counts, timelines or attack-to-framework pairing.",
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ]
+      },
+      {
+        "party_id": "PARTY-002",
+        "name": "Financial payment and disbursement APIs",
+        "kind": "service",
+        "roles": [
+          "affected-service"
+        ],
+        "evidence_state": "supported",
+        "evidence_basis": "CERT-In reports theft of payment-API credentials and direct execution of fraudulent transfers via exposed or credentialled payment/disbursement services.",
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ]
+      }
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.9.2",
+    "classification_status": "unclassified",
+    "adjudication_coverage": {
+      "status": "partial"
+    },
+    "primary_classification": null,
+    "secondary_classifications": [],
+    "classification_basis": "CERT-In identifies a materially AI-assisted criminal campaign in which offensive-agent frameworks automated reconnaissance, tailored exploit development and execution against independently governed financial systems. The public evidence does not distinguish ARTEX, PentAGI, Cairn and CyberStrikeAI execution in individual victim intrusions or expose operative task instructions, model-authority inferences, independent agent-selected paths and actual permission decisions needed for confident canonical mapping. An attacker commanding tools to carry out unauthorised payments establishes criminal misuse and harms, but does not by itself prove that any one AI system confused available capability with valid authority under the present taxonomy exclusions. Unresolved recognition facts are preserved per material clause; no target-platform defensive performance is assigned to the originating AI agent.",
+    "classification_review_provenance": {
+      "review_date": "2026-11-05",
+      "reviewer": "OpenAI ChatGPT — GPT-6, AI analytical reviewer",
+      "review_status": "Source-first campaign-level review; explicit no-conflation and framework-attribution limitations; awaiting victim-level primary traces and full external requirement crosswalk. Not human verified.",
+      "review_reference": "vigil/docs/reviews/2026-11-05-inc221-crafty-falcon-source-first/completion-audit.json"
+    }
+  },
+  "related_incidents": [],
+  "interpretive_provenance": {
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-11-05-INC-000221",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-11-05",
+      "review_scope": "CERT-In public-advisory provenance, bounded campaign architecture, incident duplication check, attacking-AI identity, 12-dimensional harm screen and source-first taxonomy candidate limits.",
+      "capability_profile": {},
+      "known_limitations": [
+        "Only public CERT-In advisories and their attributed findings reviewed; underlying TLP:AMBER forensic documents unavailable.",
+        "Multiple victim events aggregated under one agency-assigned attacker campaign; per-victim and per-framework joins cannot be reconstructed.",
+        "No original offending agent prompts, control logs, individual agent runtime identities or direct victim accounts.",
+        "Financial loss amounts and confirmed victim counts undisclosed; severity is an evidence-supported minimum for sensitive-key access only.",
+        "Independent EXTREQ criterion crosswalk and full repository generator/CI tests remain outstanding."
+      ],
+      "review_outcome": "Source-supported attacker campaign intake without conflating independent offensive frameworks or defenders; classified status held unclassified with incomplete coverage, economic harm band unresolved."
+    }
+  },
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessment_pathway": "specific_consequence",
+    "aggregate_harm_screening": {
+      "deployed_configuration": true,
+      "potentially_generalisable_mechanism": false,
+      "bounded_materialised_consequence_case": true,
+      "candidate_dimensions": [],
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "rationale": "Real reported unauthorised transfers and protected payment/wallet credential access at particular (unnamed) financial entities; no projection from all Indian financial users, no summation of unidentified firm losses."
+    },
+    "assessed_on": "2026-11-05",
+    "overall_severity": "S2",
+    "controlling_dimensions": [
+      "privacy-confidentiality"
+    ],
+    "coverage_note": "Twelve domains screened against public agency evidence. S2 is the confirmed-minimum confidentiality consequence of stolen real payment/wallet authentication secrets, not an upper bound or judgement that full harm was minor. Financial loss exists but lacks an amount or individually established livelihood/organisational consequence that supports a defensible S2–S5 loss band; its dimension is insufficient-evidence, not S1. No number of affected people, victim companies, transactions or distinct tools operating per attack is inferred.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The consulted public advisories do not establish a separately bandable materialised consequence in this harm dimension; reporting silence is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The consulted public advisories do not establish a separately bandable materialised consequence in this harm dimension; reporting silence is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty",
+        "assessment_status": "unreported",
+        "assessment_basis": "The consulted public advisories do not establish a separately bandable materialised consequence in this harm dimension; reporting silence is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The consulted public advisories do not establish a separately bandable materialised consequence in this harm dimension; reporting silence is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "assessed",
+        "severity": "S2",
+        "threshold_id": "VIGIL-HIM-1.1.0-PRV-S2",
+        "assessment_basis": "CERT-In reports real theft of payment/partner-bank API credentials and of digital-asset wallet keys during campaign incidents, constituting confirmed non-public authentication-material compromise. The S2 criterion is an evidenced minimum even when exact number, sensitivity, duration, reuse and subsequent confidential-information misuse remain unknown. It does not mean only minor loss occurred.",
+        "evidence_confidence": "medium",
+        "evidence_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ],
+        "observed_values": []
+      },
+      {
+        "dimension_id": "financial-economic",
+        "assessment_status": "insufficient-evidence",
+        "assessment_basis": "CERT-In directly reports unauthorised transfers to mule accounts, large-value follow-on transfers and funds siphoned from digital-asset wallets, establishing materialised financial loss. The public advisories give no realised loss amount in USD/INR, independent rate for a USD band, per-victim count, livelihoods impacted, organisational-viability finding or recovered funds. ₹1 is a probe transaction only, and no population-summed loss band can be assigned.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "unreported",
+        "assessment_basis": "The consulted public advisories do not establish a separately bandable materialised consequence in this harm dimension; reporting silence is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "The consulted public advisories do not establish a separately bandable materialised consequence in this harm dimension; reporting silence is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The consulted public advisories do not establish a separately bandable materialised consequence in this harm dimension; reporting silence is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The consulted public advisories do not establish a separately bandable materialised consequence in this harm dimension; reporting silence is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The consulted public advisories do not establish a separately bandable materialised consequence in this harm dimension; reporting silence is not S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The consulted public advisories do not establish a separately bandable materialised consequence in this harm dimension; reporting silence is not S1.",
+        "evidence_confidence": "not-assessed"
+      }
+    ]
+  }
+}
