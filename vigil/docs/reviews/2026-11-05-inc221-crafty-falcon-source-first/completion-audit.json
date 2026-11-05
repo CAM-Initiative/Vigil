@@ -233,16 +233,32 @@
     "selection_or_access_reason": "Primary source is textual; no genuine model trace, attacker session screenshot or case-specific event image was publicly accessible. Do not fabricate or substitute stock imagery."
   },
   "generated_outputs_and_validation": {
-    "status": "not-reviewed",
-    "review_reference": null,
+    "status": "blocked",
+    "review_reference": "https://github.com/CAM-Initiative/Vigil/actions/runs/41955285735",
     "commands_and_results": [
       {
-        "command": "GitHub connector create_file/fetch_file",
-        "result": "Canonical record created; schema-level authoritative CI pending."
+        "command": "GitHub Actions python vigil/tests/test_public_prose_quality.py",
+        "result": "Passed following removal of record-maintenance shorthand in source_records[1].evidence_status_basis."
       },
       {
-        "command": "VIGIL canonical builders and regression suite",
-        "result": "Pending CI; resulting publication indexes may require generation and commit."
+        "command": "python -m unittest discover -s vigil/tests -p 'test_*.py'",
+        "result": "PASSED: 378 tests (2026-11-05, workflow 41955285735). Expected negative-fixture error text from other test cases is not a real INC-221 error."
+      },
+      {
+        "command": "python vigil/scripts/validate-vigil-records.py",
+        "result": "PASSED: 212 canonical Incident records, including INC-221."
+      },
+      {
+        "command": "VIGIL system component, source and interpretive provenance validators",
+        "result": "PASSED: 212 Incidents including normalized agent/environment metadata, and interpretive authorship/provenance checks."
+      },
+      {
+        "command": "Public Incident index validator after CI build",
+        "result": "PASSED: 212 records within the GitHub Actions runner after generation."
+      },
+      {
+        "command": "Checked-in generated public and jurisdiction/registry index diff gate",
+        "result": "FAILED: GitHub Actions rebuilt generated outputs which differ from committed files. Rebuild and commit using the canonical builder(s) before publication or PR; not a canonical record validity error."
       }
     ]
   },
@@ -256,6 +272,6 @@
   ],
   "linked_issue_urls": [],
   "issue_staging_status": "not-needed",
-  "completion_disposition": "partial — agency-attributed attacker campaign recorded; classification/economic magnitude evidence limited; full external crosswalk and publication gate outstanding",
+  "completion_disposition": "partial — source-supported INC-221 passes canonical schema and 378 CI tests; generated publication indexes and external-requirement crosswalk remain outstanding",
   "completion_report_reference": "vigil/records/incidents/VIGIL-INC-000221.json"
 }
