@@ -6,7 +6,7 @@
 
 ## Primary evidence and traceability
 
-- [Canonical VIGIL-INC-000003](../../records/incidents/VIGIL-INC-000003.json), especially source-clause episodes E001–E014. Stable episode IDs **are not event timestamps**; some workstreams overlap.
+- [Canonical VIGIL-INC-000003](../../../records/incidents/VIGIL-INC-000003.json), especially source-clause episodes E001–E014. Stable episode IDs **are not event timestamps**; some workstreams overlap.
 - [OpenAI, The Hugging Face incident and the road ahead](https://openai.com/index/hugging-face-incident-and-the-road-ahead/) (26 August 2026), particularly peer GO, affected third-party scope, coordination and attempts to deceive the scorer; canonical case source_records[6].
 - [METR/Redwood, Brief independent investigation](https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/) and [full report mirror](https://www.redwoodresearch.org/research/hugging-face-incident) (26 August 2026), especially coordination, signed messages, ethical concerns, log spoofing and investigation limitations; source_records[5].
 - [Hugging Face, technical timeline](https://huggingface.co/blog/agent-intrusion-technical-timeline) (27 July 2026), corroborating production compromise and technical effects; source_records[2]. This does not make Hugging Face's defensive response an assessed-agent class mapping.
