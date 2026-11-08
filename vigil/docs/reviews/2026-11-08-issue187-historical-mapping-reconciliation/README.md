@@ -45,3 +45,15 @@ The source passage about corporations and governments was previously documented 
 Do not bulk-restore six mappings, weaken recognition conditions to fit the paper, overwrite the existing two-boundary record, or conflate an exemplar with an occurrence finding. Do not change the external governance or HIM assessment without its own evidence review. Keep human approval and AI analysis attribution distinct.
 
 Tracking: https://github.com/CAM-Initiative/Vigil/issues/187
+
+
+## Verified canonical before/after comparison — 8 November follow-up
+
+Directly fetched the canonical JSON at historical commit `a3958659a778612e8f64fb80bac24cf6dc75b694` and at current `main`.
+
+- **Historical v0.3.15:** FC-075, FC-078, FC-076, FC-077, FC-080, FC-081 were **all ambiguous-boundary** canonical mappings. This is later than the older Stage B review that described FC-075 as failure and FC-078 as success. Thus the paper's historical six-class account and the 18 October six-boundary baseline must not be conflated.
+- **Current v0.3.22:** only FC-075 and FC-078 remain canonical, both ambiguous-boundary.
+- **Critical structural change:** the clause-level relationships for FC-076, FC-077 (two occurrences), FC-080 and FC-081 **still exist**, but their `canonical_taxonomy_mapping` flags changed from `true` to `false`, and their relationship labels changed from `ambiguous-boundary exemplar` to `conceptual crosswalk — not an admitted mapping`. This is a deliberate-looking semantic recategorisation in the data, but the precise approving decision and change commit are **not yet established**.
+- The 18 October dignity/ecological-values review explicitly said all six roles/confidences were preserved, including FC-081 under revised recognition. Its audit artefact is recoverable from Git history even if later removed from the active branch (see commit `034c9407fe0797f7ff6c335989ba2dc7715c89cb`).
+
+**Investigative focus:** identify the exact commit changing the four `canonical_taxonomy_mapping` flags and the four canonical mapping removals, inspect any independent per-class decisions, and distinguish defensible semantic recategorisation from an unauthorised removal. Do not change the canonical record before completing that evidence check.
