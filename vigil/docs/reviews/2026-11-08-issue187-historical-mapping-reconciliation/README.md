@@ -57,3 +57,11 @@ Directly fetched the canonical JSON at historical commit `a3958659a778612e8f64fb
 - The 18 October dignity/ecological-values review explicitly said all six roles/confidences were preserved, including FC-081 under revised recognition. Its audit artefact is recoverable from Git history even if later removed from the active branch (see commit `034c9407fe0797f7ff6c335989ba2dc7715c89cb`).
 
 **Investigative focus:** identify the exact commit changing the four `canonical_taxonomy_mapping` flags and the four canonical mapping removals, inspect any independent per-class decisions, and distinguish defensible semantic recategorisation from an unauthorised removal. Do not change the canonical record before completing that evidence check.
+
+
+## Final reconciliation update — 8 November 2026 (supersedes initial checkpoints)
+The exact 19 October 2026 removal commit is `81b5e0c2c41289b3f49668856148623ce18797b3` (v0.3.17 six Boundaries → v0.3.18 two Boundaries). The **per-class decision packet did exist** at that commit and has been restored to the present branch at its original path, `vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000129-DECISION.json`. It records all four removals as `removed-unsupported` with source/criterion review. Claims above about missing historical disposition are therefore superseded.
+
+The six current taxonomy 0.9.1 decisions, with individually stated failure/success conditions, exclusions, specific evidence limitations and an SIAI paper version distinction, are now in [INC-000129-current-taxonomy-six-class-dispositions.json](INC-000129-current-taxonomy-six-class-dispositions.json). Two operative Boundaries remain and four non-adjudicated conceptual crosswalks remain in E001. Taxonomy family exemplar entries were reconciled from misleading `admitted` to `deprecated`, without a class-rule change.
+
+The exploratory schema/validator proposal for a non-operative `invariant-exemplar` canonical Boundary was **withdrawn**: it would conflict with the current source-first decision-integrity rule that a Boundary requires affirmative operative class engagement and no class-scope exclusion. The main-branch schema, record validator and boundary tests were restored. The provenance gate and generic regression tests provide protection against future silent mapping loss.
