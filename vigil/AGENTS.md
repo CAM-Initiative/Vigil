@@ -30,6 +30,10 @@ A defender-centred Incident is different: defensive behaviour may be adjudicated
 
 For source-proposition coverage, use `context-only` for relevant external-actor or independent-defender facts that are not conduct of the assessed AI system. Follow **Pre-taxonomy source-proposition coverage** in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md` and the Incident authoring/website-rendering crosswalk in `vigil/MAINTAINERS.md`. This is an attribution and documentation clarification, not a new classification role, schema requirement, validator or authority for retroactive record changes.
 
+## Boundary interpretation: preserve exemplar role
+
+Do not conflate an `ambiguous-boundary` with a successful-invariant or require every Boundary exemplar to demonstrate an operative class failure or a protective success. Distinguish an `occurrence-uncertainty` Boundary (operative class engagement, polarity unresolved) from a documented `invariant-exemplar` Boundary (material source-grounded illustration of a class invariant or interpretive limit, **without claiming the mechanism occurred**). Identify non-operative exemplars in `boundary_adjudication.boundary_kind`; no successful-invariant is established unless all its positive recognition conditions are evidenced. Respect the literal class scope exclusions when adjudicating operative outcomes; report them as limitations in exemplar records rather than silently overriding them. Generic topical similarity alone is not enough.
+
 ## Incident authority and provenance
 
 - Preserve `source_records` as the only canonical source-evidence block.
