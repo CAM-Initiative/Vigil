@@ -58,6 +58,18 @@ jobs:
           python vigil/scripts/check-incident-publication-versions.py \
             --event "$GITHUB_EVENT_PATH" --repo .
 
+      # A surviving-class-only review must not silently erase earlier canonical mappings.
+      # Compare actual base/head records, and require an updated, class-specific decision packet.
+      - name: Require explicit mapping-change adjudication provenance
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch --no-tags origin "$GITHUB_BASE_REF"
+          python vigil/scripts/check-vigil-mapping-removals.py \
+            --base "refs/remotes/origin/$GITHUB_BASE_REF" --head HEAD
+
+      - name: Test mapping-change provenance guard
+        run: python vigil/tests/test_mapping_change_provenance.py
+
       - name: Diagnose committed public index freshness before rebuilding
         run: |
           if python vigil/scripts/validate-vigil-public-records.py; then
