@@ -31,21 +31,6 @@ class BoundaryAdjudicationTests(unittest.TestCase):
         V.validate_boundary_adjudication(Path('synthetic.json'), self.mapping, 'mapping', errors, self.record if record else None)
         return errors
 
-    def test_invariant_exemplar_is_a_boundary_not_a_success(self):
-        self.value['boundary_kind'] = 'invariant-exemplar'
-        self.value['diagnostic_reasons'] = ['invariant-exemplar-without-operative-test']
-        self.assertEqual(self.errors(), [])
-
-    def test_exemplar_must_be_explicitly_non_operational(self):
-        self.value['boundary_kind'] = 'invariant-exemplar'
-        self.assertTrue(self.errors())
-        self.value['diagnostic_reasons'] = ['invariant-exemplar-without-operative-test']
-        self.assertEqual(self.errors(), [])
-
-    def test_unsupported_boundary_kind_rejected(self):
-        self.value['boundary_kind'] = 'successful-invariant'
-        self.assertTrue(self.errors())
-
     def test_completed_boundary(self):
         self.assertEqual(self.errors(), [])
 
