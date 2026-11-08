@@ -39,3 +39,7 @@ These assessments **do not justify automatically restoring all four** as canonic
 5. Propose targeted CI controls without modifying schema/validator or canonical data before review.
 
 No canonical record, class definition or public output changed in this commit.
+
+
+## Closure correction — recovered evidence (8 November 2026)
+The forensic checkpoint above is superseded by actual commit/history recovery. First removal: `81b5e0c2c41289b3f49668856148623ce18797b3`, dated 19 October 2026. The historical `INC-000129-DECISION.json` was present at that commit, later absent from the head, and is restored unchanged in this branch. It has specific `removed-unsupported` decisions for FC-076, FC-077, FC-080 and FC-081. The current 0.9.1 six-class decision ledger is in [INC-000129-current-taxonomy-six-class-dispositions.json](INC-000129-current-taxonomy-six-class-dispositions.json). Historical six Boundary mappings remain a reproducible October 18 assessment, not the present canonical disposition. No canonical Incident record change was warranted by the reviewed recognition/exclusions.
