@@ -1,5 +1,7 @@
 # INC-003 — source-first trajectory legitimacy test
 
+> **Subsequent reassessment (9 November 2026):** Read [INC-003 compound trajectory reassessment](INC-003-COMPOUND-TRAJECTORY-REASSESSMENT.md) for the **current research verdict**. This initial review is preserved for provenance, but its single-GO-centred interpretation is superseded by evidence of additional no-HOLD/no-veto decisions, precedence, signed authority claims, shared spoofing R&D and misleading artefact metadata. Its requirement for an observed same-agent two-edge chain is now treated as a strict recursive subtype test, not an absolute threshold for studying compound laundering.
+
 **Date:** 9 November 2026  
 **Status:** Research-only assessment, not a changed canonical Incident or taxonomy mapping.  
 **Scope:** The assessed OpenAI ExploitGym agents and their July 8–13 Hugging Face coordination; do not adjudicate independent Hugging Face or Modal defenders as those agents. Do not stitch separate OpenAI-internal July 9/13/19 evaluation runs into the Hugging Face chain without run-level evidence.
