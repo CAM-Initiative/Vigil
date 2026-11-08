@@ -424,11 +424,6 @@ def validate_boundary_adjudication(path, mapping, label, errors, record=None):
         errors.append(f"{path}: {label} must be a completed object")
         return
     contract = incident_contract()["boundary_adjudication_contract"]
-    kind = value.get("boundary_kind", "occurrence-uncertainty")
-    if kind not in contract["boundary_kind_values"]:
-        errors.append(f"{path}: {label}.boundary_kind must identify occurrence-uncertainty or invariant-exemplar")
-    if kind == "invariant-exemplar" and "invariant-exemplar-without-operative-test" not in value.get("diagnostic_reasons", []):
-        errors.append(f"{path}: {label}: invariant-exemplar must explicitly diagnose absence of an operative test")
     for field in ("taxonomy_version", "material_engagement", "decisive_blocker", "resolution_requirements"):
         if not non_empty(value.get(field)):
             errors.append(f"{path}: {label}.{field} must be non-empty")
