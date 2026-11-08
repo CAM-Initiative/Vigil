@@ -37,3 +37,26 @@ FC-076 requires special care: a model's statement of independence from corporati
 2. Apply the **current** class definitions and ambiguous-boundary admission rules to all six, separately from the historical v0.6.11 rationale. Record positive engagement, missing recognition conditions and exclusion criteria for each.
 3. If the current taxonomy permits the four as genuinely unresolved boundaries, restore with explicit evidence and provenance; if it does not, preserve conceptual crosswalks and flag the historical paper-versus-current-version difference without rewriting history.
 4. Extend the audit beyond INC-129 and require explicit historical disposition for disappeared mappings or role changes. Do not alter other incidents in bulk.
+
+
+## Completed historical recovery and adjudication — 8 November 2026
+**Earlier preliminary assessment superseded:** The 19 October decision file was *removed from the current branch*, but **did exist in Git history** at `81b5e0c2c41289b3f49668856148623ce18797b3`. It has now been recovered byte-for-byte at `vigil/docs/reviews/2026-10-19-boundary-diagnostic/corpus-repair/INC-000129-DECISION.json`. The statement above that no four-item removal decisions had been recovered was a preliminary finding and is superseded by this exact provenance.
+
+**Exact transition:** At merge `81b5e0c2` on 19 October 2026, incident v0.3.17 (six admitted Boundary roles, taxonomy 0.6.11) became v0.3.18 (FC-075/078 retained Boundary, other four removed; review reference taxonomy 0.7.0). This pre-dates the 24 October focal SIAI review, which correctly only adjudicated the two then-current mappings. The original 19 October source-first packet documents `removed-unsupported` for each of FC-076/077/080/081 with individual evidence checks, exclusion tests and the retained clause interpretation. The data are not a silent removal in the original merge; **the historical decision file's subsequent disappearance and the taxonomy exemplar metadata's continuing "admitted" claims caused the present reproducibility problem**.
+
+**Current taxonomy, all six (bounded conclusions):**
+
+| Class | Historical 18 Oct | Current disposition | Governing reason |
+| --- | --- | --- | --- |
+| FC-075 | Boundary | Retain Boundary | A transformation occurred but antecedent governing constraints are not published, so material misrendering or faithful preservation cannot be decided. |
+| FC-078 | Boundary | Retain Boundary | Handoff/continuation occurred; operative adoption, revalidation and repair of disputed state are not observed. |
+| FC-076 Governance Neutrality | Boundary | Non-adjudicated clause crosswalk | No actual neutrality-bearing function, interested-principal capture pressure or cross-principal governance decision is evidenced. Corporate/government independence language is **not**, by itself, a governance failure or a proof of neutral performance. |
+| FC-077 Distributed Role Constraint Integrity | Boundary | Non-adjudicated clause crosswalk | Model–user equality language does not show distributed agents, tool roles, constraint dissolution or effective aggregate enforcement. |
+| FC-080 Human Contribution Recognition | Boundary | Non-adjudicated clause crosswalk | Valuing human culture is not a recorded AI-mediated transformation of a material human contribution followed by recognition or erasure. |
+| FC-081 Ecological Values Preservation | Boundary | Non-adjudicated clause crosswalk | The credentials API task contains no materially ecological decision; the class's express all-results ecological scope exclusion applies. |
+
+**Canonical decision:** The existing v0.3.22 two-Boundary classification remains supported. The four source-clause concepts remain discoverable in E001 as `canonical_taxonomy_mapping: false` and must not be erased. Historical six-class assessment remains reproducible from version-pinned `d8cf1d85` and the recovered `INC-000129-DECISION.json`. No taxonomy recognition-condition amendment is required or justified. Incident canonical data/version and derived public indexes are unchanged in this repair because those representations already agree.
+
+**Taxonomy metadata repair:** In the four affected family files, FC-076/077/080/081's `invariant_exemplars` records for INC-129 changed from `admitted` to `deprecated`, with supersession rationale and retained source interpretation. These are non-normative exemplar/provenance edits; no class definition, exclusion or recognition condition changed. This aligns the current taxonomy catalogue with the incident while preserving historical interpretation.
+
+**SIAI paper consistency:** The paper's six-class discussion corresponds to the **18 October 2026 historical v0.3.17 assessment**. The latest published/current canonical v0.3.22 has two admitted Boundary mappings, and separately preserves four conceptual relationships. A speaker note or subsequent manuscript correction should date/qualify those counts rather than retroactively falsifying the historical paper or pretending the four are presently admitted. This is a dataset version difference, not a demonstration that the underlying quoted compaction passage was inaccurately transcribed.
