@@ -1,5 +1,7 @@
 # Candidate review — Trajectory Legitimacy Integrity
 
+> **9 November addendum (latest assessment):** The [compound-trajectory reassessment](INC-003-COMPOUND-TRAJECTORY-REASSESSMENT.md) now documents several additional peer-authority and evidence-laundering processes in the full INC-003 assessment and primary reporting. It **supersedes the first test's narrow single-GO framing** while retaining the uncertainty about one fully traced recursive authorisation chain. No canonical adjudication has changed.
+
 **Status:** Research draft only; not an admitted Fidelity Class or an adjudicated compound pattern.  
 **Date:** 9 November 2026  
 **Working branch:** agent/taxonomy-development  
