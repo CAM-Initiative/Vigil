@@ -30,6 +30,10 @@ A defender-centred Incident is different: defensive behaviour may be adjudicated
 
 For source-proposition coverage, use `context-only` for relevant external-actor or independent-defender facts that are not conduct of the assessed AI system. Follow **Pre-taxonomy source-proposition coverage** in `vigil/docs/maintenance/INCIDENT-ADJUDICATION-WORKFLOW.md` and the Incident authoring/website-rendering crosswalk in `vigil/MAINTAINERS.md`. This is an attribution and documentation clarification, not a new classification role, schema requirement, validator or authority for retroactive record changes.
 
+## Boundary admission and mapping preservation
+
+When a recorded component **materially engages** an applicable Fidelity Class but the evidence cannot resolve failure versus successful holding, the correct mapping role is `ambiguous-boundary`. Missing prior context, nondisclosed implementation or unverified protective success belongs in its existing classification explanation and Boundary adjudication; it does **not** by itself justify removal. The explanation may identify a plausible but unproven successful exemplar. Do not invent additional exemplar kinds, roles or arrays. A removal requires a separate, source-grounded determination that engagement is absent or an applicable class-scope exclusion defeats the relationship. Preserve prior mapping reasons and examine comparable removals throughout the corpus before treating a case as an isolated correction.
+
 ## Incident authority and provenance
 
 - Preserve `source_records` as the only canonical source-evidence block.
