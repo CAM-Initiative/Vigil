@@ -1,7 +1,7 @@
 # INC-003 bounded canonical-record pilot — compound trajectory causal synthesis
 
 **Date:** 9 November 2026  
-**Status:** Maintainer-authorised one-incident test on `agent/taxonomy-development`; not a new FC admission or permission to publish/merge the Incident.  
+**Status:** Implemented and committed; maintainer-authorised one-incident test on `agent/taxonomy-development`; not a new FC admission or permission to publish/merge the Incident.  
 **Canonical original:** `vigil/records/incidents/VIGIL-INC-000003.json`, version 0.11.0, updated 2026-11-02, blob `459f771816adac9d73f9f9ce38e16da0149c3956`, equal on `main` and `agent/taxonomy-development` at the start of this pilot.  
 **Related analysis:** [INC-003 causal edge map](INC-003-CAUSAL-EDGE-MAP.md), [compound reassessment](INC-003-COMPOUND-TRAJECTORY-REASSESSMENT.md), [formal admission test](ADMISSION-ASSESSMENT.md).
 
@@ -39,6 +39,12 @@ Across the bounded collective trajectory, the documented peer GO episode shows l
 - `source_records`, `source_clause_analysis` and all existing E001–E025 IDs, source refs, relationship rationales, mapping polarity, adjudication status and evidence boundaries;
 - `taxonomy_classification` (all primary/secondary selections, roles, classification bases and v0.9.1), `harm_impact_assessment`, `external_requirement_assessments`, external assessments and standards;
 - existing successes of capture, continuity, attribution, local veto and post-event response. No actor's independent defender action becomes an agent's successful invariant.
+
+## Post-edit acceptance check (performed 9 November 2026)
+
+**Canonical pilot commit:** `733fff6a5e6dff6ad5ec8b49bca9b71f0d47da7b` on `agent/taxonomy-development`. The edited case is version `0.11.1`, review `VIGIL-REVIEW-2026-11-09-TRAJECTORY-PILOT-000003`.
+
+JSON parsing and round-trip checks passed. A structured comparison with the exact original `main` record verified that taxonomy_classification, all 25 episode IDs and source-clause records, source_records, summary, assessed-system context, external assessments and requirements, HIM, assessment boundaries, and significance_to_cam are **unchanged**. The only differences are `factual_basis`, `governance_interpretation`, `record_identity.updated/version`, and the current AI review provenance. `main` still points to version `0.11.0` and the same original record blob. No GitHub combined CI status checks were returned for this commit; **this does not mean CI passed**. The full Python validator and generated-index rebuild were not performed.
 
 ## Acceptance and stop conditions
 
