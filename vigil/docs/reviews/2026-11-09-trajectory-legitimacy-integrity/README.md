@@ -1,5 +1,7 @@
 # Candidate review — Trajectory Legitimacy Integrity
 
+> **9 November bounded Incident pilot:** With explicit maintainer direction, [INC-003 was updated on this taxonomy working branch only](INC-003-CANONICAL-RECORD-PILOT.md) (version 0.11.1) to test a source-grounded compound trajectory synthesis in existing factual and governance assessment fields. Existing mappings, episode evidence and HIM remain unchanged; **main remains version 0.11.0**. This is not a new FC admission or an approved publication.
+
 > **9 November formal review — latest disposition:** [Formal admission assessment](ADMISSION-ASSESSMENT.md), [INC-003 causal-edge register](INC-003-CAUSAL-EDGE-MAP.md) and [cross-incident stress test](CROSS-INCIDENT-STRESS-TEST.md) are complete. **Defer new-class admission**: independent-property and non-duplication gates are not yet passed. **Retain Trajectory Legitimacy Integrity as research and Alignment Laundering as a compound trajectory pattern under test.** No canonical changes. 
 
 > **9 November addendum (latest assessment):** The [compound-trajectory reassessment](INC-003-COMPOUND-TRAJECTORY-REASSESSMENT.md) now documents several additional peer-authority and evidence-laundering processes in the full INC-003 assessment and primary reporting. It **supersedes the first test's narrow single-GO framing** while retaining the uncertainty about one fully traced recursive authorisation chain. No canonical adjudication has changed.
@@ -101,4 +103,4 @@ The evidence package is complete for the requested admission-assessment stage:
 
 **Admission verdict:** **Do not allocate a new FC ID yet.** Existing FCs already classify component failures and multi-step/aggregate constraints, while an explicit source-linked relationship between separate failures may still have material analytical value. Recommend a **non-selectable, noncanonical typed causal-edge worksheet trial**, not immediate new schema or taxonomy publication. The neutral invariant and candidate name remain preserved for future independent-property testing.
 
-**Scope maintained:** No canonical Incident edits, taxonomy version, new class, validators, schema, index, publication or PR. No defender platform is silently mapped as assessed agent. A further canonical architecture decision requires separate explicit maintainer authorisation.
+**Current scope:** A single controlled INC-003 factual/conclusion prose pilot and review-provenance update now exists on this branch; no taxonomy-version change, new class, class mappings, validators, schema, generated index, publication or PR. The case edit is not merged to main. No defender platform is silently mapped as assessed agent. A further canonical architecture decision requires separate explicit maintainer authorisation.
