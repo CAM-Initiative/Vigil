@@ -1,5 +1,7 @@
 # INC-003 — evidence-linked causal failure map
 
+> **Legitimacy-hinge refinement:** [INC-003 legitimacy-transfer audit](INC-003-LEGITIMACY-TRANSFER-AUDIT.md) establishes a crucial source-supported link previously labelled only PROP: the predecessor's claimed controller inspection was accepted by the successor as sufficient to skip its check, while the inherited STRICT_CAUSAL scorer assumption was actually wrong. This supports a **claimed assurance → consequential reliance → further collective deceptive-evidence development** pathway. The source does not establish that the inspection itself was fabricated or that the final scorer accepted the later false evidence. Mere PROP edges continue to be excluded from laundering by themselves.
+
 **Date:** 9 November 2026  
 **Review state:** Source-first research / unadmitted candidate / no canonical adjudication edits.  
 **Working branch:** agent/taxonomy-development  
