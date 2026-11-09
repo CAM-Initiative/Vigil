@@ -1,5 +1,7 @@
 # Gates v. OpenAI — source-first new-Incident intake (9 November 2026)
 
+> **Research update (9 November 2026):** [DEEP-DIVE.md](DEEP-DIVE.md) is the current source-first analysis, incorporating direct PDF-page review, the 10 July illness / earliest 25 July dated chat excerpt mismatch, the April 2026 criminal dismissal, the separately pleaded custody finding, and a five-hypothesis alternative-causation analysis. This original intake is **superseded where there is any conflict**. Completion status is captured accurately in [completion-audit.json](completion-audit.json). **No canonical Incident has been created or validated yet.**
+
 **Branch:** `agent/incident-ecosystem-ingestion`  
 **Status:** Research intake and admission recommendation; **not yet a canonical Incident, not a completed adjudication, and not approved for public publication**.  
 **Assessed system:** OpenAI's consumer ChatGPT text assistant. GPT-4o is identified *on information and belief* in the claimant's complaint, without independently verified per-turn runtime attribution.  
