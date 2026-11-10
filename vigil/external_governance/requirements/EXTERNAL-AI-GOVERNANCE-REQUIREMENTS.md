@@ -2,9 +2,9 @@
 
 Canonical analytical catalogue derived from registered external governance sources. Inclusion does not establish CAM applicability, adoption, coverage, compliance, conformance or alignment.
 
-- Registered source versions: 112
+- Registered source versions: 114
 - Primary AI-governance source versions: 63
-- Requirement records: 1134
+- Requirement records: 1135
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -2410,6 +2410,20 @@ No requirement records are asserted. AI-specific incident-reporting framework re
 | `EXTREQ-F0C77761448A085A` | Section 2.5(a) | Governments, including developing countries, should cooperate actively with stakeholders to advance the principles and responsible AI stewardship. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FAE1B0790E9E56C4` | Section 1.3(iv) | AI actors should provide information enabling adversely affected people to challenge AI outputs. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
+## OWASP Agent Control Standard — 0.1.4
+
+- Source: `EXT-4139AD016E2B` / `OWASP-ACS`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `partial`
+- Requirements: 1
+- Review priority: `supporting-specialist-source`
+- Next action: Verify the pinned interpretation and any further provision independently before expanding extraction.
+
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-6BE98059CC635CA7` | Instrument §6.4 | The Observed Agent must block the submitted action when it receives a usable Guardian DENY decision within the negotiated timeout. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+
 ## OWASP Top 10 for Agentic Applications 2026 — 2026
 
 - Source: `EXT-42CE4459B6B2` / `OWASP-AGENTIC-TOP10`
@@ -2421,6 +2435,18 @@ No requirement records are asserted. AI-specific incident-reporting framework re
 - Next action: Retain descriptive scope. Review exact mitigation propositions and applicability independently before proposing any canonical requirement.
 
 No requirement records are asserted. Native risk/technique identifiers retained in the dated review inventory. Descriptive associations are audit-only. No EXTREQs or canonical class relationships are extracted.
+
+## OWASP GenAI Security Industry Framework Crosswalk — 4.0.0+gb0b85c5
+
+- Source: `EXT-94C210A6AD46` / `OWASP-GENAI-FRAMEWORK-CROSSWALK`
+- Role: `context-or-discovery`
+- Access: `direct-public-primary`
+- Extraction: `context-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Verify candidate controls against their own authoritative source editions before admission.
+
+No requirement records are asserted. Selected agentic and LLM mapping rows reviewed as discovery evidence. The pinned repository snapshot declares package version 4.0.0 and includes unreleased changes.
 
 ## OWASP Top 10 for LLM Applications 2026 — 2026
 

@@ -2,7 +2,7 @@
 
 Public knowledge catalogue of external governance sources and their bounded relevance to AI governance. The summaries describe source subject matter; they do not provide legal advice or establish that a source applies to any particular system or organisation.
 
-- Source versions: 112
+- Source versions: 114
 - Review-due source versions: 0
 - Registry updated through: 2026-11-06T03:23:57Z
 
@@ -1774,6 +1774,23 @@ The OECD Recommendation of the Council on Artificial Intelligence, commonly expr
 - **Review freshness:** current
 - **Official source:** https://legalinstruments.oecd.org/en/instruments/OECD-LEGAL-0449
 
+## OWASP Agent Control Standard
+
+The Agent Control Standard specifies how an observed agent exchanges runtime control decisions with a guardian. A deployment can use these decisions to stop an action before it runs or to pause it for approval. The specification defines an audit chain and separate profiles for capabilities such as telemetry and field provenance. It also defines what happens when a guardian decision is unavailable. The deployment selects the failure posture and supplies the policy. The specification sets technical conformance criteria for implementations that adopt it. The legitimacy of an operator’s policy depends on its authority and context.
+
+- **Issuer:** OWASP Foundation / GenAI Security Project
+- **Version:** `0.1.4`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** security, risk-management, traceability
+- **Applicable lifecycle stages:** design, development, deployment, operation-use
+- **Relevance scope:** Voluntary technical conformance for runtime control of instrumented agent actions, with profile and deployment conditions.
+- **Last substantive review:** 2026-11-10
+- **Next substantive review:** 2027-02-08
+- **Substantive reviewer:** OpenAI / ChatGPT / GPT-6
+- **Review method:** direct-public-primary-review · partial-review
+- **Review freshness:** current
+- **Official source:** https://genai.owasp.org/resource/agent-control-standard-acs/
+
 ## OWASP Top 10 for Agentic Applications 2026
 
 This community-developed security risk reference addresses applications whose AI agents plan, select tools and act across workflows. The 2026 edition identifies agent-specific risks involving goals, tools, identity and privileges, supply chains, code execution, memory, communication, cascading effects, human trust and autonomous deviations. Its guidance helps developers and defenders examine delegated authority and operational safeguards. The categories overlap with application security risks but retain their own ASI identifiers and scope. A risk label does not establish unauthorised conduct or successful exploitation in a particular occurrence. The document is voluntary security guidance, rather than legislation, a certification scheme or a complete rights-based governance framework.
@@ -1790,6 +1807,23 @@ This community-developed security risk reference addresses applications whose AI
 - **Review method:** direct-public-primary-review · context-only-review
 - **Review freshness:** current
 - **Official source:** https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
+
+## OWASP GenAI Security Industry Framework Crosswalk
+
+The OWASP GenAI Security Project maps security risks to provisions from external frameworks. The crosswalk covers risks from large language models, agentic applications and GenAI data security. It gives engineers and governance teams a way to identify controls for further review. Each target framework remains the authority for its own provisions, actors, conditions and exceptions. An association can help locate a provision even when the crosswalk suggests a more specific implementation than the target source prescribes. Implementation and conformance require separate evidence about the applicable system and its controls.
+
+- **Issuer:** OWASP Foundation / GenAI Security Project
+- **Version:** `4.0.0+gb0b85c5`
+- **Lifecycle state:** `published`
+- **AI-governance relevance:** security, risk-management
+- **Applicable lifecycle stages:** design, development, deployment, operation-use
+- **Relevance scope:** Informative comparison for locating external controls and reviewing possible security coverage across source editions.
+- **Last substantive review:** 2026-11-10
+- **Next substantive review:** 2027-02-08
+- **Substantive reviewer:** OpenAI / ChatGPT / GPT-6
+- **Review method:** direct-public-primary-review · context-only-review
+- **Review freshness:** current
+- **Official source:** https://genai.owasp.org/resource/genai-security-industry-framework-crosswalk/
 
 ## OWASP Top 10 for LLM Applications 2026
 
