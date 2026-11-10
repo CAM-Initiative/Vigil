@@ -2,9 +2,9 @@
 
 Canonical analytical catalogue derived from registered external governance sources. Inclusion does not establish CAM applicability, adoption, coverage, compliance, conformance or alignment.
 
-- Registered source versions: 109
+- Registered source versions: 114
 - Primary AI-governance source versions: 63
-- Requirement records: 1130
+- Requirement records: 1135
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -1713,6 +1713,18 @@ No requirement records are asserted. Registered as systems/software vocabulary a
 
 No requirement records are asserted. Source registration only. Existing contract forbids requirement extraction from supporting sources. No EXTREQ extraction, completeness or metadata-fidelity assurance claimed.
 
+## MITRE ATLAS — Adversarial Threat Landscape for Artificial-Intelligence Systems — v2026.09
+
+- Source: `EXT-A2F12155AC5A` / `MITRE-ATLAS`
+- Role: `context-or-discovery`
+- Access: `direct-public-primary`
+- Extraction: `context-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Retain descriptive scope. Review exact mitigation propositions and applicability independently before proposing any canonical requirement.
+
+No requirement records are asserted. Native risk/technique identifiers retained in the dated review inventory. Descriptive associations are audit-only. No EXTREQs or canonical class relationships are extracted.
+
 ## Artificial Intelligence Risk Management Framework (AI RMF 1.0) — 1.0
 
 - Source: `EXT-6442C7954667` / `NIST-AI-100-1`
@@ -2134,20 +2146,24 @@ No requirement records are asserted. Retained for terminology, examples, strateg
 - Role: `supporting-external-authority`
 - Access: `direct-public-primary`
 - Extraction: `partial`
-- Requirements: 8
+- Requirements: 12
 - Review priority: `supporting-specialist-source`
-- Next action: Retain the bounded reviewed selection. Expand only after a specific unsupported proposition is identified and independently reviewed.
+- Next action: Retain the twelve reviewed provisions. Do not convert contextual recovery initiation, declaration, documentation or communication candidates into admitted requirements without a separately supported relationship.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
 | `EXTREQ-186266B5896332A7` | PR.AA-05 | Define access permissions, entitlements and authorisations in a policy. Manage, enforce and review them using least privilege and separation of duties. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-2D0252D6865FB9DF` | RC.RP-05 | Verify restored-asset integrity, restore systems and services, and confirm normal operating status. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-510142D12255806C` | PR.PS-01 | Establish and apply configuration management practices. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-73CD14677F9DEB8C` | RC.RP-04 | Consider critical mission functions and cybersecurity risk management when setting post-incident operational norms. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-8664EF5872201BF3` | RS.MI-01 | Contain cybersecurity incidents. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-8C67B5EEFB0AA897` | RC.RP-01 | Execute the recovery portion of the incident response plan once the incident response process initiates it. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-97D042E03280A4F1` | PR.IR-04 | Maintain resource capacity adequate to ensure availability. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-9BFEC90D284F0A9C` | PR.IR-01 | Protect networks and environments from unauthorised logical access and usage. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-B08F5AC7A04C1481` | PR.IR-03 | Implement mechanisms that meet resilience requirements during normal and adverse conditions. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-B3C2C06EC24BD021` | RC.RP-03 | Verify the integrity of backups and other restoration assets before using them for restoration. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-CC9B3D4127206817` | DE.CM-01 | Monitor networks and network services to find potentially adverse events. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-F1E1011BE4A1DCE7` | RC.RP-02 | Choose, scope and prioritise recovery actions, then carry them out. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## Protecting Tokens and Assertions from Forgery, Theft, and Misuse: Implementation Recommendations for Agencies and Cloud Service Providers — 2026-09
 
@@ -2393,6 +2409,56 @@ No requirement records are asserted. AI-specific incident-reporting framework re
 | `EXTREQ-ED1DE68AB6182A1A` | Section 2.4(a) | Governments should empower people to use and interact with AI effectively across applications, including through necessary skills. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-F0C77761448A085A` | Section 2.5(a) | Governments, including developing countries, should cooperate actively with stakeholders to advance the principles and responsible AI stewardship. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-FAE1B0790E9E56C4` | Section 1.3(iv) | AI actors should provide information enabling adversely affected people to challenge AI outputs. | `recommended-practice` / `guidance` | `government-voluntary-framework` | `alignment` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## OWASP Agent Control Standard — 0.1.4
+
+- Source: `EXT-4139AD016E2B` / `OWASP-ACS`
+- Role: `supporting-external-authority`
+- Access: `direct-public-primary`
+- Extraction: `partial`
+- Requirements: 1
+- Review priority: `supporting-specialist-source`
+- Next action: Verify the pinned interpretation and any further provision independently before expanding extraction.
+
+| Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
+| --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-6BE98059CC635CA7` | Instrument §6.4 | The Observed Agent must block the submitted action when it receives a usable Guardian DENY decision within the negotiated timeout. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+
+## OWASP Top 10 for Agentic Applications 2026 — 2026
+
+- Source: `EXT-42CE4459B6B2` / `OWASP-AGENTIC-TOP10`
+- Role: `context-or-discovery`
+- Access: `direct-public-primary`
+- Extraction: `context-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Retain descriptive scope. Review exact mitigation propositions and applicability independently before proposing any canonical requirement.
+
+No requirement records are asserted. Native risk/technique identifiers retained in the dated review inventory. Descriptive associations are audit-only. No EXTREQs or canonical class relationships are extracted.
+
+## OWASP GenAI Security Industry Framework Crosswalk — 4.0.0+gb0b85c5
+
+- Source: `EXT-94C210A6AD46` / `OWASP-GENAI-FRAMEWORK-CROSSWALK`
+- Role: `context-or-discovery`
+- Access: `direct-public-primary`
+- Extraction: `context-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Verify candidate controls against their own authoritative source editions before admission.
+
+No requirement records are asserted. Selected agentic and LLM mapping rows reviewed as discovery evidence. The pinned repository snapshot declares package version 4.0.0 and includes unreleased changes.
+
+## OWASP Top 10 for LLM Applications 2026 — 2026
+
+- Source: `EXT-00F9F42FF8C3` / `OWASP-LLM-TOP10`
+- Role: `context-or-discovery`
+- Access: `direct-public-primary`
+- Extraction: `context-only`
+- Requirements: 0
+- Review priority: `supporting-specialist-source`
+- Next action: Retain descriptive scope. Review exact mitigation propositions and applicability independently before proposing any canonical requirement.
+
+No requirement records are asserted. Native risk/technique identifiers retained in the dated review inventory. Descriptive associations are audit-only. No EXTREQs or canonical class relationships are extracted.
 
 ## Protecting civilians and other protected persons and objects against the potential human cost of ICT activities during armed conflict — 2024
 

@@ -1,0 +1,60 @@
+{
+  "status": "AUDIT",
+  "results": [
+    {
+      "command": "python vigil/scripts/manage-external-sources.py validate --check-generated",
+      "exit_code": 0,
+      "output": "External source registry valid: 112 source versions, 19 review-required or review-due\nWARNING: public_summary outside the preferred 80-180 word range for ('ISO-IEC-27001', '2022')\nWARNING: public_summary outside the preferred 80-180 word range for ('ISO-IEC-27002', '2022')\nWARNING: public_summary outside the preferred 80-180 word range for ('NIST-IR-8587', '2026-09')\nWARNING: public_summary outside the preferred 80-180 word range for ('NIST-SP-800-53', '5.2.0')\n"
+    },
+    {
+      "command": "python vigil/scripts/manage-external-requirements.py validate --check-generated",
+      "exit_code": 0,
+      "output": "External requirements valid: 112 source versions, 1134 requirements\n"
+    },
+    {
+      "command": "python vigil/scripts/validate-external-requirement-fidelity.py",
+      "exit_code": 0,
+      "output": "{\n  \"effective_partial_due_fidelity\": 0,\n  \"explicit_fidelity_entries\": 29,\n  \"fidelity_assured_effective_complete_sources\": 19,\n  \"historical_complete_sources\": 19,\n  \"migration_packages\": {\n    \"EU-AI-ACT-2026-07-27-article-4a.json\": {\n      \"source\": [\n        \"EXT-7DB18E82C9D3\",\n        \"2026-07-27\"\n      ],\n      \"state\": \"migrated\"\n    },\n    \"EU-AI-ACT-2026-07-27-article-9.json\": {\n      \"source\": [\n        \"EXT-7DB18E82C9D3\",\n        \"2026-07-27\"\n      ],\n      \"state\": \"migrated\"\n    },\n    \"EU-AI-ACT-2026-07-27-articles-10-13.json\": {\n      \"source\": [\n        \"EXT-7DB18E82C9D3\",\n        \"2026-07-27\"\n      ],\n      \"state\": \"migrated\"\n    },\n    \"EU-AI-ACT-2026-07-27-articles-11-12.json\": {\n      \"source\": [\n        \"EXT-7DB18E82C9D3\",\n        \"2026-07-27\"\n      ],\n      \"state\": \"migrated\"\n    },\n    \"EU-AI-ACT-2026-07-27-articles-14-15.json\": {\n      \"source\": [\n        \"EXT-7DB18E82C9D3\",\n        \"2026-07-27\"\n      ],\n      \"state\": \"migrated\"\n    },\n    \"NIST-AI-100-1-1.0-measure-2-2.json\": {\n      \"source\": [\n        \"EXT-6442C7954667\",\n        \"1.0\"\n      ],\n      \"state\": \"migrated\"\n    }\n  },\n  \"staged_reextraction_requirements\": 104,\n  \"staged_reextraction_retirements\": 9\n}\n"
+    },
+    {
+      "command": "python vigil/scripts/validate-external-requirement-metadata.py",
+      "exit_code": 0,
+      "output": "{\n  \"records\": 1134,\n  \"canonical_records\": 1134,\n  \"staged_records\": 0,\n  \"metadata_complete\": 1061,\n  \"review_required_fields\": 584,\n  \"review_required_records\": 73,\n  \"reextraction_backlog_entries\": 0,\n  \"records_flagged_for_reextraction\": 0\n}\nExternal requirement metadata review contract valid\n"
+    },
+    {
+      "command": "python vigil/scripts/validate-authorship-provenance.py",
+      "exit_code": 0,
+      "output": "VIGIL authorship provenance validation passed.\n"
+    },
+    {
+      "command": "python vigil/scripts/validate-vigil-source-provenance.py",
+      "exit_code": 0,
+      "output": "Validated source_residence and source_role on 759 active source record(s).\n"
+    },
+    {
+      "command": "python vigil/scripts/validate-vigil-interpretive-provenance.py",
+      "exit_code": 0,
+      "output": "Interpretive provenance validation passed for 209 Incidents.\n"
+    },
+    {
+      "command": "python vigil/scripts/validate-occurrence-requirement-assessments.py",
+      "exit_code": 0,
+      "output": "Occurrence requirement assessments: evidence, derivation and independent alignment results OK\n"
+    },
+    {
+      "command": "python vigil/taxonomy/validate_taxonomy.py",
+      "exit_code": 0,
+      "output": "Validated 18 family file(s) against JSON Schema: 82 classes; catalogue integrity OK (working-branch mode)\n"
+    },
+    {
+      "command": "python -m unittest discover -s vigil/tests -p \"test_*.py\"",
+      "exit_code": 0,
+      "output": "...........................................................................................................................................................................................................................................................................Wrote lightweight Incident index for 209 canonical records (1539838 bytes) and registry manifest (1096 bytes).\n.......................................................................................VIGIL Incident validation failed:\n- /tmp/tmpquik3ndc/VIGIL-INC-000001.json: classification_review_provenance contains process-history fields method\n.VIGIL Incident validation failed:\n- /tmp/tmpetlt4fjg/VIGIL-INC-000001.json: forbidden Incident fields: diagnostic_provenance\n...VIGIL Incident validation failed:\n- /tmp/tmpyu5jyl__/VIGIL-INC-000001.json: taxonomy_classification.classification_basis contains forbidden candidate-testing transcript\n- /tmp/tmpyu5jyl__/VIGIL-INC-000001.json: taxonomy_classification.classification_basis contains forbidden repository workflow narration\n....VIGIL Incident validation failed:\n- /tmp/tmpzvw937s5/VIGIL-INC-000001.json: source_data is retired; use source_records\nVIGIL Incident validation failed:\n- /tmp/tmp5h7e12qu/VIGIL-INC-000001.json: forbidden Incident fields: evidence_confidence\n.VIGIL Incident validation failed:\n- /tmp/tmp0tzx59zb/VIGIL-INC-000001.json: source_records[1].incident_source_order must be unique\n- /tmp/tmp0tzx59zb/VIGIL-INC-000001.json: incident_source_order must form a contiguous sequence from 1\n..VIGIL Incident validation failed:\n- /tmp/tmpe25hbaa7/VIGIL-INC-000001.json: unclassified Incident must not assert taxonomy mappings\n.............\n----------------------------------------------------------------------\nRan 378 tests in 18.397s\n\nOK\nIEEE 7001 fidelity regression contract valid\nIEEE 7007 fidelity regression contract valid\nIEEE 7009 identity retirement regression valid\nIEEE 7009 legacy metadata retirement regression valid\nIEEE 7010 fidelity regression contract valid\nIEEE 7014 fidelity regression contract valid\nWrote lightweight Incident index for 209 canonical records (1539838 bytes) and registry manifest (1096 bytes).\nWrote lightweight Incident index for 209 canonical records (1539838 bytes) and registry manifest (1096 bytes).\nExternal source registry valid: 112 source versions, 19 review-required or review-due\nWARNING: public_summary outside the preferred 80-180 word range for ('ISO-IEC-27001', '2022')\nWARNING: public_summary outside the preferred 80-180 word range for ('ISO-IEC-27002', '2022')\nWARNING: public_summary outside the preferred 80-180 word range for ('NIST-IR-8587', '2026-09')\nWARNING: public_summary outside the preferred 80-180 word range for ('NIST-SP-800-53', '5.2.0')\nPrepared taxonomy release 0.9.2 (patch) for 2026-08-31: 18 families, 82 classes.\nTaxonomy content already matches published release 0.9.2; no version bump required.\nVIGIL Incident validation passed: 209 canonical Incident records.\n"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "output": ""
+    }
+  ]
+}

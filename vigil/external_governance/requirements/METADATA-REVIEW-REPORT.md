@@ -1,9 +1,9 @@
 # External Requirement Metadata Review Report
 
-- Records assessed: 1130
-- Canonical records: 1130
+- Records assessed: 1135
+- Canonical records: 1135
 - Staged records: 0
-- Metadata-complete: 1057
+- Metadata-complete: 1062
 - Records requiring review: 73
 - Unresolved field decisions: 584
 - Records flagged for re-extraction: 0
@@ -14,21 +14,21 @@
 
 | Field | Populated, reviewed | Populated, unreviewed | Empty, unreviewed | Not specified by source | Not applicable |
 |---|---:|---:|---:|---:|---:|
-| `applicable_actor` | 1057 | 73 | 0 | 0 | 0 |
-| `governed_object` | 1057 | 73 | 0 | 0 | 0 |
-| `timing_or_frequency` | 246 | 4 | 69 | 811 | 0 |
-| `required_artefacts` | 436 | 23 | 50 | 621 | 0 |
-| `evidence_expectation` | 407 | 23 | 50 | 650 | 0 |
-| `verification_method` | 324 | 1 | 72 | 733 | 0 |
-| `applicability_conditions` | 954 | 18 | 55 | 103 | 0 |
-| `exceptions_or_qualifications` | 731 | 18 | 55 | 326 | 0 |
+| `applicable_actor` | 1062 | 73 | 0 | 0 | 0 |
+| `governed_object` | 1062 | 73 | 0 | 0 | 0 |
+| `timing_or_frequency` | 249 | 4 | 69 | 813 | 0 |
+| `required_artefacts` | 436 | 23 | 50 | 626 | 0 |
+| `evidence_expectation` | 407 | 23 | 50 | 655 | 0 |
+| `verification_method` | 324 | 1 | 72 | 738 | 0 |
+| `applicability_conditions` | 959 | 18 | 55 | 103 | 0 |
+| `exceptions_or_qualifications` | 736 | 18 | 55 | 326 | 0 |
 
 ## Source-level review backlog
 
 | Source/version | Status | Records | Complete | Records requiring review | Unresolved fields | Re-extraction |
 |---|---|---:|---:|---:|---:|---:|
 | `EXT-7DB18E82C9D3|2026-07-27` | `partially-metadata-reviewed` | 175 | 102 | 73 | 584 | 0 |
-| `EXT-09F549521716|2.0` | `fully-metadata-reviewed` | 8 | 8 | 0 | 0 | 0 |
+| `EXT-09F549521716|2.0` | `fully-metadata-reviewed` | 12 | 12 | 0 | 0 | 0 |
 | `EXT-13FB945E8A06|1.7` | `fully-metadata-reviewed` | 5 | 5 | 0 | 0 | 0 |
 | `EXT-17722772CDFD|2026` | `fully-metadata-reviewed` | 66 | 66 | 0 | 0 | 0 |
 | `EXT-1BE47AB84994|2022` | `fully-metadata-reviewed` | 14 | 14 | 0 | 0 | 0 |
@@ -36,6 +36,7 @@
 | `EXT-31AD0314218F|2021` | `fully-metadata-reviewed` | 59 | 59 | 0 | 0 | 0 |
 | `EXT-338E4D8BD259|2021` | `fully-metadata-reviewed` | 33 | 33 | 0 | 0 | 0 |
 | `EXT-3CCBC407EAC8|2026-05` | `fully-metadata-reviewed` | 39 | 39 | 0 | 0 | 0 |
+| `EXT-4139AD016E2B|0.1.4` | `fully-metadata-reviewed` | 1 | 1 | 0 | 0 | 0 |
 | `EXT-477888AB2C1E|2.4` | `fully-metadata-reviewed` | 28 | 28 | 0 | 0 | 0 |
 | `EXT-4AADC9C1B06B|1.1` | `fully-metadata-reviewed` | 2 | 2 | 0 | 0 | 0 |
 | `EXT-564A4CAA4F00|2024` | `fully-metadata-reviewed` | 63 | 63 | 0 | 0 | 0 |
