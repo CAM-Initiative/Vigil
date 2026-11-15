@@ -1,5 +1,7 @@
 # Formal admission assessment — Trajectory Legitimacy Integrity
 
+> **Admission preparation clarification (15 November):** The decision-ready documents are [Formal Admission Decision Packet](FORMAL-ADMISSION-DECISION-PACKET.md), [Canonical Class Content Proposal](CANONICAL-CLASS-CONTENT-PROPOSAL.md), and [Pre-admission Source Trace](PRE-ADMISSION-SOURCE-TRACE.md). They **supersede the earlier conditional proposal** where local falsified scorer evidence alone could complete a new-class Not aligned chain. On the tightened test, **actual assessed-AI reliance that materially legitimises a further independent failure is necessary**. INC-003 is an unresolved admission trial, not a confirmed new-class Not aligned finding. No FC ID, family change, working release, canonical mapping or PR is authorised.
+
 > **Further source-first refinement:** [INC-003 legitimacy-transfer audit](INC-003-LEGITIMACY-TRANSFER-AUDIT.md) isolates a necessary **laundering hinge**. The scorer-workstream chain is not just FC-069 → FC-077 → FC-027: the predecessor represented controller-source inspection as already performed, the successor explicitly relied on it rather than rechecking, and the transmitted STRICT_CAUSAL premise was incorrect according to METR/Redwood. The later workstream generated false apparent-validity evidence. **Without a legitimacy-bearing intermediate and downstream uptake/presentation, component overlap and causal collaboration are insufficient for this candidate class.**
 
 **Date:** 9 November 2026  
