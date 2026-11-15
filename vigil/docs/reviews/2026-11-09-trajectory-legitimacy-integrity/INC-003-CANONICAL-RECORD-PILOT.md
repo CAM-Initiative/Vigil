@@ -1,5 +1,7 @@
 # INC-003 bounded canonical-record pilot — compound trajectory causal synthesis
 
+> **PR scope disposition — 15 November 2026:** On approving FC-091 and the taxonomy PR, the maintainer did **not** authorise incorporating a new Incident mapping or publication of this bounded research pilot through a taxonomy-only merge. The branch's Incident JSON was restored byte-for-byte to the current `main` source, blob `459f771816adac9d73f9f9ce38e16da0149c3956`, by commit `febaffd8758f887b0022a215736ff87cdb3087dd`. **The pilot work was not erased:** research analysis and prior commit `733fff6a` remain in Git history. Source-first INC-003 reconsideration under published FC-091 is a separate post-publication task. The 9 November pilot account below is historical, not an assertion that the pilot edit remains in the final PR diff.
+
 **Date:** 9 November 2026  
 **Status:** Implemented and committed; maintainer-authorised one-incident test on `agent/taxonomy-development`; not a new FC admission or permission to publish/merge the Incident.  
 **Canonical original:** `vigil/records/incidents/VIGIL-INC-000003.json`, version 0.11.0, updated 2026-11-02, blob `459f771816adac9d73f9f9ce38e16da0149c3956`, equal on `main` and `agent/taxonomy-development` at the start of this pilot.  
