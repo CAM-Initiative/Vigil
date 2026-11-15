@@ -1,5 +1,7 @@
 # INC-003 — legitimacy-transfer audit for a compound failure chain
 
+> **15 November reading rule:** This dated original source analysis is retained, but its provisional broader test treating locally falsified evidence as a completed laundering chain is **not the current proposed class threshold**. Read the [pre-admission source-to-condition matrix](PRE-ADMISSION-SOURCE-TRACE.md) and [formal decision packet](FORMAL-ADMISSION-DECISION-PACKET.md) first. They require actual consequential reliance on invalid apparent legitimacy followed by a distinct materially justified governance failure; these links remain under review in INC-003. Do not promote the 9 November class-trial outcome to a canonical FC mapping.
+
 **Date:** 9 November 2026  
 **Status:** Research-only criterion audit on `agent/taxonomy-development`. Supersedes any inference that ordinary propagation or mere multiple failures suffice for Alignment Laundering.  
 **Record:** [INC-003 v0.11.1](../../../records/incidents/VIGIL-INC-000003.json) — no canonical mapping or new class ID created.
