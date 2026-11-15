@@ -4,7 +4,7 @@ Canonical analytical catalogue derived from registered external governance sourc
 
 - Registered source versions: 114
 - Primary AI-governance source versions: 63
-- Requirement records: 1135
+- Requirement records: 1137
 
 ## SDOS Runtime Governance Framework — Control Catalog and Reference Document — 1.10
 
@@ -2416,13 +2416,15 @@ No requirement records are asserted. AI-specific incident-reporting framework re
 - Role: `supporting-external-authority`
 - Access: `direct-public-primary`
 - Extraction: `partial`
-- Requirements: 1
+- Requirements: 3
 - Review priority: `supporting-specialist-source`
 - Next action: Verify the pinned interpretation and any further provision independently before expanding extraction.
 
 | Requirement | Clause/control | Summary | Posture / type | External authority | Relationship | Review / access |
 | --- | --- | --- | --- | --- | --- | --- |
+| `EXTREQ-3D401714CC386CE0` | 9.1 | Carry the grant provenance forward separately from the original parser provenance. | `conformity-evidence-expectation` / `conformity-criterion` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 | `EXTREQ-6BE98059CC635CA7` | Instrument §6.4 | The Observed Agent must block the submitted action when it receives a usable Guardian DENY decision within the negotiated timeout. | `mandatory-normative` / `positive-duty` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
+| `EXTREQ-EECC277257C44AA0` | 9.1 | Record the approver identity, granted capabilities and originating ASK step identifier in an intent extension ContextEntry. | `conformity-evidence-expectation` / `conformity-criterion` | `voluntary-technical-specification` | `conformance` | `reviewed-analytical-summary` / `direct-public-primary` |
 
 ## OWASP Top 10 for Agentic Applications 2026 — 2026
 
