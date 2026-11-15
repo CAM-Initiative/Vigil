@@ -157,7 +157,25 @@
   },
   "external_incident_references": [],
   "external_assessments": [],
-  "external_requirement_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "NIST SP 800-53 IA-5(g) calls for system-authenticator content to be protected against unauthorised disclosure and modification. Apiiro observed Claude Code saving literal approved command strings containing authentication secrets in project-local permission settings, and confirmed that some of those files and histories were publicly accessible in Git repositories. This is an observed authenticator-content custody failure, even though a user or agent later committed the file and the researchers did not test the credentials. The voluntary control comparison concerns this bounded product behaviour, not certification, legal liability or confirmed misuse of any particular secret.",
+      "assessed_on": "2026-11-15",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_episode_refs": [
+        "E002",
+        "E004"
+      ],
+      "identification_basis": "Direct reviewed FC-090 to NIST SP 800-53 IA-5(g) custody relationship; actual stored and public credential-bearing permission records."
+    }
+  ],
   "system_context": {
     "platform_or_vendor": "Anthropic",
     "product_or_service": "Claude Code",
@@ -229,7 +247,7 @@
       "reviewer_platform": "OpenAI ChatGPT with connected GitHub",
       "reviewer_model": "GPT-6",
       "review_date": "2026-11-15",
-      "review_scope": "Original research report, taxonomy recognition, 12-dimensional specific-consequence HIM and independent external-control relevance screening.",
+      "review_scope": "Original research report, taxonomy recognition, 12-dimensional specific-consequence HIM and independent external-control relevance screening. Follow-up 15 November 2026: independently compared the source-specific credential-persistence and public-exposure mechanism with the reviewed NIST IA-5(g) proposition. One bounded external requirement assessment is retained. FC-091 screened; repeated approved-command persistence does not demonstrate an earlier unauthorised success taken as authority for a later expansion.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -243,7 +261,7 @@
         "Product behavior and public Git exposure are first-party research claims; independent replay was not performed.",
         "AI assessment is not human review."
       ],
-      "review_outcome": "Bounded and provisional product-level credential custody Incident."
+      "review_outcome": "Bounded and provisional product-level credential custody Incident. One NIST control comparison admitted on the observed credential-custody episode, without asserting downstream credential use."
     }
   },
   "harm_impact_assessment": {
