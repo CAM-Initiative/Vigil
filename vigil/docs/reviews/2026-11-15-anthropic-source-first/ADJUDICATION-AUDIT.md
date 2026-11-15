@@ -43,3 +43,19 @@ Potential crosswalks to be **assessed**, not published by default:
 7. No PR, merge or site release without an authorised release step and successful gates.
 
 **Scope of this dated packet:** an inspectable record of source and criterion reasoning to finish canonical acceptance, not an assertion that those six completion gates have passed.
+
+
+## Completion addendum — 15 November 2026 (supersedes earlier operational hold)
+
+The initial sections record the source-first drafting stage and its then-outstanding checks. The subsequent AI adjudication is complete, with the original evidence limitations preserved and no independent human verification claimed.
+
+- Eight working Incidents: 235–242, including three independent GTG-10007 workstreams—laboratory exploit research, realised production intrusions and standing public-source collection.
+- Dating-app finding: Social Engineering Integrity and the separately evidenced Economic Solicitation Authenticity; no unsupported heightened-vulnerability duty is inferred.
+- Xiaomi: Secondary-Purpose Authority Revalidation remains an ordinary ambiguous boundary because the data replay is reported, while original permissions and scope-specific revalidation remain unknown.
+- Russian-linked espionage: victim-specific source episodes have been separated. Microsoft Threat Intelligence provides independent corroboration limited to the overlapping hospitality operation and some AI assistance, not all model actions.
+- Harm: four Incidents (236, 237, 239 and 241) establish an S2 privacy-confidentiality minimum from realised unauthorised secret or protected-information acquisition. Four retain SU; unknown downstream consequence is not affirmative evidence of no harm.
+- External requirements: five occurrence assessments retained across Incidents 235, 236, 237 (two) and 239. The other four retain none after exact candidate review and recorded exclusions. OECD/NIST comparisons do not assert general compliance, certification or legal liability.
+- Architecture: thirteen scheduled source-collection agents are directly reported for INC-240; other multi-agent/swarm workflows retain evidence-supported lower bounds or unknown exact counts.
+- Validation: canonical, source/provenance, full VIGIL maintenance tests, public prose and generated-index consistency passed at commit `f5fb851bdddddedcac612dbb45601765a2036e0b`: https://github.com/CAM-Initiative/Vigil/actions/runs/43724377387
+
+**Release gate:** this completes the AI-authored source-first working-record adjudications, not their independent human acceptance. No new PR, merge or website publication is authorised by this review. The earlier operational hold is superseded for adjudication and build validation only; maintainer release approval remains outstanding.
