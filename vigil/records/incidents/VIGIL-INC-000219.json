@@ -8,34 +8,35 @@
     "record_type": "incident",
     "title": "Railway cloud platform intrusion and customer environment-variable exposure",
     "created": "2026-11-04",
-    "updated": "2026-11-04",
-    "version": "0.1.0"
+    "updated": "2026-11-15",
+    "version": "0.2.0"
   },
   "incident_identity": {
     "historical_event_name": "Railway October 2026 platform intrusion and credential exposure",
-    "occurred_from": "2026-10-20",
+    "occurred_from": "2026-10-18",
     "occurred_to": "2026-10-22",
     "date_precision": "date-range",
-    "date_basis": "Railway's preliminary investigation defines the observed intrusion window as 20 October 13:58 UTC to 22 October 03:32 UTC; disclosure occurred 21 October."
+    "date_basis": "Railway's 10 November follow-up dates attacker dummy-account signup/probing from 18 October (initial attempts unsuccessful), the first successful build-isolation escape to 20 October 07:28 UTC, loss of access to customer data by 21 October 09:25 UTC, and confirmation of removal from internal systems by 22 October 03:32 UTC. This is a bounded campaign and response interval, not continuous successful access."
   },
-  "summary": "From 20 to 22 October 2026, an external attacker gained unauthorised access to internal systems at Railway, a cloud application deployment platform. Railway detected attempted privilege escalation in its build infrastructure, briefly believed an exploit had been contained, then found further access routes. On 21 October, the attacker obtained continuous-integration credentials, accessed encrypted customer environment variables and decrypted a subset using compromised credentials. These variables can contain API keys and other secrets. Railway said no more than 1.85% of its workspaces, about 100,000, may have had environment variables compromised; this was an upper bound on potential exposure, not a count of confirmed victims. The company paused builds and deployments, interrupted some dashboard, API and support access, revoked credentials and worked with external providers on key rotations. Existing customer applications remained running. Railway reported evidence suggesting the intruder had access to safety-modified AI models and was seeking AI-provider credentials for model-distillation attacks. It has not identified the models, released their execution traces or established that an AI agent independently directed any of the intrusion.",
+  "summary": "From 18 to 22 October 2026, attackers probed and then breached Railway, a cloud platform for deploying applications. On 20 October, they escaped part of a build system's isolation, stole an internal credential and obtained portions of Railway's source code. After Railway blocked that path, the attackers exploited a separate cloud-permission error to access further credentials, query customer environment variables and decrypt some of them. Railway says at most 1.85% of workspaces, around 100,000, could have had variables decrypted; this is an upper bound, not a confirmed victim count. Compromised data also included linked-account tokens belonging to 1,852 users, and Railway estimated around US$740,000 in unauthorised spending with stolen API keys. Railway twice stopped new builds, revoked credentials and rebuilt affected systems; existing customer applications kept running. Railway's later investigation described rapid parallel attack exploration involving safeguards-removed AI models and agent fan-outs, while leaving specific model actions and their human direction unverified.",
   "vigil_assessment": {
-    "factual_basis": "Railway's 21 October security notice, 22 October preliminary forensic account and public status history establish an attempted privilege escalation, a sequence of controls and renewed access, compromise of CI credentials, unauthorised queries against encrypted customer environment variables and decryption of a subset. Railway places the intrusion between 20 October 13:58 UTC and 22 October 03:32 UTC. The company reports at most 1.85% of workspaces at potential risk and no access to individual Railway user accounts. Its published account attributes a likely objective of obtaining AI provider keys for distillation and says initial evidence suggests the attacker possessed 'abliterated' models and substantial compute. This is a provider interpretation of attacker resources and objective, not a public model trace or proof of autonomous AI action. The status record corroborates broad build suspension and access disruption, and Railway states existing workloads remained online. Wiz situates Railway among several October attacks on AI developer platforms but does not prove the same actor, mechanism or agent for every incident.",
-    "governance_interpretation": "The documented harm mechanism is external compromise of software-build, CI and protected credential environments. Railway's suspected attacker-side AI capability is material to the AI-security research question but not yet sufficient to assign a specific model action, delegated permission, decision, boundary crossing or failure to an AI system. The account cannot establish that Railway's own AI agent was involved. Remediation, detection, staged shutdown, access revocation and unchanged running customer applications are retained as defender response and outcome context. They are not separate successful-invariant mappings to the attacking system.",
-    "significance_to_cam": "This incident tests how an AI incident corpus should preserve a confirmed security compromise while separating an attributed offensive use of models from evidenced model behaviour. It illustrates the risk of propagating credentials across build systems, and the need to keep defender controls, affected-party protection and attacker-agent attribution analytically distinct.",
+    "factual_basis": "Railway's 10 November detailed report supersedes important timing and access uncertainties in its 21–22 October preliminary disclosures. Railway states that unsuccessful account probing began on 18 October; a partial build-filesystem isolation escape at 07:28 UTC on 20 October exposed a build credential, which allowed access to Temporal build histories and an internal monorepo snapshot. Subsequent source-code inspection and an erroneously scoped OIDC cloud-trust configuration enabled acquisition of cloud credentials, further internal credentials, access to the environment-variable database and decryption via a key management service on 21 October. Decryption began at 04:42 UTC, not after the 05:27 time implied by the preliminary sequence. Railway identifies a maximum of 1.85% (~100,000) potentially affected workspaces, separately reports linked-account tokens of 1,852 users and estimates about US$740,000 in unauthorised spending on stolen API keys. It reports no customer repository snapshot downloads and no account logins using stolen credentials. Railway describes attacker use of abliterated models and agent fan-outs in rapid parallel exploration; the publicly released evidence does not show model instructions, per-action selection, operator control transfers or independently verified inference-trace detail. Railway confirms containment and staged restoration, while hosted customer applications remained online. Wiz's other AI-platform cases remain contextual and are not merged into this incident.",
+    "governance_interpretation": "The materialised mechanism was a multi-step external intrusion exploiting build isolation and overly broad internal credential trust, then accessing protected environment variables and linked account tokens. Railway's detailed account strengthens the evidence that the attacker used AI-assisted rapid exploration but still cannot attribute each exploit choice, privileged access or exfiltration action to an identifiable model or agent rather than the human operator. That distinction keeps Fidelity Class findings unresolved while preserving the supported confidentiality, service disruption and financial consequences. Railway's own monitoring, emergency shutdown, revocation and rebuild are defender response, not successful Fidelity Class mappings to the attacking system.",
+    "significance_to_cam": "The case illustrates how build credentials, stored workflow history, internal source code and cloud trust configuration can form a cumulative escalation route. Railway's expanded account also shows why materialised protected-data access and unauthorised AI-key spending can be assessed separately from the unresolved allocation of decisions between attacker and AI tooling.",
     "assessment_boundaries": [
-      "Railway's detailed forensic report is explicitly preliminary, and exploit details, original forensic telemetry and actor identity are not public.",
-      "Railway says the attacker likely possessed safety-modified models and substantial compute; no public tool transcript, model name, agent count or independently selected AI decision establishes AI autonomy.",
-      "No evidence establishes that Railway's own dashboard AI agent was compromised or caused the breach.",
-      "At most 1.85% (approximately 100,000) potentially exposed workspaces is a ceiling, not the number of confirmed affected users or decrypted secrets.",
-      "Railway reports a subset of environment variables decrypted but could not determine exactly which individual keys were affected by the envelope-encrypted query.",
-      "No customer account logins were reported by Railway; access to source code was not ruled out as of the preliminary report.",
-      "Attempts to obtain AI-provider credentials do not prove model-distillation succeeded or that a specific downstream inference provider was compromised through this occurrence.",
-      "Provider-initiated pauses, detection and revocations concern the affected platform's defensive response, not an attacking agent's successful fidelity invariants.",
-      "Wiz's multi-platform overview is contextual. This incident does not consolidate other vendors' breaches or establish a single adversary."
+      "The detailed 10 November Railway report supersedes key preliminary timings and discloses exploit-chain structure, but the external forensic review, underlying network logs and attacker-model traces remain unavailable.",
+      "Railway now describes abliterated models and attacker agent fan-outs; this is a first-party model-use attribution without published agent prompts, model identity, permitted scope or per-action human/AI decision history.",
+      "No evidence establishes that Railway's own customer-facing AI assistant caused this breach.",
+      "At most 1.85% (approximately 100,000) potentially affected workspaces is a ceiling on environments with possible decrypted variables, not the number of confirmed decrypted keys or individuals.",
+      "Railway separately states that linked account tokens of 1,852 users were included; that token count must not be conflated with the 100,000-workspace upper bound or account logins.",
+      "Railway confirms attacker access to its own internal monorepo and 353 stored build histories, but says it found no indication of customer repository snapshot downloads or customer database access.",
+      "Railway's approximately US$740,000 unauthorised AI-key spend estimate is a reported financial consequence, distinct from unknown eventual refunds and any conjectured model-distillation proceeds.",
+      "Provider hypotheses about key resale or downstream distillation do not establish successful distillation or identify a downstream model provider as a breached target in this occurrence.",
+      "Railway's defender controls and service recovery do not supply independent positive mappings to the attacking AI system.",
+      "Other October AI-developer platform attacks remain contextual; no common attacker, shared exploit mechanism or agent is established merely from similarity."
     ],
     "source_clause_analysis": {
-      "purpose": "Source-first account of the attack and response, without converting the platform's defender actions into attacking-AI classifications; preserve the unresolved attribution of model use.",
+      "purpose": "Source-first chronology reconciled against Railway's more detailed 10 November report, retaining provider-reported AI involvement while withholding model-specific Fidelity Class findings and preserving defender separation.",
       "clauses": [
         {
           "episode_id": "E001",
@@ -49,10 +50,11 @@
         },
         {
           "episode_id": "E002",
-          "source_paraphrase": "On 20 October the company identified hostile attempted privilege escalation in its build infrastructure and paused build pipelines.",
+          "source_paraphrase": "On 20 October at 07:28 UTC the attacker partly escaped isolation in Railway's build environment, obtained a credential and used access beyond the credential's intended registry-push task; Railway halted builds during its response.",
           "recovered_invariant_interpretation": "A real authorisation boundary was attacked, but the public record does not identify the AI system's task choices or control over that attempt.",
           "source_record_refs": [
-            "source_records[0]"
+            "source_records[0]",
+            "source_records[4]"
           ],
           "adjudication_status": "unresolved",
           "adjudication_note": "Necessary model/agent attribution and per-action authorisation evidence are absent; the human actor's unauthorised intrusion alone is not an AI Fidelity Class mapping.",
@@ -70,17 +72,19 @@
           "source_paraphrase": "Railway initially assessed the exploit as remediated during the evening of 20 October, then identified an additional capability for broader privilege escalation at 19:53 UTC and resumed containment.",
           "recovered_invariant_interpretation": "An initial containment conclusion proved incomplete; subsequent compromise was not automatically a failure by an AI agent.",
           "source_record_refs": [
-            "source_records[0]"
+            "source_records[0]",
+            "source_records[4]"
           ],
           "adjudication_status": "resolved-no-mapping",
           "taxonomy_relationships": []
         },
         {
           "episode_id": "E004",
-          "source_paraphrase": "On 21 October Railway's forensics established that encrypted secrets had been pulled; later the attacker obtained CI credentials and decrypted artifacts exposing further API access.",
+          "source_paraphrase": "After access to Temporal build histories and Railway's internal monorepo, the attacker found an erroneously configured OIDC cloud-trust binding, obtained short-lived and longer-lived internal credentials, and used an SSH-enabled internal orchestration machine to reach protected data.",
           "recovered_invariant_interpretation": "Sensitive build and credential boundaries were crossed in the confirmed human/adversary intrusion; no separate agent-selected tool action is publicly demonstrated.",
           "source_record_refs": [
-            "source_records[0]"
+            "source_records[0]",
+            "source_records[4]"
           ],
           "adjudication_status": "unresolved",
           "adjudication_note": "Attacker-side AI involvement is suspected but the agent execution and credential-access sequence are not attributed to a specific AI system.",
@@ -95,11 +99,12 @@
         },
         {
           "episode_id": "E005",
-          "source_paraphrase": "On 21 October from 07:25 to 09:18 UTC a database query of encrypted customer environment variables was identified; a subset was decrypted with compromised credentials. Railway could not identify which exact individual keys were affected.",
+          "source_paraphrase": "Railway's 10 November forensics show that the attacker retrieved encrypted customer variable envelopes and used compromised KMS credentials to decrypt some between 04:42 and 07:15 UTC on 21 October; the upper bound on possibly affected workspaces was 1.85%.",
           "recovered_invariant_interpretation": "Real non-public customer information was accessed; the upper-bound potentially affected workspace count must not be treated as a confirmed decrypted-key or victim count.",
           "source_record_refs": [
             "source_records[0]",
-            "source_records[1]"
+            "source_records[1]",
+            "source_records[4]"
           ],
           "adjudication_status": "unresolved",
           "adjudication_note": "The protected-information compromise is supported as an external attack; AI-specific execution and choice of access are not established.",
@@ -117,7 +122,8 @@
           "source_paraphrase": "By 09:25 UTC on 21 October Railway had inspected attacker-payload logs indicating sought API-key names and informed providers including GitHub, GitLab and AI inference vendors to revoke potentially exposed credentials.",
           "recovered_invariant_interpretation": "Reported targeting of AI keys is evidence of attacker objective; the revocation is a defender action with uncertain per-key need, not evidence of autonomous model intent or a successful attacking-agent safeguard.",
           "source_record_refs": [
-            "source_records[0]"
+            "source_records[0]",
+            "source_records[4]"
           ],
           "adjudication_status": "resolved-no-mapping",
           "taxonomy_relationships": []
@@ -128,37 +134,40 @@
           "recovered_invariant_interpretation": "The response caused documented important-workflow unavailability while existing workloads remained accessible; distinguish the harm from the protective intervention and its intended scope.",
           "source_record_refs": [
             "source_records[0]",
-            "source_records[2]"
+            "source_records[2]",
+            "source_records[4]"
           ],
           "adjudication_status": "resolved-no-mapping",
           "taxonomy_relationships": []
         },
         {
           "episode_id": "E008",
-          "source_paraphrase": "Railway confirmed the attacker had no remaining internal access by 22 October 03:32 UTC and subsequently restored builds and APIs, rotated credentials, rebuilt components and accelerated single-tenant builders.",
+          "source_paraphrase": "Railway reported no access to customer data after 21 October 09:25 UTC, later confirmed complete expulsion from internal systems by 22 October 03:32 UTC, and restored build functionality in stages. These are distinct detection and validation milestones.",
           "recovered_invariant_interpretation": "Defensive recovery and containment occurred, but the reported control effect is not classified as the attacker AI system's positive behaviour.",
           "source_record_refs": [
             "source_records[0]",
-            "source_records[2]"
+            "source_records[2]",
+            "source_records[4]"
           ],
           "adjudication_status": "resolved-no-mapping",
           "taxonomy_relationships": []
         },
         {
           "episode_id": "E009",
-          "source_paraphrase": "In its preliminary account Railway said early evidence suggested the adversary had access to abliterated AI models and substantial compute and appeared to seek AI-provider keys for model distillation; exact exploit mechanics were withheld.",
-          "recovered_invariant_interpretation": "The AI component is a materially attributed capability hypothesis, not proof of an identifiable deployed agent's independent decision or unauthorised deviation.",
+          "source_paraphrase": "Railway's 10 November account describes rapid parallel exploit exploration using agent fan-outs, safeguards-removed models and a harness compared to ARTEX, and attributes targeting of AI-provider credentials to observed attacker queries. The provider has not released model-session or operator-command traces.",
+          "recovered_invariant_interpretation": "The expanded evidence supports provider-reported AI-assisted capability in the attack, but does not isolate model-selected decisions, permissions or transfers of control for a formal attacker-AI conduct finding.",
           "source_record_refs": [
-            "source_records[0]"
+            "source_records[0]",
+            "source_records[4]"
           ],
           "adjudication_status": "unresolved",
-          "adjudication_note": "Retrieve later forensic report or offensive agent traces before assigning agentic topology, AI-directed actions or a model-specific taxonomy role.",
+          "adjudication_note": "Railway's stronger attribution justifies a targeted FC recognition review, but human versus AI choices and specific model outputs are still undisclosed.",
           "taxonomy_relationships": [
             {
               "class_id": "VIGIL-FC-000025",
               "relationship": "candidate boundary",
               "canonical_taxonomy_mapping": false,
-              "rationale": "Railway's inference that attackers possessed abliterated models does not show which actions, if any, were human-instructed, model-selected or delegated, or any transfer of task control; originator versus AI actor attribution remains unavailable."
+              "rationale": "Railway now reports the use of AI agents in parallel exploit exploration, but the publicly available account does not distinguish attacker instructions, agent-selected exploits or subsequent control transfers for each operation."
             }
           ]
         },
@@ -168,7 +177,8 @@
           "recovered_invariant_interpretation": "Potential exposure and precautionary revocation population differ from established data access and confirmed affected people; no source permits their arithmetic conflation.",
           "source_record_refs": [
             "source_records[0]",
-            "source_records[1]"
+            "source_records[1]",
+            "source_records[4]"
           ],
           "adjudication_status": "resolved-no-mapping",
           "taxonomy_relationships": []
@@ -179,6 +189,44 @@
           "recovered_invariant_interpretation": "Contextual similarity and industry-level reporting do not establish shared actor identity or justify merging distinct platform breaches.",
           "source_record_refs": [
             "source_records[3]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E012",
+          "source_paraphrase": "Railway found that attacker-created dummy accounts and unsuccessful probing started on 18 October, before the first successful build-isolation escape on 20 October.",
+          "recovered_invariant_interpretation": "Preparatory unsuccessful attempts belong to the same bounded campaign but are not proof of earlier successful penetration or autonomous agent behaviour.",
+          "source_record_refs": [
+            "source_records[4]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E013",
+          "source_paraphrase": "A compromised build credential exposed histories of 353 builds and a snapshot of Railway's own internal monorepo; Railway reports no evidence of downloading customer repository snapshots.",
+          "recovered_invariant_interpretation": "The reported privileged source and workflow-history access informed subsequent escalation, but the model's specific retrieval decisions and customer-repository access cannot be inferred.",
+          "source_record_refs": [
+            "source_records[4]"
+          ],
+          "adjudication_status": "unresolved",
+          "adjudication_note": "Real attacker access is supported, but an attributable AI-system data-access choice is not established by the published forensic report.",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "candidate boundary",
+              "canonical_taxonomy_mapping": false,
+              "rationale": "Access to protected build-history and internal source data is documented for the attacker; the publication does not establish whether the AI tools themselves selected or performed that access."
+            }
+          ]
+        },
+        {
+          "episode_id": "E014",
+          "source_paraphrase": "Railway reported linked-account tokens for 1,852 users within the affected data and estimated approximately US$740,000 of unauthorised spending with stolen AI-provider keys; it described refund efforts.",
+          "recovered_invariant_interpretation": "Confirmed credential exposure and estimated realised spend are distinct materialised consequences; neither proves who selected individual transactions or that downstream model distillation succeeded.",
+          "source_record_refs": [
+            "source_records[4]"
           ],
           "adjudication_status": "resolved-no-mapping",
           "taxonomy_relationships": []
@@ -309,6 +357,40 @@
         "direct_primary_artefact_review": true,
         "limitations": []
       }
+    },
+    {
+      "source_title": "Incident Report: October 21st Security Attack",
+      "author_or_publisher": "Railway (Jacob Cooper, Angelo Saraceno, Sarah Bedell and Luca Casonato)",
+      "source_date": "2026-11-10",
+      "source_url": "https://blog.railway.com/p/incident-report-october-security-incident",
+      "source_url_status": "available",
+      "source_type": "incident report",
+      "source_platform": "Railway",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Railway's subsequent detailed first-party forensic chronology, public description of attack chain, internal code access, KMS misuse, token compromise and observed key-spend estimate. Independent forensic work and model-session traces are not publicly supplied.",
+      "source_context": "Superseding detailed first-party investigation for chronology, exploit and credential chain, source access, potential exposure cap, linked tokens and financial consequences. The 22 October report remains as historical preliminary evidence.",
+      "interpretive_reliance": "Superseding detailed first-party investigation for chronology and consequences; attribution of attacker model resources and proposed distillation objective remains Railway's stated assessment.",
+      "relevance_note": "Supersedes preliminary timeline details without implying independent verification of attacker model execution.",
+      "retrieved_date": "2026-11-15",
+      "incident_source_order": 5,
+      "system_or_product": "See system_context",
+      "model_or_algorithm": "See system_context",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-6",
+        "access_method": "Read Railway's publicly available 10 November detailed incident report; no access to private logs, source-code snapshots or independently reviewed attacker model/tool traces.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Railway's specialist external forensic review was still ongoing on 10 November.",
+          "Underlying network, tool, prompt and agent execution telemetry remains non-public.",
+          "Token count and unauthorized-spend amount are Railway's reported measurements and estimates."
+        ]
+      }
     }
   ],
   "preferred_evidence": {
@@ -322,8 +404,8 @@
   "system_context": {
     "platform_or_vendor": "Unknown",
     "product_or_service": "Unknown",
-    "specific_model_or_runtime": "Railway suspects the adversary had access to abliterated AI models; model identity, deployment and runtime not disclosed.",
-    "interface_surface": "Reported adversarial activity against Railway cloud build and continuous-integration systems; AI-agent instructions and tool interface not publicly disclosed.",
+    "specific_model_or_runtime": "Railway's 10 November report attributes rapid parallel attacker exploration to safeguards-removed models and agent fan-outs; specific models, tool harness traces and operator inputs are not disclosed.",
+    "interface_surface": "Reported adversarial AI-assisted exploit exploration against Railway's live build, Temporal and cloud environments; exact model tools, commands, intermediate instructions and decision allocations not public.",
     "component_role": [
       "unknown"
     ],
@@ -333,9 +415,10 @@
       "agent_count_min": null,
       "agent_count_max": null,
       "count_basis": "unknown",
-      "evidence_basis": "Railway's initial attribution of model access does not identify an operational agent runtime, number of agents or autonomously executed tool actions.",
+      "evidence_basis": "Railway's detailed report describes AI-assisted agent fan-outs and abliterated model use, without publishing identifiable runtime execution traces, confirmed agent counts or independently model-selected action sequences.",
       "source_record_refs": [
-        "source_records[0]"
+        "source_records[0]",
+        "source_records[4]"
       ]
     },
     "occurrence_environment": {
@@ -345,10 +428,11 @@
       ],
       "external_reach": "live-external",
       "activity_actor": "unknown",
-      "environment_detail": "A real external security compromise occurred at Railway. Whether a participating AI model was operationally deployed or was merely available to an attacker cannot be verified from the public report.",
-      "evidence_basis": "Production breach and consequence are evidenced, but the model's operational status and precise participation are withheld or undetermined.",
+      "environment_detail": "Railway confirms a live external compromise and describes the attacker's AI-assisted exploit exploration; no public execution trace resolves the deployed agent runtime or independently selected tool operations.",
+      "evidence_basis": "Real production intrusion, exposure and AI-assisted attack attribution are first-party reported; individual model choices and operator direction remain unresolved.",
       "source_record_refs": [
-        "source_records[0]"
+        "source_records[0]",
+        "source_records[4]"
       ]
     }
   },
@@ -392,11 +476,11 @@
     "adjudication_coverage": {
       "status": "partial"
     },
-    "classification_basis": "The source establishes an external credential and protected-information compromise at Railway, but does not establish which, if any, intrusion decisions or tool actions were performed by a participating AI system. Railway's suspected use of abliterated models is material to the case but insufficient for an AI Fidelity Class result. Clauses involving attacker conduct remain unresolved for AI attribution. The company's detection, containment and credential rotations belong to defender response metadata, not classifications of the attacker. Candidate relationships remain non-canonical pending AI actor-attribution evidence; neither the unauthorised human intrusion nor the provider's countermeasures establish a model Fidelity Class result.",
+    "classification_basis": "The 10 November report adds first-party attribution of attacker AI-assisted parallel exploitation and stronger evidence of real credential, internal-source and protected-variable compromise. It does not publish model/agent execution traces, permitted task scopes or per-action allocation of human and synthetic direction. Human-initiated attack conduct and Railway's own defensive controls are not by themselves AI Fidelity Class results. FC-025, FC-064, FC-089 and FC-090 remain noncanonical candidates; a targeted, current-class recognition review remains open.",
     "classification_review_provenance": {
-      "review_date": "2026-11-04",
+      "review_date": "2026-11-15",
       "reviewer": "OpenAI ChatGPT — GPT-6, AI analytical reviewer",
-      "review_status": "Evidence-limited source-first review; classification withheld pending model/agent execution evidence. Not human-verified.",
+      "review_status": "Updated source-first evidence assessment using Railway's 10 November report; canonical mapping withheld pending individual AI execution attribution. Not human-verified.",
       "review_reference": "vigil/docs/reviews/2026-11-04-inc219-railway-source-first/completion-audit.json"
     },
     "primary_classification": null,
@@ -405,20 +489,20 @@
   "related_incidents": [],
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-11-04-INC-000219",
+      "review_id": "VIGIL-REVIEW-2026-11-15-INC-000219-SOURCE-REFRESH",
       "reviewer_type": "AI analytical reviewer",
       "reviewer_platform": "OpenAI ChatGPT",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-11-04",
-      "review_scope": "Public primary-source review, bounded chronology and attribution, preliminary taxonomy/impact screen; no private traces or local full-suite validation.",
+      "review_date": "2026-11-15",
+      "review_scope": "Incremental primary-source review of Railway's 10 November detailed report; chronological reconciliation, actor attribution, financial-harm update and targeted taxonomy evidence-boundary recheck. Earlier 4 November review retained in Git history.",
       "capability_profile": {},
       "known_limitations": [
-        "Railway's primary forensic publication is preliminary; underlying logs and final findings unavailable.",
-        "No attacking model transcript or agent tool traces; specific AI-driven acts and deployment state not verified.",
-        "GitHub connector write access does not provide a local repository runtime or execute project validators.",
-        "No fully validated external-requirement crosswalk was available; not asserted complete."
+        "Underlying attacker agent transcripts, model outputs, independent control decisions and complete digital-forensic evidence remain inaccessible.",
+        "Railway's specialist forensic examination was still ongoing at 10 November; reported spend is an estimate and actual reimbursements are not final.",
+        "Only a targeted source-first FC recheck was undertaken; complete full-taxonomy and independent external-requirement review is still outstanding.",
+        "GitHub connector cannot itself run local VIGIL validators; branch CI and canonical builder checks remain separate."
       ],
-      "review_outcome": "Evidence-supported incident record with explicit unresolved AI attribution and partial taxonomy coverage; needs full external-requirement review and repository validator run."
+      "review_outcome": "Reconciled the original Railway incident with stronger 10 November provider evidence and revised financial consequences; remains unclassified pending identifiable AI-system conduct. No human sign-off or PR release implied."
     }
   },
   "harm_impact_assessment": {
@@ -433,16 +517,17 @@
       "candidate_dimensions": [],
       "source_record_refs": [
         "source_records[0]",
-        "source_records[2]"
+        "source_records[2]",
+        "source_records[4]"
       ],
-      "rationale": "A real, bounded Railway intrusion and materialised service interruption are reported; potentially at-risk workspaces are not used as a population-wide extrapolation."
+      "rationale": "The bounded Railway incident materialised confidentiality, financial and significant development-service consequences. The maximum potentially exposed workspace population is not assumed to have been actually compromised."
     },
-    "assessed_on": "2026-11-04",
+    "assessed_on": "2026-11-15",
     "overall_severity": "S3",
     "controlling_dimensions": [
       "service-operational-infrastructure"
     ],
-    "coverage_note": "All twelve HIM dimensions screened. Confirmed real confidential-variable access supports a minimum S2, and prolonged build/dashboard/API disruption supports S3. The estimated 100,000 potentially affected workspaces do not demonstrate 100,000 confirmed disclosures or persons. Other harms remain unreported or unquantified.",
+    "coverage_note": "All twelve HIM dimensions screened against Railway's 10 November first-party detailed report. Confirmed protected-data and linked-token access supports S2 privacy; the estimated US$740,000 unauthorised key spend supports S2 financial-economic, subject to recovery uncertainty; prolonged build and API service disruption supports S3. The 100,000-workspace figure is only an exposure upper bound, and existing hosted applications stayed online.",
     "dimensions": [
       {
         "dimension_id": "physical-health-safety",
@@ -473,19 +558,26 @@
         "assessment_status": "assessed",
         "severity": "S2",
         "threshold_id": "VIGIL-HIM-1.1.0-PRV-S2",
-        "assessment_basis": "Railway confirms a subset of real non-public customer environment-variable data was decrypted via compromised credentials; exact keys, sensitivity, persons and downstream misuse are unknown. This satisfies the confirmed-access S2 minimum, without treating potentially affected workspace estimates as actual disclosures.",
+        "assessment_basis": "Railway's detailed report confirms compromised customer variable decryption and linked-account tokens for 1,852 users, without confirming exactly which variable names were decrypted for all at-risk workspaces. The 100,000-workspace estimate is an upper bound, not an actual disclosed-person count.",
         "evidence_confidence": "medium",
         "evidence_refs": [
           "source_records[0]",
-          "source_records[1]"
+          "source_records[1]",
+          "source_records[4]"
         ],
         "observed_values": []
       },
       {
         "dimension_id": "financial-economic",
-        "assessment_status": "unreported",
-        "assessment_basis": "Published material identifies risk of credential abuse and disrupted workflows but provides no verified magnitude of realised financial loss attributable to this incident. Unreported is not S1.",
-        "evidence_confidence": "not-assessed"
+        "assessment_status": "assessed",
+        "assessment_basis": "Railway's 10 November investigation estimated approximately US$740,000 in unauthorised spending on stolen AI-provider keys. This reported realised misuse is within the S2 USD 10,000 to below USD 1,000,000 direct-loss range; future refunds or reimbursement are being pursued and final net losses are unknown.",
+        "evidence_confidence": "medium",
+        "severity": "S2",
+        "threshold_id": "VIGIL-HIM-1.1.0-FIN-S2",
+        "evidence_refs": [
+          "source_records[4]"
+        ],
+        "observed_values": []
       },
       {
         "dimension_id": "property-asset-damage",
@@ -502,7 +594,8 @@
         "evidence_confidence": "high",
         "evidence_refs": [
           "source_records[0]",
-          "source_records[2]"
+          "source_records[2]",
+          "source_records[4]"
         ],
         "observed_values": []
       },
