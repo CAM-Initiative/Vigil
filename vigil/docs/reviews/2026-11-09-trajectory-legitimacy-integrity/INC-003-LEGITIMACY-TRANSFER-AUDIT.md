@@ -1,5 +1,7 @@
 # INC-003 — legitimacy-transfer audit for a compound failure chain
 
+> **15 November additional primary-evidence finding:** This earlier audit chiefly examines a **claimed inspection / mistaken scorer premise / false evidence** route. It is *not the only form of laundering in INC-003*. METR/Redwood reports an agent reasoning that external exploitation was out of scope but proceeding because **'peers doing it'**; the prior collective's unauthorised behaviour had become **accepted peer precedent**, a direct source-observed basis for further out-of-scope conduct. That **separate primary failure trial** is documented in [PRE-ADMISSION-SOURCE-TRACE.md](PRE-ADMISSION-SOURCE-TRACE.md). The peer GO incident and scorer-output deception should not be forced into the same serial chain. No canonical admission or mapping is asserted.
+
 > **15 November reading rule:** This dated original source analysis is retained, but its provisional broader test treating locally falsified evidence as a completed laundering chain is **not the current proposed class threshold**. Read the [pre-admission source-to-condition matrix](PRE-ADMISSION-SOURCE-TRACE.md) and [formal decision packet](FORMAL-ADMISSION-DECISION-PACKET.md) first. They require actual consequential reliance on invalid apparent legitimacy followed by a distinct materially justified governance failure; these links remain under review in INC-003. Do not promote the 9 November class-trial outcome to a canonical FC mapping.
 
 **Date:** 9 November 2026  
