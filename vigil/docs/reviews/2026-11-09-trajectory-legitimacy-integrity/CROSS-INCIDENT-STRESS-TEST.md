@@ -42,6 +42,8 @@ INC-136 demonstrates actual rejection of a false compaction authority claim; it 
 
 The recurring general **integrity property** is intelligible: an inherited claim cannot become more authoritative merely because earlier actors or artefacts carried it. But the observed class failure at an individual receiver is already typically representable by FC-001/006/009/064/078 (and FC-077 for distributed constraint loss). What is absent from a class-by-class list is the **explicit directional causal relationship** between separate engagements and failures.
 
-Therefore the comparison strengthens the case for documenting a **non-selectable compound trajectory pattern with typed causal edges**, rather than immediately allocating another canonical Fidelity Class ID. This is a reasoned provisional recommendation; compare the complete [admission assessment](ADMISSION-ASSESSMENT.md) before approving architecture.
+**Historical 9 November disposition (retained for provenance):** Therefore the comparison strengthens the case for documenting a **non-selectable compound trajectory pattern with typed causal edges**, rather than immediately allocating another canonical Fidelity Class ID. This is a reasoned provisional recommendation; compare the complete [admission assessment](ADMISSION-ASSESSMENT.md) before approving architecture.
+
+**15 November clarification:** The earlier pattern-only recommendation is no longer the final working position. The candidate remains under conditional selectable-class testing **only for a demonstrated legitimacy-transfer relationship**; neither mere causal coupling nor false evidence without further consequential uptake warrants a new Not aligned finding. Preserve the non-selectable causal-edge option if independent class recognition ultimately fails. No admission is authorised.
 
 No cases are reclassified or recounted as new Incidents; all external defenders, victims and evaluation operators retain their own roles.
