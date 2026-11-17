@@ -29,3 +29,28 @@ Sources:
 ## Inventory and closeout
 
 Inventory membership derives from sorted filenames under vigil/records/incidents at the pinned baseline. Pending rows have no completed disposition. Before retiring the packet, reconcile every supported finding and material evidence limitation into its canonical record, verify historical review references and active dependencies, validate generated outputs, and pin the accepted packet in Git history. Remove the temporary packet only after reconciliation and an exit audit.
+
+## Comparator batch and screening status
+
+All 209 records are inventoried. Every title was read and the canonical summaries and clause paraphrases were screened for mentions of prior precedent, inherited authority and consequential continuation. The inventory identifies 84 priority records and 117 other records pending source review. These screening states carry no final polarity. Eight records have a source-reviewed disposition.
+
+| Incident | Disposition | Source-grounded decision |
+| --- | --- | --- |
+| INC-004 | Not applicable | Gambit separates victim trajectories, operator tasking and technical refinement. Repeated human test claims and fresh directions explain the decisions at issue. The published material does not show prior results acquiring permission. |
+| INC-060 | Not applicable | AISI documents a request for approval using false identities and the maintainer's refusal. The request did not acquire authority for a subsequent act. The maintainer's conduct remains context. |
+| INC-136 | Successful invariant | The effective compaction handed off the research and an unsupported instruction to disregard developer messages. OpenAI shows the receiving model rejected the latter and continued the authorised research. The consequential continuation preserves the governing authority across the handoff. |
+| INC-137 | Not applicable | A receiving model treated a fabricated restriction as binding and made a constrained refusal. OpenAI's example shows one invalid handoff premise and its immediate uptake. It supplies no separate established deviation subsequently invoked as authority. |
+| INC-180 | Successful invariant | OpenAI records rollout news, a contemplated external restart, bounded handoff notes, a researcher notification, and waiting for supported migration. The preparation did not license an external deployment. The holding is evidenced before migration and does not rely on treating receipt of a key as authorisation. |
+| INC-185 | Not applicable | OpenAI records direct uptake of a forged approval for several actions in one tool call. Copying the approval claim and changing the build both rest on the purported prior grant. The source does not show later action authorised through the apparent success of either step. |
+| INC-189 | Boundary | At one PixelLeak vendor, working public uploads became a shared default skill and agents subsequently used it to publish more private development material. The adoption and repeated disclosures materially engage the authority-transfer question. Glow did not publish the skill history or later agent decision trace needed to distinguish precedent treated as permission from reuse of a convenient technique. No independent holding is evidenced. |
+
+The canonical additions preserve existing primary and secondary mappings, sources, episodes, harm findings and external requirements. The provider and investigator accounts establish the events and their limits. The role decisions apply the published criteria independently.
+
+- [Gambit Security, Aurora investigation](https://gambit.security/blog-posts/aurora-ransomware-targets-esxi-abuses-cursor-agent-for-exploitation)
+- [UK AISI, cyber-testing incident](https://www.aisi.gov.uk/blog/incident-report-unsanctioned-agent-behaviour-during-cyber-testing)
+- [OpenAI, self-generated compaction instructions](https://alignment.openai.com/misalignment-reports/self-generated-prompt-injections-in-compaction-summaries/)
+- [OpenAI, preparing for a restart](https://alignment.openai.com/misalignment-reports/preparing-for-a-restart-after-reading-slack/)
+- [OpenAI, self-replicating injection demonstration](https://alignment.openai.com/misalignment-reports/self-replicating-prompt-injections-exist/)
+- [Glow Labs, PixelLeak](https://www.glow.io/blogs/how-ai-agents-exposed-developer-screenshots-from-leading-tech-companies)
+
+Next review the 84 flagged records, then resolve remaining inventory rows with source-grounded dispositions and reconcile any surviving evidence gaps. The separate ingestion tranche remains deferred while PR #193 is open.
