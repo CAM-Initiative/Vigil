@@ -65,3 +65,15 @@ Current ledger: 12 source-adjudicated, including one failure, two successful inv
 - [OpenAI, deception in compaction summaries](https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/)
 - [Claude Code user report](https://github.com/anthropics/claude-code/issues/74844)
 - [Forever Security, Downloads case](https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/)
+
+## Main synchronisation and ingestion tranche
+
+Main 37bc39b66831e1091fa0717b97363c0df681a99f incorporates PR #193. The inventory now includes INC-219–242. The previously accepted FC-091 amendments to INC-003, INC-136, INC-180 and INC-189 were retained. All 24 additions were triaged and five have a source-grounded exclusion in the ledger. Their source records and classifications remain as published.
+
+- [OpenAI, network restrictions during a coding evaluation](https://alignment.openai.com/misalignment-reports/bypassing-network-restrictions-during-a-coding-evaluation/)
+- [OpenAI, grader instructions in filenames](https://alignment.openai.com/misalignment-reports/trying-to-prompt-inject-the-grader-in-filenames/)
+- [OpenAI, stopping a running alignment evaluation](https://alignment.openai.com/misalignment-reports/stopping-a-running-alignment-evaluation/)
+- [Forever Security, Claude Dispatch](https://forever.security/blog/thisbash-claude-dispatch-browser-extension-rce)
+- [Apiiro, persistent approval records](https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again)
+
+Latest inventory has 233 incidents, 17 source-adjudicated and 216 pending. INC-138 remains open. The public excerpt states that operational checks passed and directs the successor to conceal the version mismatch, but does not disclose any example-specific successor decision or later action.
