@@ -1,0 +1,573 @@
+{
+  "id": "VIGIL-INC-000225",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-11-11",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000225",
+    "record_type": "incident",
+    "title": "Grok Build published apps exposed confidential information and generated a defective team access check",
+    "created": "2026-11-11",
+    "updated": "2026-11-11",
+    "version": "0.1.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "GhostShares 2: Grok Build app-sharing and generated team-authorisation exposure",
+    "occurred_from": "2026-11-08",
+    "occurred_to": "2026-11-10",
+    "date_precision": "date-range",
+    "date_basis": "Claroc reports direct observations on 8–9 November, public response through 10 November and tests in the preceding week. Earlier publication and start times for individual apps are not known."
+  },
+  "summary": "In November 2026, security researchers at Claroc found that thousands of apps published with Grok Build could be opened without signing in. On 8–9 November, they reached confidential internal sales and onboarding pages published by SpaceXSI and X staff. Other accessible apps held health information, staff records and business material. One contractor's timesheet app delivered employee passwords in its browser code. The researchers also built a test app for a four-person sales team. Grok generated sign-in code that added newcomers to the team before checking membership. An account that had not been invited could see, change and delete the test records. Claroc counted 35,578 accessible apps but did not say that all contained sensitive data. It reported the issue to SpaceXSI, which removed 24 of its staff apps after journalists made inquiries. The researchers began notifying other affected organisations. The published account did not establish wider correction or later misuse.",
+  "vigil_assessment": {
+    "factual_basis": "Claroc directly counted 37,571 still-live app pages and obtained first-page responses without authentication from 35,578 (94.7%). It describes 24 open SpaceXSI/X staff apps and concrete non-public information in other apps, including an intensive-care patient briefing. Ars independently obtained provider comment and described the removal of the 24 staff apps after inquiry. The first-party report demonstrates real confidential-information retrieval, and a browser-delivered script contained plaintext password material. Claroc's estimated 650–800 private-data apps is based on sampling and review, not a confirmed victim count. Two controlled generated apps test separate behaviours: the requested public contact-list app accepted anonymous writes, whereas the intended four-person team app enrolled uninvited sign-ins before checking membership and allowed changes to synthetic data. The available record does not prove that the defective team check operated in the exposed third-party apps. Publication involved deliberate user clicks, and protected sharing settings existed; neither fact reverses the researcher-observed exposure. The full underlying code, exact production model version, individual app owner instructions, complete permission histories, exposure start times, criminal access and downstream harms have not been disclosed.",
+    "governance_interpretation": "The occurrence demonstrates real protected-information access through AI-mediated published-app infrastructure and disclosure of authentication material through a client-delivered script. The direct Grok-generated test also demonstrates an operative team-membership check that cannot restrict access because it enrols users before validating membership. These are independently evidenced failures of information protection and of the specific generated authorisation control. The platform's publication default and hostname discoverability explain how links become reachable, but a provider's hosting choice must not be misattributed as an autonomous model decision. User publication actions and provider remediation are separate from the Grok-generated check. The finding does not extend laboratory editing to the exposed third-party apps or convert all public apps into confidentiality breaches.",
+    "significance_to_cam": "AI application builders can produce useful deployed systems while combining generated code, user publication decisions and provider-controlled access settings. A usable sign-in button is not evidence that an app enforces who may see or change its data. Effective governance requires clearly bounded access authority in both generated code and the hosting layer, plus verification of controls at the point of publication and after material app changes.",
+    "assessment_boundaries": [
+      "Only app first pages were retrieved in bulk. The full content of every open app and all owner publishing intentions were not independently verified.",
+      "35,578 counts pages accessible without a sign-in, not confidential apps or distinct harmed people; 650–800 estimated private-data apps is sample-derived.",
+      "The researcher did not modify or authenticate into third-party apps. Real-world unauthorised modification and credential use have not been established.",
+      "The four-person team app used synthetic records in a controlled test. Its generated access weakness must not be assumed to be present in all deployed user apps.",
+      "A contractor's script reportedly included 18 account-password strings. Their continued validity and any actual misuse were not tested.",
+      "The app link's hostname exposure through passive DNS and the ordinary-account publish default are provider architecture and configuration facts, not independently observed autonomous decisions by the model.",
+      "SpaceXSI said apps require deliberate publishing and its own staff accounts default to private; Claroc directly observed the normal-account publish selector starting at Anyone with the link. Do not collapse these into a single uncontested default claim.",
+      "Removing 24 provider-staff apps is not proof that other clients' apps were secured, users were notified, or exposed data copies deleted.",
+      "Researchers' redacted examples and summaries support sensitivity assessment, but individual subject identities, affected population and precise exposure duration cannot be reliably counted.",
+      "The published illustrated authorisation code was simplified; full raw generated source and a complete model trace remain unavailable.",
+      "A nearby Grok Build case concerns July 2026 whole-Git-repository transfers to xAI storage. This November app-sharing occurrence has a different path and should not inherit its classifications or outcome.",
+      "The present AI-authored adjudication is not independently human-certified; all role and harm conclusions remain bounded to the public source packet."
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://blog.claroc.io/ghostshares-grok-build-apps/",
+      "purpose": "Source-first account of real public app exposure, protected content, browser-code secret custody, provider publishing and response, and a separately bounded synthetic generated team-app test. Avoid assigning unrelated user-app edits or provider controls to Grok model behaviour.",
+      "clauses": [
+        {
+          "episode_id": "E001",
+          "source_paraphrase": "Claroc enumerated 43,601 Grok-hosted app names, attempted 43,551 app addresses according to its summary, and tested 37,571 still-live apps. Of those, 35,578 loaded without a sign-in; 1,993 responded with access-denied status.",
+          "recovered_invariant_interpretation": "The number of publicly reachable apps is a measured platform exposure, not proof that every app held protected material or that all creators intended private sharing.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E002",
+          "source_paraphrase": "On 8–9 November Claroc opened first pages for 24 published apps created by SpaceXSI and X personnel, including a confidential onboarding plan, internal sales data, advertiser plans and staff details.",
+          "recovered_invariant_interpretation": "Confidential operational information held in an AI-built application must not become accessible to unrelated third parties merely because its unguessable link is discoverable.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Unauthenticated researchers retrieved company records independently marked confidential or internal in Grok Build published apps. Their access lay outside the records' stated confidential audience. This demonstrates actual retrieval, not merely an untested possible URL."
+            }
+          ]
+        },
+        {
+          "episode_id": "E003",
+          "source_paraphrase": "Claroc and Ars described other open Grok Build apps carrying an intensive-care patient's laboratory and imaging details, an occupational-health dashboard identifying 3,784 medical examinations, personnel rosters and confidential commercial material. Claroc read saved first pages without sign-in, not every database record.",
+          "recovered_invariant_interpretation": "A live published app can expose real health, personnel or commercial information across an established confidentiality boundary, but the catalogue of accessible apps is not a confirmed population of distinct victims.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The investigated pages included individual patient information and material from internal organisational records; Claroc viewed pages without joining the relevant institutions or signing in. Those concrete disclosures support the protected-information boundary finding, without treating the entire discovery count as confidential or asserting unauthorised editing of third-party records."
+            }
+          ]
+        },
+        {
+          "episode_id": "E004",
+          "source_paraphrase": "A contractor timesheet app delivered code to browsers containing 18 employee-account records with plaintext passwords, including administrator-labelled entries. Claroc reported the secret values in redacted screenshots and did not try using them.",
+          "recovered_invariant_interpretation": "Authentication secrets have a custody boundary independent of access to other ordinary application content; browser-delivered secret values are retrievable by a visitor even when their subsequent usability is untested.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The timesheet's client-delivered script exposed employee-account password strings to unauthenticated visitors. Passwords have a distinct secret-custody function from the app's ordinary data. The finding concerns demonstrated retrievability and does not assert that researchers logged in with, validated or misused any credential."
+            }
+          ]
+        },
+        {
+          "episode_id": "E005",
+          "source_paraphrase": "Published Grok Build apps used distinct subdomains under grok.me, and Claroc discovered names through passive DNS. Random words in a hostname did not prevent a researcher who had not received the share link from finding the app.",
+          "recovered_invariant_interpretation": "The technical discoverability of the publication address defeats reliance on obscurity as confidentiality protection; it does not by itself prove that a particular app's information was protected.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E006",
+          "source_paraphrase": "In Claroc's ordinary paid account, publishing required user clicks but initially selected 'Anyone with the link'. The provider told Ars apps are private before deliberate publication, and employee accounts default to 'Only you'. Claroc confirmed a changed 'Only you' setting rejected an unrelated visitor, and unpublishing took an app offline.",
+          "recovered_invariant_interpretation": "Provider-controlled publishing settings, user approvals and operational access enforcement are separate facts. A usable protected option is not evidence that it was selected for the reported confidential apps.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E007",
+          "source_paraphrase": "Claroc asked Grok Build to create a contact list 'so every visitor sees them'. The resulting test app allowed an unauthenticated researcher to add an entry that appeared to a later visitor.",
+          "recovered_invariant_interpretation": "The requested public visibility of the synthetic contact list does not independently establish that public write access violated an applicable information-integrity boundary.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E008",
+          "source_paraphrase": "Claroc asked Grok Build for a customer list 'for my company’s sales team of 4 people'. Grok generated a Google/X sign-in flow but its code enrolled a signing-in user in the team before checking membership. An uninvited Google account then viewed, modified and deleted synthetic customer entries.",
+          "recovered_invariant_interpretation": "Identity authentication is not proof of membership authorisation. The generated check must enforce the independently requested four-person scope before permitting protected data operations; the synthetic test establishes code behaviour, not production victim harm.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000089",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The researcher specified a four-person team, but the code admitted an uninvited Google identity and permitted it to view and change that team's synthetic customer entries. This directly tests and crosses the stated access-and-modification boundary within the controlled app; no real customer exposure is inferred from this test."
+            },
+            {
+              "class_id": "VIGIL-FC-000083",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The generated app deployed a team-membership check as an operative protection for the four-person customer list. It first added anyone who authenticated to the team, so the ensuing check could not restrict access. A tested uninvited account then read, altered and deleted entries, demonstrating the activated check's protective effect fell short. This classification is bounded to the synthetic test."
+            }
+          ]
+        },
+        {
+          "episode_id": "E009",
+          "source_paraphrase": "Claroc notified SpaceXSI on 8 November of the measured exposure and two of its own apps and reported another 22 staff apps on 9 November. After media contact the 24 staff apps were removed by 10 November. Claroc began notifying other affected organisations, but broader remediation and owners' receipt of notices were not confirmed.",
+          "recovered_invariant_interpretation": "Research notifications and provider removals are observed external-human responses, not an originating AI builder's own protective success. Availability of other apps and later notification effects remain unsettled.",
+          "source_record_refs": [
+            "source_records[0]",
+            "source_records[1]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E010",
+          "source_paraphrase": "Claroc estimated about 650–800 published apps held private data after using AI triage, hand confirmation and random-sample checks. It did not report 35,578 confidential apps, 35,578 separate individuals or widespread downstream exploitation.",
+          "recovered_invariant_interpretation": "A sample-derived estimate of sensitive apps and a directly counted population of apps accessible without sign-in are different quantities. Neither proves the number of unique people harmed or any later malicious use.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        }
+      ]
+    }
+  },
+  "source_records": [
+    {
+      "source_title": "GhostShares 2: Grok Apps Exposed xAI’s Business Secrets and People’s Private Data",
+      "author_or_publisher": "Claroc Research / Asaf Aprozper",
+      "source_date": "2026-11-10",
+      "source_url": "https://blog.claroc.io/ghostshares-grok-build-apps/",
+      "source_url_status": "available",
+      "source_type": "investigation report",
+      "source_platform": "Claroc Research / Asaf Aprozper",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "The researcher reports personally enumerating app hostnames, reading first pages without authentication and constructing two synthetic Grok Build test apps. Counts are observed for tested live apps; private-data estimates are sample extrapolations.",
+      "source_context": "Primary direct research on live Grok Build app exposure, publication defaults, password-bearing client code, synthetic app authorisation tests and disclosure chronology.",
+      "interpretive_reliance": "Primary direct research on live Grok Build app exposure, publication defaults, password-bearing client code, synthetic app authorisation tests and disclosure chronology.",
+      "relevance_note": "Primary direct research on live Grok Build app exposure, publication defaults, password-bearing client code, synthetic app authorisation tests and disclosure chronology.",
+      "retrieved_date": "2026-11-11",
+      "incident_source_order": 1,
+      "system_or_product": "Grok Build",
+      "model_or_algorithm": "Grok Build (underlying model/version not conclusively established)",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-6",
+        "access_method": "Read the dated public source directly; no access to private exposed apps, respondent organisations' security telemetry, unredacted screenshots, provider production audit records or original complete model execution trace.",
+        "direct_primary_artefact_review": true,
+        "limitations": [
+          "Researchers read first pages, not full data tables or private backend logs, for all open apps.",
+          "The number of private-data apps is an extrapolation; the number of affected unique individuals and unauthorised recipients is not established.",
+          "Screenshots conceal identifying details and the published generated-authentication code is illustrative/simplified.",
+          "No independent re-performance of the researchers' app tests was done in this VIGIL review.",
+          "Original test prompts and full generated code, affected organisations' authorisation policies and precise exposure start times are unavailable.",
+          "Source summary uses 43,551 attempted addresses while methodology reports 43,601 discovered names; separate these populations."
+        ]
+      }
+    },
+    {
+      "source_title": "Grok Build coding agent leaks oodles of confidential info, some belonging to SpaceXSI",
+      "author_or_publisher": "Ars Technica / Dan Goodin",
+      "source_date": "2026-11-10",
+      "source_url": "https://arstechnica.com/security/2026/11/grok-build-coding-agent-leaks-oodles-of-confidential-info-some-belonging-to-spacexsi/",
+      "source_url_status": "available",
+      "source_type": "news article",
+      "source_platform": "Ars Technica / Dan Goodin",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "independent-reporting",
+      "evidence_status_basis": "Reporter independently sought the provider's response and confirmed the 24 SpaceXSI/X staff app links stopped resolving after the inquiry, while quoting details of Claroc's security findings.",
+      "source_context": "Independent journalism on affected sectors and material examples, provider's attributed explanation, chronology and limited response.",
+      "interpretive_reliance": "Independent journalism on affected sectors and material examples, provider's attributed explanation, chronology and limited response.",
+      "relevance_note": "Independent journalism on affected sectors and material examples, provider's attributed explanation, chronology and limited response.",
+      "retrieved_date": "2026-11-11",
+      "incident_source_order": 2,
+      "system_or_product": "Grok Build",
+      "model_or_algorithm": "Grok Build (underlying model/version not conclusively established)",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "reviewing_system": "OpenAI ChatGPT — GPT-6",
+        "access_method": "Read the dated public source directly; no access to private exposed apps, respondent organisations' security telemetry, unredacted screenshots, provider production audit records or original complete model execution trace.",
+        "direct_primary_artefact_review": false,
+        "limitations": [
+          "Ars sourced the exposure measurements and controlled authorisation test from Claroc and did not independently confirm all 35,578 app states.",
+          "Provider's assurances concern the publishing flow; they do not prove the privacy settings of every published app.",
+          "Follow-up remediation for most third-party apps was unverified at the time of publication.",
+          "An article's inclusion of sensitive-data category or company is not evidence of documented subsequent misuse."
+        ]
+      }
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://blog.claroc.io/ghostshares-grok-build-apps/",
+    "selection_basis": "First-party researcher investigation with enumerated direct tests, dates and provider-response chronology; Ars provides independent reporting and attributed provider statements.",
+    "selected_on": "2026-11-11"
+  },
+  "external_incident_references": [],
+  "external_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-FA4D888041BED657",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "NIST SP 800-53 AC-3 requires enforcement of approved logical access authorisations for information and system resources. In Claroc's controlled four-person Grok Build team app, the generated code added an uninvited Google account to the team before checking membership. The new account then read and changed the team's synthetic customer records. The team's four-person scope provides the actual intended restriction for this narrow app and operation. This is an independent retrospective comparison with the NIST control proposition, not a claim that SpaceXSI was legally obliged to adopt NIST controls or that all third-party published apps used the same flawed check.",
+      "assessed_on": "2026-11-11",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000089"
+      ],
+      "source_episode_refs": [
+        "E008"
+      ],
+      "source_clause_indices": [
+        7
+      ]
+    },
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "NIST SP 800-53 IA-5(g) requires protection of system authenticator content from unauthorised disclosure and modification. Claroc reports an employee timesheet whose downloaded browser code contained 18 password-bearing employee-account entries, including administrator-labelled entries. Sending claimed active password content to an arbitrary unauthenticated visitor does not preserve the protected authenticator-content boundary. This addresses exposure of content, not proof of successful credential use, and does not claim automatic NIST certification or binding legal duties.",
+      "assessed_on": "2026-11-11",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_episode_refs": [
+        "E004"
+      ],
+      "source_clause_indices": [
+        3
+      ]
+    }
+  ],
+  "system_context": {
+    "platform_or_vendor": "xAI",
+    "product_or_service": "Grok",
+    "specific_model_or_runtime": "Grok Build (Build mode, beta at time of disclosure; participating underlying model version not independently established)",
+    "interface_surface": "Grok Build web app generation and publish workflow; grok.me hosted apps, user access settings and generated Google/X team login",
+    "component_role": [
+      "agent-runtime",
+      "user-interface",
+      "identity-authentication",
+      "external-service"
+    ],
+    "agent_context": {
+      "agentic_status": "unknown",
+      "agent_count": null,
+      "agent_count_min": null,
+      "agent_count_max": null,
+      "count_basis": "unknown",
+      "evidence_basis": "Researcher identifies Grok Build as an AI app-building agent; no independent count of internal agent roles or model instances was reported for this bounded study.",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    },
+    "occurrence_environment": {
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use",
+        "research"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "third-party",
+      "environment_detail": "Deployed Grok Build customer apps and dependent public hosting were inspected over the internet. Separately, Claroc built controlled synthetic apps in the released product to test model-generated code and publish-access settings.",
+      "evidence_basis": "Real third-party apps were publicly hosted in ordinary operational use. Claroc's own separately described research tests used the released Grok Build tool and synthetic records.",
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ]
+    }
+  },
+  "jurisdictional_context": {},
+  "affected_party_context": {
+    "entities": [
+      {
+        "party_id": "PARTY-001",
+        "name": "SpaceXSI and X",
+        "kind": "organization",
+        "roles": [
+          "subject"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "Claroc retrieved pages from 24 apps created by staff of these businesses, including confidential commercial material; they were later removed.",
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ]
+      },
+      {
+        "party_id": "PARTY-002",
+        "name": "Other organisations whose staff published Grok Build apps",
+        "kind": "population",
+        "roles": [
+          "subject"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "Claroc confirmed open internal or private-content apps associated with 30 other organisations. Exact users and app owners are not wholly identifiable from public sources.",
+        "source_record_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ]
+      },
+      {
+        "party_id": "PARTY-003",
+        "name": "Claroc Research",
+        "kind": "organization",
+        "roles": [
+          "other"
+        ],
+        "evidence_state": "attributed",
+        "evidence_basis": "Conducted anonymous page retrievals and two tests with controlled synthetic records; did not edit third-party apps.",
+        "source_record_refs": [
+          "source_records[0]"
+        ]
+      }
+    ]
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.9.1",
+    "classification_status": "provisionally-classified",
+    "adjudication_coverage": {
+      "status": "complete"
+    },
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0018",
+      "class_id": "VIGIL-FC-000089",
+      "classification_role": "failure-occurrence",
+      "classification_confidence": "medium",
+      "classification_basis": "Claroc retrieved concrete material marked confidential and a real patient's clinical information from unauthenticated Grok Build app pages; the sources independently support protected content and access by a researcher outside the authorised audience. Its separately generated four-person team app also admitted and allowed an uninvited identity to change synthetic records. The real disclosures and the controlled test are distinct episodes. A public access count alone was not used to assert confidentiality for every app."
+    },
+    "secondary_classifications": [
+      {
+        "family_id": "VIGIL-FF-0018",
+        "class_id": "VIGIL-FC-000090",
+        "classification_role": "failure-occurrence",
+        "classification_confidence": "medium",
+        "classification_basis": "In a contractor's Grok Build timesheet, browser-delivered JavaScript contained 18 employee-account password strings, including administrator-labelled accounts. This placed secret authentication material in a client-downloadable pathway. Claroc did not use those values and did not establish later account compromise."
+      },
+      {
+        "family_id": "VIGIL-FF-0008",
+        "class_id": "VIGIL-FC-000083",
+        "classification_role": "failure-occurrence",
+        "classification_confidence": "medium",
+        "classification_basis": "Grok Build generated a four-person team-login app with a membership check that became operative only after each signed-in person was automatically added to the team. An uninvited Google account then read, modified and deleted test entries. The configured membership safeguard operated but could not fulfil its protection purpose; this finding is restricted to the synthetic test app."
+      }
+    ],
+    "classification_basis": "The primary finding is actual unauthorised access to identifiable protected data in Grok-published apps, supported by firsthand researcher observation and independent reporting. The separate contractor timesheet exposed password material in downloaded code. A controlled model-generated app provides an independently bounded test of a team-membership check that allowed uninvited access and writes. Class conditions were tested at the level of the evidenced affected operation; the accessible-app population is not treated as an all-private victim population. Nearby capability-authority and verification-laundering labels are not mapped because there is no evidence that the model inferred permission from technical reachability or presented a completed independent validation. The provider's user-sharing design is differentiated from the model-generated control defect; no defender success is attributed to Grok itself.",
+    "classification_review_provenance": {
+      "review_date": "2026-11-11",
+      "reviewer": "OpenAI ChatGPT — GPT-6, AI analytical reviewer",
+      "review_status": "AI source-first provisional case adjudication against published taxonomy v0.9.1; primary and secondary clause roles screened. No human verification or local full-suite validation claimed.",
+      "review_reference": "vigil/docs/reviews/2026-11-11-inc225-grok-ghostshares/completion-audit.json"
+    }
+  },
+  "related_incidents": [],
+  "interpretive_provenance": {
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-11-11-INC225-GHOSTSHARES",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT with connected GitHub",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-11-11",
+      "review_scope": "Source-first initial admission, duplicate and episode separation, review of current published Fidelity Class criteria, all twelve HIM dimensions and external-candidate screening of Claroc GhostShares 2. The two occurrence-specific NIST requirement comparisons were independently screened.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": true,
+        "web_research": true
+      },
+      "known_limitations": [
+        "No first-hand access to private Grok source repositories or model traces, nor to the affected apps or their confidential contents.",
+        "AI analytical review without independent human verification.",
+        "The original complete generated code and app-permission history are not publicly supplied.",
+        "NIST component comparisons were completed against admitted registered control propositions; exact affected organisations' own policy commitments are not available. No assertion of legal compliance or violation is made."
+      ],
+      "review_outcome": "A provisionally classified case with sourced real confidential information exposure, a separately supported secret-custody mechanism and controlled generated team-access control failure; publishing and full validator gates remain outstanding."
+    }
+  },
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessment_pathway": "specific_consequence",
+    "aggregate_harm_screening": {
+      "deployed_configuration": true,
+      "potentially_generalisable_mechanism": true,
+      "bounded_materialised_consequence_case": true,
+      "candidate_dimensions": [],
+      "source_record_refs": [
+        "source_records[0]",
+        "source_records[1]"
+      ],
+      "rationale": "The actual reported sensitive-data exposure is the specific consequence pathway. The large accessible-app population does not define an eligible harmed-user cohort or an additional aggregate harm band, and controlled test editing harmed no real user records."
+    },
+    "assessed_on": "2026-11-11",
+    "overall_severity": "S4",
+    "controlling_dimensions": [
+      "privacy-confidentiality"
+    ],
+    "coverage_note": "All twelve dimensions screened. The evidenced exposure of identifiable highly sensitive clinical material supports the privacy S4 alternative threshold; exposed app counts are not a unique-person count, and later misuse remains unverified. The controlled synthetic generated-app data changes create no separately bandable real asset damage; other dimensions remain unreported rather than S1.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "The available first-party investigation and independent reporting do not substantiate materialised occurrence-specific harm meeting this dimension's assessment threshold. A possibility, future risk or absence of reporting is not a positive no-harm finding.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "The available first-party investigation and independent reporting do not substantiate materialised occurrence-specific harm meeting this dimension's assessment threshold. A possibility, future risk or absence of reporting is not a positive no-harm finding.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty",
+        "assessment_status": "unreported",
+        "assessment_basis": "The available first-party investigation and independent reporting do not substantiate materialised occurrence-specific harm meeting this dimension's assessment threshold. A possibility, future risk or absence of reporting is not a positive no-harm finding.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "The available first-party investigation and independent reporting do not substantiate materialised occurrence-specific harm meeting this dimension's assessment threshold. A possibility, future risk or absence of reporting is not a positive no-harm finding.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "assessed",
+        "severity": "S4",
+        "threshold_id": "VIGIL-HIM-1.1.0-PRV-S4",
+        "assessment_basis": "Claroc directly retrieved clearly confidential company material and pages with a real intensive-care patient's clinical details from unauthenticated Grok Build app pages. Ars separately describes an occupational-health dashboard with 3,784 medical examinations and other staff data. At least one individually highly sensitive clinical exposure supports the S4 alternative threshold without needing to treat every accessible app as confidential or count all medical exams as unique persons. The exact number of people, duration, onward recipients and misuse remain unverified; S4 measures the demonstrated sensitivity of the exposed information, not proven downstream injury.",
+        "evidence_confidence": "medium",
+        "evidence_refs": [
+          "source_records[0]",
+          "source_records[1]"
+        ],
+        "observed_values": [
+          {
+            "metric": "Grok Build live app pages accessible without sign-in",
+            "value": 35578,
+            "unit": "apps",
+            "qualitative_value": "Observed across 37,571 live apps; most were not shown to contain protected information."
+          },
+          {
+            "metric": "Apps estimated to contain private data",
+            "qualitative_value": "Claroc estimated 650–800 from sampling and verification; not a direct full census."
+          },
+          {
+            "metric": "Sensitive material",
+            "qualitative_value": "An intensive-care patient briefing and company-confidential material were observed accessible to outsiders; exact impacted individuals remain uncertain."
+          }
+        ]
+      },
+      {
+        "dimension_id": "financial-economic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The available first-party investigation and independent reporting do not substantiate materialised occurrence-specific harm meeting this dimension's assessment threshold. A possibility, future risk or absence of reporting is not a positive no-harm finding.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "unreported",
+        "assessment_basis": "The only observed data modification was to Claroc's synthetic test records, not persisted real third-party assets. Third-party apps were not edited by the researchers; subsequent criminal misuse was not established.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "The available first-party investigation and independent reporting do not substantiate materialised occurrence-specific harm meeting this dimension's assessment threshold. A possibility, future risk or absence of reporting is not a positive no-harm finding.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "The available first-party investigation and independent reporting do not substantiate materialised occurrence-specific harm meeting this dimension's assessment threshold. A possibility, future risk or absence of reporting is not a positive no-harm finding.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic",
+        "assessment_status": "unreported",
+        "assessment_basis": "The available first-party investigation and independent reporting do not substantiate materialised occurrence-specific harm meeting this dimension's assessment threshold. A possibility, future risk or absence of reporting is not a positive no-harm finding.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "The available first-party investigation and independent reporting do not substantiate materialised occurrence-specific harm meeting this dimension's assessment threshold. A possibility, future risk or absence of reporting is not a positive no-harm finding.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "The available first-party investigation and independent reporting do not substantiate materialised occurrence-specific harm meeting this dimension's assessment threshold. A possibility, future risk or absence of reporting is not a positive no-harm finding.",
+        "evidence_confidence": "not-assessed"
+      }
+    ]
+  }
+}
