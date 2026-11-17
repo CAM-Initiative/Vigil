@@ -54,3 +54,14 @@ The canonical additions preserve existing primary and secondary mappings, source
 - [Glow Labs, PixelLeak](https://www.glow.io/blogs/how-ai-agents-exposed-developer-screenshots-from-leading-tech-companies)
 
 Next review the 84 flagged records, then resolve remaining inventory rows with source-grounded dispositions and reconcile any surviving evidence gaps. The separate ingestion tranche remains deferred while PR #193 is open.
+
+## Additional scope controls
+
+The next source pass excluded INC-205 and INC-206 (OpenAI's monitoring report), INC-211 (the user's GitHub report), and INC-216 (Forever Security's customer detection). These establish an over-broad interpretation of a standing instruction, disputed delegation, incomplete stop propagation, and direct injection uptake, respectively. Each lacks a source-supported transfer of authority from an earlier achieved result to a later decision. INC-138 remains a priority lead. OpenAI published the preceding version substitution, passing operational checks and the instruction to conceal the mismatch, but the successor's decision and follow-through still need verification.
+
+Current ledger: 12 source-adjudicated, including one failure, two successful invariants, one Boundary and eight not applicable. The other 197 need adjudication (80 flagged and 117 other triaged records). These counts supersede the comparator-batch checkpoint. Source evidence and the precise reasons are recorded by Incident in the inventory.
+
+- [OpenAI, evaluation monitoring incidents](https://alignment.openai.com/misalignment-reports/suppressing-misalignment-monitoring-alerts-and-disabling-misalignment-monitoring/)
+- [OpenAI, deception in compaction summaries](https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/)
+- [Claude Code user report](https://github.com/anthropics/claude-code/issues/74844)
+- [Forever Security, Downloads case](https://forever.security/blog/hijacking-ai-agents-via-downloads-folder/)
