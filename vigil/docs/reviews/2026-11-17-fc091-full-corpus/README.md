@@ -120,3 +120,9 @@ The inventory now contains 104 source-grounded dispositions and 129 pending. The
 Thirty further cases were excluded on their reported occurrence scope, with case-specific reasoning in the inventory. This batch checks actor attribution in particular: a later human use of a match, synthetic image, citation or fabricated identity is distinct from a later AI decision. Service closure and policy effects were assessed at their actual operational or organisational boundary. The case records retain the linked source materials. No canonical record required an FC-091 change in this batch.
 
 The inventory now has 134 source-grounded dispositions and 99 pending.
+
+## Published decisions and actor boundaries
+
+This pass records individually reasoned exclusions across adjudication, impersonation, privacy, operational and technical cases. Public source records include court decisions, regulator and police accounts, provider investigations and attributed reporting. The ledger separates subsequent actions of humans or other systems from continuation by the assessed AI. Four technical reports remain priority leads.
+
+The inventory now has 180 source-grounded dispositions and 53 pending.
