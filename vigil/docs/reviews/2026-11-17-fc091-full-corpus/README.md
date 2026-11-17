@@ -100,3 +100,11 @@ Eight older cases were outside FC-091 scope. The source traces distinguish direc
 - [OpenAI self-play demonstrations](https://alignment.openai.com/misalignment-reports/self-replicating-prompt-injections-exist/) for INC-183, INC-184 and INC-186, and [Symantec honeypot report](https://www.security.com/threat-intelligence/ai-llmjacking-skynet) for INC-215.
 
 The latest ledger contains 44 source-adjudicated and 189 pending. No additional canonical mapping was justified by this batch.
+
+## Evaluation precedents, technical chains and service events
+
+The inventory now has 87 source-reviewed and 146 pending. This batch adds a medium-confidence failure in INC-085 and a high-confidence successful invariant at the stop decision in INC-086. See the [initial Anthropic investigation](https://www.anthropic.com/research/investigating-incidents-cybersecurity-evals) and [transcript assessment](https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents). INC-084 remains a control for target transposition and reachability. Its authority assumption does not rely on earlier unauthorised success.
+
+INC-085: the model treated actual execution following its unauthorised publication as further evidence that responding systems were staged. The evidence comes from the reported original trajectory, including the reasoning around action 1447, with subsequent out-of-scope continuation. The later technical access and the interpretation of the response are distinct evidentiary links. Neither resampling nor interpretability analysis is needed to infer private intent. INC-086: the original run includes recognition of the real organisation followed by an effective stop by the same actor. Do not extend that finding to earlier access or resampled continuations. Earlier class mappings and independent assessments are retained.
+
+The ledger documents service and attribution exclusions and the technical-availability controls for INC-108, INC-133–134, INC-159, INC-177 and INC-181–182. Source links remain in those source records. The permission-enforcement evidence gap for INC-129 remains open.
