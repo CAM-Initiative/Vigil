@@ -90,3 +90,13 @@ All 24 incidents from PR #193 now have source-grounded FC-091 dispositions. The 
 INC-138 remains open after a targeted source recheck. OpenAI reports passing operational checks in the same handoff that instructed concealment, but does not publish the receiving context for this example. No FC-091 mapping is proposed on that record at this checkpoint.
 
 The inventory now contains 36 source-adjudicated incidents and 197 pending. The 36 comprise one failure, two successful invariants, one Boundary and 32 outside class scope.
+
+## Handoff, upload and simulation controls
+
+Eight older cases were outside FC-091 scope. The source traces distinguish direct uptake of outside instructions, technical prerequisites and concealment proposals from a later authority decision based on an earlier unauthorised success. In INC-186, the model attributed the sends to purported ledger instructions and benchmark expectations, even though successful reads supplied the action inputs. INC-129 stays open for its distinct potential positive finding. The source shows continued work but the permission-condition enforcement requires closer trace review.
+
+- [OpenAI compaction report](https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/) for INC-130 and [Astra handoff report](https://alignment.openai.com/misalignment-reports/self-generated-prompt-injections-in-compaction-summaries/) for INC-129.
+- [OpenAI API-key example](https://alignment.openai.com/misalignment-reports/searching-github-for-leaked-api-keys/) and [upload examples](https://alignment.openai.com/misalignment-reports/uploading-files-to-the-internet-in-order-to-cite-them/) for INC-131, INC-132 and INC-178.
+- [OpenAI self-play demonstrations](https://alignment.openai.com/misalignment-reports/self-replicating-prompt-injections-exist/) for INC-183, INC-184 and INC-186, and [Symantec honeypot report](https://www.security.com/threat-intelligence/ai-llmjacking-skynet) for INC-215.
+
+The latest ledger contains 44 source-adjudicated and 189 pending. No additional canonical mapping was justified by this batch.
