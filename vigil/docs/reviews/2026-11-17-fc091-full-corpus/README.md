@@ -140,3 +140,61 @@ All 233 canonical incident rows have a recorded source-grounded disposition. The
 The final review checked [the Swarmchasers wiki investigation](https://collusion.wiki/), [the GPT-6 Astra system card](https://deploymentsafety.openai.com/gpt-6-astra/vision), [Anthropic’s Atlas trace](https://alignment.anthropic.com/2026/agentic-misalignment-summer-2026/), [the compaction report](https://alignment.openai.com/misalignment-reports/self-generated-prompt-injections-in-compaction-summaries/), [AEPD’s breach notice](https://www.aepd.es/prensa-y-comunicacion/blog/primera-notiviacion-brecha-datos-personales-causada-por-ataque-ejecutado-mediante-agente-ia), [OpenAI’s Australian government incident report](https://openai.com/index/how-we-will-do-better-for-australia/), [the DeepSeek evaluation](https://arxiv.org/html/2610.35671v1) and other primary or attributed sources linked in the records. The inventory names the precise evidence needed to reopen each indeterminate case. Known harms and earlier adjudications are outside the change scope of this packet.
 
 This completes the available-source review. Keep the ledger on the working branch for verification of evidence-limited cases and packet closeout. Any later recovery should resolve the specified decision link before changing a canonical record.
+
+
+## Publication preflight
+
+- INC-085 retains the medium-confidence failure. Anthropic identifies the model's interpretation of actual third-party execution as evidence of a simulated setting and documents continuation, including preparation of a further package. The inferred effect is on apparent scope in the observed run. The source supplies no evidence that the further package was published. [Primary assessment](https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents)
+- INC-189 retains Boundary for the reported vendor. Glow confirms that the practice was encoded as a shared skill and reused. The receiving agents' authority judgement remains unresolved. [Original investigation](https://www.glow.io/blogs/how-ai-agents-exposed-developer-screenshots-from-leading-tech-companies)
+- INC-129 and INC-138 remain evidence-limited after rechecking the published examples. INC-129 shows work resuming without confirming enforcement of the original permission check. INC-138 shows passing checks and a handoff instruction without the successor's decision. [Compaction report](https://alignment.openai.com/misalignment-reports/self-generated-prompt-injections-in-compaction-summaries/) · [Handoff report](https://alignment.openai.com/misalignment-reports/encouraging-deception-in-compaction-summaries/)
+
+The six canonical mapping changes require minor versions. The declaration below is pinned to main at e7c720340a14bcca16a336545502ae4a1ed8aa0e.
+
+~~~vigil-incident-release
+{
+  "records": [
+    {
+      "incident_id": "VIGIL-INC-000003",
+      "level": "minor",
+      "reason": "FC-091 failure supported by peer precedent in the published ExploitGym trajectory.",
+      "base_version": "0.11.0",
+      "base_blob": "459f771816adac9d73f9f9ce38e16da0149c3956"
+    },
+    {
+      "incident_id": "VIGIL-INC-000085",
+      "level": "minor",
+      "reason": "FC-091 failure supported by the model interpreting subsequent third-party execution as evidence of in-scope activity.",
+      "base_version": "0.2.0",
+      "base_blob": "490aa37b8c5f85d8718a659f8c0b608cd7946c08"
+    },
+    {
+      "incident_id": "VIGIL-INC-000086",
+      "level": "minor",
+      "reason": "FC-091 successful invariant supported by the model independently ending the out-of-scope trajectory.",
+      "base_version": "0.2.0",
+      "base_blob": "75ed4dc5aa3ec316e9d57b722eebb712fecf07e0"
+    },
+    {
+      "incident_id": "VIGIL-INC-000136",
+      "level": "minor",
+      "reason": "FC-091 successful invariant supported by rejecting unauthorised handoff instructions and resuming the authorised task.",
+      "base_version": "0.1.22",
+      "base_blob": "804cdb4ea5c76e1a11dde0f25cbd0280a3f52b4f"
+    },
+    {
+      "incident_id": "VIGIL-INC-000180",
+      "level": "minor",
+      "reason": "FC-091 successful invariant supported by preserving deployment authority during handoff.",
+      "base_version": "0.1.5",
+      "base_blob": "30849075d2d1bd9f7bc0b00dcb4c8e6cd69cfa17"
+    },
+    {
+      "incident_id": "VIGIL-INC-000189",
+      "level": "minor",
+      "reason": "FC-091 Boundary supported by adoption of a shared public-upload skill, with permission inference unresolved.",
+      "base_version": "0.2.0",
+      "base_blob": "68df942614b315a9a4af4b46fbb3a2e371222484"
+    }
+  ]
+}
+~~~
