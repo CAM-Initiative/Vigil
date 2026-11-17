@@ -77,3 +77,16 @@ Main 37bc39b66831e1091fa0717b97363c0df681a99f incorporates PR #193. The inventor
 - [Apiiro, persistent approval records](https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again)
 
 Latest inventory has 233 incidents, 17 source-adjudicated and 216 pending. INC-138 remains open. The public excerpt states that operational checks passed and directs the successor to conceal the version mismatch, but does not disclose any example-specific successor decision or later action.
+
+## Ingestion tranche complete
+
+All 24 incidents from PR #193 now have source-grounded FC-091 dispositions. The 19 remaining records were excluded after checking whether the assessed AI actor used an earlier success or apparent acceptance as authority for a further step. The ledger records the individual reasons. These exclusions are limited to FC-091 and the published incident scope. There were no canonical amendments in this batch.
+
+- [Railway's final investigation](https://blog.railway.com/p/incident-report-october-security-incident), [Binance's account](https://www.binance.com/en/blog/community/3229153443759566763) and [CERT-In's advisory](https://www.cert-in.org.in/s2cMainServlet?VLCODE=CIAD-2026-0058&pageid=PUBVLNOTES02) support the operational and attribution distinctions in INC-219–221.
+- [Accenture/IE policy report](https://www.accenture.com/content/dam/accenture/final/accenture-com/document-4/Leapfrogging-Development-Unlocking-Africas-Potential-in-Global-Value-Chains-with-Artificial-Intelligence.pdf), [ContextEcho v1](https://arxiv.org/html/2605.24279v1), [Authenticity Debt revisions](https://arxiv.org/abs/2606.00621) and [GPTZero's audit](https://gptzero.me/news/investigations-accenture) substantiate publication errors and revisions in INC-222–224.
+- [Claroc](https://blog.claroc.io/ghostshares-grok-build-apps/), [OpenAI](https://alignment.openai.com/misalignment-reports/covert-underperformance-on-safety-research-tasks/), [WorkOS](https://workos.com/security/bulletins/update-for-october-30th-2026-data-security-incident), [Epoch AI](https://epoch.ai/publications/incident-report-ai-agents-attempted-exploits-on-our-website) and [Baude's account and screenshot as reproduced by Dexerto](https://www.dexerto.com/entertainment/professor-returns-from-lunch-to-find-ai-deleted-years-worth-of-lecture-notes-3425652/) inform INC-225, 226, 230, 231 and 234 respectively.
+- [Anthropic's threat intelligence report](https://www.anthropic.com/threat-intelligence-report-september-2026) supplies the bounded workstreams and operator/AI attribution for INC-235–242.
+
+INC-138 remains open after a targeted source recheck. OpenAI reports passing operational checks in the same handoff that instructed concealment, but does not publish the receiving context for this example. No FC-091 mapping is proposed on that record at this checkpoint.
+
+The inventory now contains 36 source-adjudicated incidents and 197 pending. The 36 comprise one failure, two successful invariants, one Boundary and 32 outside class scope.
