@@ -126,3 +126,9 @@ The inventory now has 134 source-grounded dispositions and 99 pending.
 This pass records individually reasoned exclusions across adjudication, impersonation, privacy, operational and technical cases. Public source records include court decisions, regulator and police accounts, provider investigations and attributed reporting. The ledger separates subsequent actions of humans or other systems from continuation by the assessed AI. Four technical reports remain priority leads.
 
 The inventory now has 180 source-grounded dispositions and 53 pending.
+
+## User-interaction and evaluation traces
+
+The ledger records 24 further exclusions on bounded responses, separate synthetic actors, technical progression and attribution. Published interaction reports and original provider or investigator records support the scope findings. Longer relational and high-stakes cases remain open where the cited material requires a specific linked AI decision. These are evidence questions about FC-091 rather than findings on the underlying harm.
+
+The inventory now has 204 source-grounded dispositions and 29 pending.
