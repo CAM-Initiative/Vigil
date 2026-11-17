@@ -114,3 +114,9 @@ The ledger documents service and attribution exclusions and the technical-availa
 The next pass closes 17 additional cases outside FC-091, with individual reasons in the ledger. Sources include [the OpenAI GitHub-token trace](https://alignment.openai.com/misalignment-reports/exposing-a-github-token-in-a-public-repository/), [Anthropic's cybersecurity assessment](https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents), [its simulation traces](https://alignment.anthropic.com/2026/agentic-misalignment-summer-2026/), [METR's monitoring experiment](https://metr.org/blog/2026-01-19-early-work-on-monitorability-evaluations/), [Anthropic's unattended-form account](https://www.anthropic.com/news/investigating-unintended-model-actions), [AIOpsDoom](https://www.usenix.org/system/files/usenixsecurity26-pasquini.pdf), [the OSS-Fuzz-Gen study](https://arxiv.org/html/2510.02185v1), [Swarmchasers' Amap investigation](https://swarmcha.se/posts/chinese-agent-fleet-full-report) and [the Cornell agent study](https://arxiv.org/html/2605.19149v1).
 
 The inventory now contains 104 source-grounded dispositions and 129 pending. The higher-evidence leads in INC-001, 088, 093, 126 and 217 remain open alongside INC-129 and INC-138. Each has a case-specific question in the ledger. This checkpoint does not certify full corpus coverage.
+
+## Attribution and bounded-output checks
+
+Thirty further cases were excluded on their reported occurrence scope, with case-specific reasoning in the inventory. This batch checks actor attribution in particular: a later human use of a match, synthetic image, citation or fabricated identity is distinct from a later AI decision. Service closure and policy effects were assessed at their actual operational or organisational boundary. The case records retain the linked source materials. No canonical record required an FC-091 change in this batch.
+
+The inventory now has 134 source-grounded dispositions and 99 pending.
