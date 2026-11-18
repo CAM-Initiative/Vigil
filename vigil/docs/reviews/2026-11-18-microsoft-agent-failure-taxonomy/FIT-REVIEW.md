@@ -1,3 +1,5 @@
+> **Status update — 18 November 2026 (review reconciliation):** The original conceptual comparison is retained, but its references to active contextual-risk and reasoning-allocation proposals are **historical**. Contextual-risk is **held/consolidated**; reasoning allocation is **retired as an FC proposal**. Approval–Execution Correspondence remains **unadmitted** and requires a distinct communication/commitment failure beyond existing classes. Current dispositions and proposed merge scope: [taxonomy development merge-readiness review](https://github.com/CAM-Initiative/Vigil/blob/agent/taxonomy-development/vigil/reviews/2026-11-18-taxonomy-development-merge-readiness.md).
+
 # Microsoft AI Red Team v2.0 — VIGIL neutral-invariant fit review
 
 **Date:** 18 November 2026
