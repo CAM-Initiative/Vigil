@@ -1,0 +1,94 @@
+{
+  "candidate_key": "REVIEW-APPROVAL-EXECUTION-SCOPE-CORRESPONDENCE",
+  "status": "review; unadmitted, unnumbered, not selectable",
+  "working_name": "Approval–Execution Scope Correspondence Integrity",
+  "taxonomy_baseline": {
+    "published_version": "0.9.2",
+    "main_commit_at_review": "e7c720340a14bcca16a336545502ae4a1ed8aa0e",
+    "review_date": "2026-11-18"
+  },
+  "source": {
+    "publisher": "Microsoft AI Red Team",
+    "title": "Taxonomy of Failure Modes in Agentic AI Systems",
+    "version": "2.0",
+    "publication_date": "2026-04",
+    "public_announcement": "2026-06-04",
+    "section": "5.4 Consent architecture hardening",
+    "url": "https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/bade/documents/products-and-services/en-us/security/Taxonomy-of-Failure-Modes-in-Agentic-AI-Systems-v2-0.pdf",
+    "role": "illustrated mechanism and mitigation guidance, not case-specific primary execution evidence"
+  },
+  "proposed_placement": "unresolved; compare existing authority, verification, governance-control, and agency family invariants before admission",
+  "definition": "The property by which a human approval requested by an AI-mediated execution process faithfully represents the material scope and effects of the actual actions being authorised, including consequential constituent tool calls, targets, parameters and affected principals, and binds the resulting approval to that represented executable scope.",
+  "invariant": "When human approval is relied on to authorise an AI-mediated consequential action or bundle, the approving actor must have a materially faithful and intelligible representation of the actual actions, significant sub-actions, target scope and effects, and the approved scope must remain bound to what proceeds. Ordinary low-risk internal steps do not require individual approvals.",
+  "plain_english": "The human should be told what they are really approving, rather than approving a harmless-looking headline that conceals consequential sub-actions.",
+  "failure_condition": "A human is asked to approve an AI-mediated consequential action or bundle using a materially incomplete or misleading representation of what will actually be executed; the system then treats that approval as an operative basis to advance a materially different, undisclosed or broader action scope.",
+  "failure_recognition": {
+    "applies_to": "failure-occurrence",
+    "required_conditions": [
+      "A bounded consequential AI-mediated executable action or bundle and its human approval/review gate are established.",
+      "Contemporaneous evidence shows the material underlying executable operation or action manifest and the representation actually presented for approval.",
+      "The representation omits or materially distorts a consequential sub-action, affected target, principal, parameter, scope or effect relevant to an informed decision.",
+      "The human approval is granted or used as the basis for advancing consequential execution without an adequate equivalent review or other valid independently scoped authority.",
+      "The mismatch is material and causally relevant to approval of a different or broader execution scope; do not infer this solely from a poor later outcome."
+    ]
+  },
+  "success_condition": "The approval representation sufficiently captures the material executable scope, allows proportionate understanding and review, and binds authorised execution to what the approving actor actually considered; approval, refusal or a bounded hold may each satisfy the property.",
+  "success_recognition": {
+    "applies_to": "successful-invariant",
+    "required_conditions": [
+      "A consequential AI-mediated action is actually subjected to human approval.",
+      "The review representation includes the material executable actions, targets, important sub-actions and effects, with supporting action evidence or authorised equivalent.",
+      "The approved scope is preserved through execution; material variations are re-reviewed through an applicable route."
+    ]
+  },
+  "exclusions": [
+    "No applicable human approval gate or approval-reliance pathway exists; autonomous action alone is not evidence of this property.",
+    "The only defect is selection of the wrong assurance tier or when approval should be requested; compare Contextual Execution Risk Calibration, FC-038 and FC-041.",
+    "A truthful, bounded approval is later improperly extended to a changed target or purpose; assess FC-003 where sufficient.",
+    "The only problem is reporting execution status, target rebinding or transformed governance constraint meaning; assess FC-029, FC-015 or FC-075 respectively.",
+    "A validly activated protective approval control fails its protective purpose and FC-083 fully exhausts the mechanism without a separately evidenced representation mismatch.",
+    "An objective-directed deceptive influence tactic fully explains the choice impairment under FC-052; co-occurrence requires separately observed approval/action mismatch.",
+    "An informed, reasonably intelligible batch approval or valid existing standing authority covers the actual executable action scope; do not require individual consent for every trivial substep.",
+    "Only an incomplete research scenario or abstract concern is available; no material contemporaneous mismatch between an actual approval presentation and execution can be shown."
+  ],
+  "relationships_to_test": [
+    {
+      "target": "FC-003",
+      "distinction": "changed-authority scope versus contemporary misdescription of action presented for approval"
+    },
+    {
+      "target": "FC-015",
+      "distinction": "target-object rebinding versus completeness of presented compound action"
+    },
+    {
+      "target": "FC-029",
+      "distinction": "execution progress/state versus content of the approved action"
+    },
+    {
+      "target": "FC-041",
+      "distinction": "required governance route traversal versus accurate content inside a route that was traversed"
+    },
+    {
+      "target": "FC-052",
+      "distinction": "instrumental impairment of human choice versus non-deliberate material approval representation mismatch"
+    },
+    {
+      "target": "FC-075",
+      "distinction": "pragmatic rendering of constraints versus executable action summary"
+    },
+    {
+      "target": "FC-083",
+      "distinction": "protective control sufficiency; highest possible redundancy, requiring empirical independence"
+    },
+    {
+      "target": "Contextual Execution Risk Calibration Integrity (candidate)",
+      "distinction": "approval threshold selection rather than truthful scope of an approval actually requested"
+    }
+  ],
+  "illustrative_cases": {
+    "possible_failure": "A supervisor is asked to approve an innocuous deployment-settings change, while the executing bundle also contains a material outbound export that is omitted in the preview; the approval is used to advance the export. Requires authentic preview, tool-call and authorisation evidence.",
+    "possible_success": "A bounded batch approval shows all consequential actions and affected targets in a compact, intelligible review, and execution stays within that scope.",
+    "ambiguous_boundary": "A paper describes consent-description laundering but does not disclose any contemporaneous human review preview, actual action bundle or operative approval evidence."
+  },
+  "admission_hold": "Must demonstrate independently supported occurrence evidence and an observable failure residual after FC-003/015/029/041/052/075/083 comparisons. Do not allocate canonical ID, edit selectable classes or families, release, Incident mappings or PR without human maintainer review."
+}
