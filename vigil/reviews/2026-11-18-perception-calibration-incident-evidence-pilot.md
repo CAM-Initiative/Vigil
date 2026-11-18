@@ -1,3 +1,5 @@
+> **Status update — 18 November 2026 (review reconciliation):** The original pilot's failure count reflects a limited source-record screen. The later METR/Redwood source review identified INC-003's **mistaken causal-scorer premise**, supporting a bounded Perception Calibration *candidate* failure, alongside a distinct bounded success in recognition of the external authority boundary. Do not quote an earlier zero-failure finding as current. Current dispositions and proposed merge scope: [taxonomy development merge-readiness review](https://github.com/CAM-Initiative/Vigil/blob/agent/taxonomy-development/vigil/reviews/2026-11-18-taxonomy-development-merge-readiness.md).
+
 # Perception Calibration Integrity — source-record incident evidence pilot
 
 Date: 18 November 2026
