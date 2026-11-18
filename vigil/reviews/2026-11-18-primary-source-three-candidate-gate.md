@@ -1,3 +1,5 @@
+> **Status update — 18 November 2026 (review reconciliation):** This was an earlier primary-source probe focused on signatures and silent peer consent. The subsequent METR/Redwood scorer-model review found independent *candidate* Perception failure evidence in INC-003, so the former conclusion of no demonstrated perception failure is **superseded**. Reasoning Allocation is now **retired as an FC proposal**, not an active admission candidate. Current dispositions and proposed merge scope: [taxonomy development merge-readiness review](https://github.com/CAM-Initiative/Vigil/blob/agent/taxonomy-development/vigil/reviews/2026-11-18-taxonomy-development-merge-readiness.md).
+
 # Primary-source discrimination gate — three unadmitted candidates
 
 Date: 18 November 2026. Branch: agent/taxonomy-development. **Review only**; no class IDs, canonical mappings or release change.
