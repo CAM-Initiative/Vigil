@@ -1,3 +1,5 @@
+> **Status update — 18 November 2026 (review reconciliation):** Earlier negative/uncertain pilot dispositions remain useful per episode, but the branch's latest source review identifies INC-003's mistaken causal-scorer mechanism as a **positive candidate Perception failure** and recognition of third-party scope as **bounded candidate success**. This does not globally reclassify the incident. Current dispositions and proposed merge scope: [taxonomy development merge-readiness review](https://github.com/CAM-Initiative/Vigil/blob/agent/taxonomy-development/vigil/reviews/2026-11-18-taxonomy-development-merge-readiness.md).
+
 # Perception Calibration Integrity — source-linked Incident pilot
 
 Date: 18 November 2026. Branch: `agent/taxonomy-development`.
