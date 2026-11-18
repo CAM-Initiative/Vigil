@@ -1,3 +1,5 @@
+> **Status update — 18 November 2026 (review reconciliation):** Its scorer-misperception correction remains current. Any discussion of Reasoning Allocation as an ongoing class candidate is superseded: the proposal has been **retired as an FC candidate**, with related reasoning/verification methods preserved as engineering-control research. Approval–Execution Correspondence remains unadmitted. Current dispositions and proposed merge scope: [taxonomy development merge-readiness review](https://github.com/CAM-Initiative/Vigil/blob/agent/taxonomy-development/vigil/reviews/2026-11-18-taxonomy-development-merge-readiness.md).
+
 # Primary-source evidence recovery: three candidate Fidelity Classes
 
 Date: 18 November 2026. Status: REVIEW ONLY. No new canonical FC, incident disposition, family, or version.
