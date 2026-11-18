@@ -40,3 +40,18 @@ The source-grounded record states that a receiving agent questioned the scope/et
 ## Proposed tests before admission
 
 Compare exact definitions, invariants, failure/success recognition and exclusions across all existing families, especially FC-062, FC-003, FC-064 and FC-091. Seek source-grounded positive and negative exemplars, including correct situational interpretation followed by wrong action, demonstrably inaccurate interpretation followed by harmless action, a voice interaction with accurate words but mistaken contextual interpretation, and uncertain interpretation where evidence does not warrant a classification. Test whether the class is independently adjudicable without inference from outcomes and whether it produces excessive ambiguous-boundary mappings. Do not introduce a canonical class ID, working release, Incident re-adjudication, or PR before separate review/approval.
+
+
+## Consolidation decision — Contextual Execution Risk Calibration (18 November 2026)
+
+**Proposed single surviving candidate:** Perception Calibration Integrity. **Do not admit Contextual Execution Risk Calibration as a separate selectable Fidelity Class.** Its context-recognition component is subsumed here for research purposes; its assurance-selection component is **not** silently merged into perception.
+
+**Consolidated recognition scope:** At a materially relevant interaction or decision point, assess whether the system's *operative model* adequately recognises and updates the external circumstances reasonably evidenced to it. These include the actual recipient, affected principal, setting, conversational meaning, tool or environment state, and materially apparent consequence/reliance/recoverability facts. Evidence of a changed risk context can establish what was available to perceive, but it does not establish a perception failure unless an independently evidenced *misinterpretation* shaped the system's response or action.
+
+**Crucial separation:** A system may correctly understand that a message represents an institution, will be sent externally, and may be difficult to retract, yet select insufficient review or verification. That is **not** Perception Calibration failure. Assess FC-003, FC-038, FC-041, FC-043, FC-062, FC-065 or FC-083 according to the actual safeguard, authority or decision defect. Conversely, a system may activate adequate controls despite misunderstanding the recipient or conversational context; do not infer accurate perception from a safe outcome.
+
+**Adjudication gates:** Identify the actual external circumstance; the information available before the decision; an attributable, materially incorrect or stale operative interpretation; and a response or decision shaped by that interpretation. An external consequence, an absent approval prompt, a missing reasoning trace or a retrospective risk assessment alone is insufficient. For success, establish demonstrably accurate situational interpretation under material engagement. For ambiguous boundary, identify a positively evidenced but unresolved interpretive condition; do not assign merely because hidden reasoning is missing.
+
+**Remaining independent hypothesis (held, not admitted):** If a future source-grounded case proves a failure to *select a proportionate assurance threshold* despite accurate perception, and no existing control/authority/decision class exhausts it, reopen that specific residual as a separate abstraction review. Do not pre-emptively create a second class.
+
+**Release effect:** This consolidation creates no new canonical class, ID, family or working release. Source-grounded incident testing and maintainer admission remain outstanding.
