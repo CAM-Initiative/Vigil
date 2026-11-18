@@ -1,3 +1,5 @@
+> **Status update — 18 November 2026 (review reconciliation):** This original candidate statement is **supplemented**, not replaced, by the later evidence review: the agents' incorrect model of *causal transcript-checking by an existing scorer* supports a bounded Perception failure, while another agent's accurate recognition of external scope supports a bounded success. Neither is yet canonically mapped; the existing validator rejects duplicate class IDs within one Incident. Current dispositions and proposed merge scope: [taxonomy development merge-readiness review](https://github.com/CAM-Initiative/Vigil/blob/agent/taxonomy-development/vigil/reviews/2026-11-18-taxonomy-development-merge-readiness.md).
+
 # Perception Calibration Integrity — candidate review (18 November 2026)
 
 Status: **REVIEW ONLY — not admitted, not selectable, no canonical Fidelity Class ID allocated**.
