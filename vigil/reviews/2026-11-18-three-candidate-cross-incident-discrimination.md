@@ -1,3 +1,5 @@
+> **Status update — 18 November 2026 (review reconciliation):** Read the **later source-correction and paired-occurrence sections** of this chronological research file as controlling over its initial table/conclusion: INC-003 exhibits a mistaken causal-scorer model (candidate failure) and separate accurate scope recognition (bounded candidate success). Risk-Adaptive Reasoning Allocation was subsequently **retired as an FC proposal**; Approval–Execution Correspondence remains research only. Current dispositions and proposed merge scope: [taxonomy development merge-readiness review](https://github.com/CAM-Initiative/Vigil/blob/agent/taxonomy-development/vigil/reviews/2026-11-18-taxonomy-development-merge-readiness.md).
+
 # Three-candidate cross-incident discrimination — INC-003 and controls
 
 Date: 18 November 2026. Review only. Baseline: published v0.9.2; branch agent/taxonomy-development. Source basis: full canonical incident JSON source-clause analyses, not a fresh authentication of all original external records. No new mappings or admission.
