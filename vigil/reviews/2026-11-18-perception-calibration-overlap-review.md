@@ -1,3 +1,5 @@
+> **Status update — 18 November 2026 (review reconciliation):** The overlap screen predates the primary-source scorer correction. INC-003 now provides a source-supported prospective Perception failure concerning the false *causal* scoring model, as well as a distinct bounded positive recognition episode. The FC-062 and other overlap gates remain outstanding; the candidate is **not admitted**. Current dispositions and proposed merge scope: [taxonomy development merge-readiness review](https://github.com/CAM-Initiative/Vigil/blob/agent/taxonomy-development/vigil/reviews/2026-11-18-taxonomy-development-merge-readiness.md).
+
 # Perception Calibration Integrity — full canonical-class overlap review
 
 Date: 18 November 2026
