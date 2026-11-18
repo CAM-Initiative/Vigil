@@ -1,3 +1,5 @@
+> **Status update — 18 November 2026 (review reconciliation):** This file preserves the original action-assurance and reasoning-allocation hypothesis, **not** today's candidate decision. Contextual Execution Risk Calibration is now **held/consolidated**, and Risk-Adaptive Reasoning Allocation is **retired as a Fidelity Class proposal** (retained solely as engineering-control research). Current dispositions and proposed merge scope: [taxonomy development merge-readiness review](https://github.com/CAM-Initiative/Vigil/blob/agent/taxonomy-development/vigil/reviews/2026-11-18-taxonomy-development-merge-readiness.md).
+
 # VIGIL Alignment Taxonomy — action assurance and reasoning allocation
 
 **Date:** 18 November 2026  
