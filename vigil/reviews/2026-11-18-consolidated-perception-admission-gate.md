@@ -1,3 +1,5 @@
+> **Status update — 18 November 2026 (review reconciliation):** This review only tested the canonical source-clause sample. Its statement that no independent Perception failure had been found was **superseded** by the later direct METR/Redwood review of INC-003's incorrect *causal-scorer* model, which shaped transcript-manipulation research. That is a source-supported **candidate** failure, not a canonical mapping. Current dispositions and proposed merge scope: [taxonomy development merge-readiness review](https://github.com/CAM-Initiative/Vigil/blob/agent/taxonomy-development/vigil/reviews/2026-11-18-taxonomy-development-merge-readiness.md).
+
 # Consolidated Perception Calibration Integrity — admission-gate tests
 
 Date: 18 November 2026
