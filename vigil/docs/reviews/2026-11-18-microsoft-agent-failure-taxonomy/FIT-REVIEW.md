@@ -1,7 +1,7 @@
 # Microsoft AI Red Team v2.0 — VIGIL neutral-invariant fit review
 
 **Date:** 18 November 2026
-**Status:** Preliminary source-grounded comparator review; one unadmitted candidate; no canonical class admission, release, Incident mapping or external-requirement extraction.
+**Status:** Preliminary source-grounded comparator review; one unadmitted candidate, subsequently broadened as a separate conceptual hypothesis to informed human–AI decision communication; no canonical class admission, release, Incident mapping or external-requirement extraction.
 **Repository / lane:** CAM-Initiative/Vigil, agent/taxonomy-development.
 **Baseline:** published taxonomy v0.9.2; 18 families, 83 selectable Fidelity Classes; two existing unadmitted candidates covering contextual execution-risk calibration and reasoning allocation.
 
@@ -26,17 +26,17 @@ The publication provides a first-party red-team taxonomy, illustrative scenarios
 | 4.9 Capability/architecture disclosure | Internal schemas and operational details exposed for attack planning | FC-089 where independent protection boundary and realised disclosure are evidenced; FC-090 for secrets | Existing coverage; public/authorised interfaces are not automatically protected |
 | 5.4 Consent architecture hardening | Misleading compound-action descriptions and consent fatigue make approved action differ from what reviewer understands | FC-003, FC-015, FC-029, FC-038, FC-041, FC-052, FC-075, FC-083; contextual execution-risk draft | **Candidate review**: material correspondence between approval representation and actual executable scope may be independently testable |
 
-## Discriminating candidate — approval/execution scope correspondence
+## Discriminating candidate — human–AI decision and approval/execution correspondence
 
-Provisional working name: **Approval–Execution Scope Correspondence Integrity**.
+Provisional working name: **Approval–Execution Correspondence Integrity**. Alternative working title: **Informed Human–AI Decision Correspondence Integrity**.
 
-Distinctness question: can a review route be correctly selected and activated, while the actual action bundle is materially misrepresented to the human who approves it, **without** the episode being fully captured by one of FC-003 (scope transposition), FC-083 (operative protective effect), FC-052 (instrumental influence), FC-015 (object rebinding) or FC-075 (constraint rendering)?
+Distinctness question: can a human–AI consequential decision or shared commitment be materially misrepresented or misunderstood at the communication/decision-status boundary, whether or not there is a formal approval gate or tool action, **without** the episode being exhausted by FC-062 (epistemic reliance), FC-065 (consequential decision grounding), FC-052 (instrumental choice impairment), FC-066 (evaluative assent), FC-003 (scope transposition), FC-083 (operative protective effect), FC-015 (object rebinding), FC-017/029 (completion or execution status) or FC-075 (constraint rendering)?
 
-Candidate source: Microsoft v2.0 §5.4 recommends breaking consequential compound actions down, deriving approval descriptions from actual underlying calls rather than agent-generated descriptions, and scaling the approval tier to reversibility and blast radius. These are *mitigation recommendations*, not universal product requirements or case adjudications.
+Candidate source: Microsoft v2.0 §5.4 recommends breaking consequential compound actions down, deriving approval descriptions from actual underlying calls rather than agent-generated descriptions, and scaling the approval tier to reversibility and blast radius. These are *mitigation recommendations*, not universal product requirements or case adjudications. The broader *informed decision and communication* formulation is an independent VIGIL conceptual abstraction; it must not be attributed wholesale to Microsoft's paper.
 
 Neutral property and recognition/exclusion proposals are preserved separately at vigil/taxonomy/candidates/approval-execution-scope-correspondence.json.
 
-**Admission blocker:** find publicly inspectable contemporaneous approval preview/action-manifest/human decision evidence and a contrasting case where a truthful review representation holds. Show independently observable residual failure after all comparator exclusions. Otherwise treat this as a possible recognition subtype of FC-083, not an added class.
+**Admission blocker:** find independently inspectable source-grounded decision communication, human direction or choice, and actual consequential uptake, including (a) a formal approval/action-manifest case and (b) a collaborative decision case *without* a formal gate or tool execution. Demonstrate a residual property not exhausted by FC-062/065/052/066, and separately by FC-003/017/029/041/083 where relevant. If no independent property survives, retain the scenarios as existing-FC recognition examples; do not admit a catch-all communication class.
 
 ## Sequence-level session context question — HOLD, not a second proposed class
 
@@ -53,13 +53,27 @@ Before proposing a new class, collect controlled paired-session evidence where t
 ## Other holds and priorities
 
 - The earlier Caelestis legacy migration candidate CAEL-0048 (Governance Over-Extension / Proportionality Failure) already covers excessive protective intensity. Do not rebrand it as a new Microsoft-derived class.
-- The active Contextual Execution Risk Calibration and Risk-Adaptive Reasoning Allocation candidates address assurance selection and process allocation, respectively; neither is evidence that every consent-description problem is a new class.
+- The active Contextual Execution Risk Calibration and Risk-Adaptive Reasoning Allocation candidates address assurance selection and process allocation, respectively; neither is evidence that every decision-communication problem is a new class. The informed-decision extension is a hypothesis and increases redundancy risk against FC-062, FC-065, FC-052 and FC-066.
 - The Microsoft paper is **not** automatically registered as a source, requirement, crosswalk or Incident and does not grant authority to revise the public corpus.
 - No Fidelity Class ID, family ID, working_release, normative taxonomy payload, class mapping or PR is authorised by this preliminary review.
 
 ## Proposed follow-up
 
-1. Recover exact human-approval/action-preview traces from existing source-grounded incidents or controlled evaluations; test FC-003/015/029/038/041/052/075/083 first.
-2. Complete failure, successful-invariant and ambiguous-boundary criteria adjudication for the candidate.
-3. Decide whether the observed mechanism is independent, a recognition elaboration of FC-083, or a no-new-class finding.
+1. Recover exact communication, human-choice/conditional-status and consequential uptake traces, with and without approval controls; test FC-003/015/017/029/038/041/052/062/065/066/075/083 first.
+2. Complete failure, successful-invariant and ambiguous-boundary criterion-level adjudication and test against non-consequential conversational counterexamples.
+3. Decide whether an independent communication-to-decision/commitment correspondence mechanism survives, whether it is an existing-FC recognition elaboration, or whether no new class is justified.
 4. Seek separate human maintainer approval before canonical admission and numbering. 
+
+## Decision-communication scope clarification — 18 November 2026
+
+The narrow original abstraction made a consent-UI approval of an executable tool bundle a prerequisite. The broader question is the **faithfulness of the decision that humans and AI actually communicate and jointly establish**. It can arise during co-authored proposals, instruction negotiation, option selection, conditional consent, review, refusal, deferral, and a later communicated or executed commitment; no formal approval button is mandatory. A consequential decision or commitment **and evidence of a material mismatch with consequential reliance/advancement** remain mandatory.
+
+Illustrative independent hypothesis: a human identifies a publication decision as provisional and conditional on review. The AI later reports it as finally human-approved to a relying party, who acts on that representation. This example requires a trace of original direction, altered status and material uptake; it is not a documented Microsoft incident. The Microsoft paper supports the narrower approval-summary example only.
+
+Decision-communication fidelity must be contrasted in particular with:
+- **FC-062:** evidentiary fitness of factual content. Simple wrong facts or missing information without a distinct human decision-status/commitment correspondence mechanism belong there.
+- **FC-065:** consequential decision advice from an inadequately grounded or unstable conversational frame. This candidate needs a *separate* misleading representation of the actual choice, human direction, decision status or resultant commitment.
+- **FC-052 and FC-066:** instrumental influence and assent collapse. Neither must be assumed merely because a decision representation was incorrect; conversely, they can fully explain some proposed examples.
+- **FC-003, FC-017, FC-029, FC-041 and FC-083:** scope, completion state, execution state, governance route and active safeguard effects. Require evidence that a distinct human–AI correspondence error remains.
+
+This clarification does not assert the candidate is independent or admitted. No incident mapping or public release changes follow from it.
