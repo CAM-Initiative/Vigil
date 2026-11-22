@@ -60,6 +60,29 @@ class ArithmeticContract(unittest.TestCase):
                                 candidate=record("1.4.12", mapped=True),
                                 declaration=row("patch", "1.4.11", "a"*40), blob="a"*40)
 
+    def test_same_class_new_role_is_a_mapping_change(self):
+        old = record("1.4.11", mapped=True)
+        new = record("1.5.0", mapped=True)
+        new["taxonomy_classification"]["secondary_classifications"] = [{
+            "class_id": "VIGIL-FC-000089",
+            "classification_role": "successful-invariant",
+        }]
+        self.assertNotEqual(guard.mapping_fingerprint(old), guard.mapping_fingerprint(new))
+        patch_candidate = record("1.4.12", mapped=True)
+        patch_candidate["taxonomy_classification"]["secondary_classifications"] = (
+            new["taxonomy_classification"]["secondary_classifications"]
+        )
+        with self.assertRaisesRegex(guard.ReleaseError, "MINOR"):
+            guard.verify_record(
+                ident=ID, published=old, candidate=patch_candidate,
+                declaration=row("patch", "1.4.11", "a"*40), blob="a"*40
+            )
+        self.assertEqual(
+            guard.verify_record(ident=ID, published=old, candidate=new,
+                                declaration=row("minor", "1.4.11", "a"*40), blob="a"*40),
+            "1.5.0",
+        )
+
     def test_historical_major_two_continues(self):
         self.assertEqual(guard.next_version("2.0.7", "minor"), "2.1.0")
         self.assertEqual(guard.next_version("2.0.7", "major"), "3.0.0")
