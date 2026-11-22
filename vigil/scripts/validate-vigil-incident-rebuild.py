@@ -68,8 +68,15 @@ def mapping_list(record: dict[str, Any]) -> list[dict[str, Any]]:
     return [item for item in items if isinstance(item.get("class_id"), str)]
 
 
-def mapping_map(record: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    return {item["class_id"]: item for item in mapping_list(record)}
+MappingKey = tuple[str, str]
+
+
+def mapping_key(item: dict[str, Any]) -> MappingKey:
+    return (item["class_id"], item.get("classification_role"))
+
+
+def mapping_map(record: dict[str, Any]) -> dict[MappingKey, dict[str, Any]]:
+    return {mapping_key(item): item for item in mapping_list(record)}
 
 
 def source_key(source: dict[str, Any]) -> str:
@@ -99,26 +106,54 @@ def non_empty(value: Any) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
-def disposition_map(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    raw = manifest.get("taxonomy_mapping_dispositions")
+def manifest_mapping_map(
+    manifest: dict[str, Any],
+    field: str,
+    reference_mappings: list[dict[str, Any]],
+    errors: list[str],
+) -> dict[MappingKey, dict[str, Any]]:
+    """Read role-aware manifest rows, inferring only unambiguous legacy roles."""
+    raw = manifest.get(field)
     if not isinstance(raw, list):
         return {}
-    result: dict[str, dict[str, Any]] = {}
-    for item in raw:
-        if isinstance(item, dict) and isinstance(item.get("class_id"), str):
-            result[item["class_id"]] = item
+    result: dict[MappingKey, dict[str, Any]] = {}
+    for index, item in enumerate(raw):
+        if not isinstance(item, dict) or not isinstance(item.get("class_id"), str):
+            continue
+        class_id = item["class_id"]
+        role = item.get("classification_role")
+        if not isinstance(role, str):
+            possible = {
+                mapping.get("classification_role")
+                for mapping in reference_mappings
+                if mapping.get("class_id") == class_id
+                and isinstance(mapping.get("classification_role"), str)
+            }
+            if len(possible) == 1:
+                role = next(iter(possible))
+            else:
+                errors.append(
+                    f"{field}[{index}] for {class_id} must identify classification_role "
+                    "because the role cannot be inferred unambiguously"
+                )
+                continue
+        key = (class_id, role)
+        if key in result:
+            errors.append(
+                f"{field} contains duplicate mapping identity {class_id} + {role}"
+            )
+        result[key] = item
     return result
 
 
-def new_mapping_map(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
-    raw = manifest.get("new_taxonomy_mappings")
-    if not isinstance(raw, list):
-        return {}
-    result: dict[str, dict[str, Any]] = {}
-    for item in raw:
-        if isinstance(item, dict) and isinstance(item.get("class_id"), str):
-            result[item["class_id"]] = item
-    return result
+def new_mapping_map(
+    manifest: dict[str, Any],
+    candidate_mappings: list[dict[str, Any]],
+    errors: list[str],
+) -> dict[MappingKey, dict[str, Any]]:
+    return manifest_mapping_map(
+        manifest, "new_taxonomy_mappings", candidate_mappings, errors
+    )
 
 
 def source_disposition_map(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -233,24 +268,26 @@ def validate(
                 "full-rebuild requires governance_interpretation_review.status = reviewed"
             )
 
+    old_mapping_list = mapping_list(baseline)
+    new_mapping_list = mapping_list(candidate)
     old_mappings = mapping_map(baseline)
     new_mappings = mapping_map(candidate)
-    dispositions = disposition_map(manifest)
+    if len(old_mappings) != len(old_mapping_list):
+        errors.append("baseline contains duplicate class_id + classification_role mappings")
+    if len(new_mappings) != len(new_mapping_list):
+        errors.append("candidate contains duplicate class_id + classification_role mappings")
+    dispositions = manifest_mapping_map(
+        manifest, "taxonomy_mapping_dispositions", old_mapping_list, errors
+    )
+    new_entries = new_mapping_map(manifest, new_mapping_list, errors)
 
-    duplicate_dispositions = manifest.get("taxonomy_mapping_dispositions")
-    if isinstance(duplicate_dispositions, list):
-        ids = [
-            item.get("class_id")
-            for item in duplicate_dispositions
-            if isinstance(item, dict) and isinstance(item.get("class_id"), str)
-        ]
-        if len(ids) != len(set(ids)):
-            errors.append("taxonomy_mapping_dispositions contains duplicate class_id entries")
-
-    for class_id, old in old_mappings.items():
-        entry = dispositions.get(class_id)
+    for mapping_identity, old in old_mappings.items():
+        class_id, old_role = mapping_identity
+        entry = dispositions.get(mapping_identity)
         if entry is None:
-            errors.append(f"baseline taxonomy mapping {class_id} has no disposition")
+            errors.append(
+                f"baseline taxonomy mapping {class_id} + {old_role} has no disposition"
+            )
             continue
         disposition = entry.get("disposition")
         if disposition not in ALLOWED_DISPOSITIONS:
@@ -259,15 +296,42 @@ def validate(
             )
             continue
 
-        new = new_mappings.get(class_id)
-        expected = expected_disposition(old, new)
+        new = new_mappings.get(mapping_identity)
+        replacement_role = None
+        if new is None:
+            # A role change is explicit only when the old role disappears, exactly
+            # one new role is added for the same class, and that target role did
+            # not already exist in the baseline.
+            replacement_candidates = [
+                (key, value) for key, value in new_mappings.items()
+                if key[0] == class_id and key not in old_mappings
+            ]
+            declared_replacement_role = entry.get("replacement_classification_role")
+            if (
+                isinstance(declared_replacement_role, str)
+                and any(key[1] == declared_replacement_role for key, _ in replacement_candidates)
+            ):
+                replacement_key, replacement = next(
+                    (key, value) for key, value in replacement_candidates
+                    if key[1] == declared_replacement_role
+                )
+                expected = expected_disposition(old, replacement)
+                replacement_role = replacement_key[1]
+            elif len(replacement_candidates) == 1:
+                replacement_key, replacement = replacement_candidates[0]
+                expected = expected_disposition(old, replacement)
+                replacement_role = replacement_key[1]
+            else:
+                expected = "removed"
+        else:
+            expected = expected_disposition(old, new)
         if expected == "removed":
             if disposition not in REMOVAL_DISPOSITIONS:
                 errors.append(
-                    f"{class_id} is absent from candidate and must be superseded or removed-unsupported"
+                    f"{class_id} + {old_role} is absent from candidate and must be superseded or removed-unsupported"
                 )
             if not non_empty(entry.get("reason")):
-                errors.append(f"{class_id} removal/supersession requires a substantive reason")
+                errors.append(f"{class_id} + {old_role} removal/supersession requires a substantive reason")
             if disposition == "superseded":
                 replacements = entry.get("replacement_class_ids")
                 if not isinstance(replacements, list) or not replacements:
@@ -282,28 +346,60 @@ def validate(
                         errors.append(
                             f"{class_id} replacement_class_ids must exist in candidate: {missing}"
                         )
+        elif expected in {"role-changed", "role-confidence-changed"}:
+            if disposition != expected:
+                errors.append(
+                    f"{class_id} + {old_role} disposition {disposition!r} does not match observed change {expected!r}"
+                )
+            if entry.get("replacement_classification_role") != replacement_role:
+                errors.append(
+                    f"{class_id} + {old_role} role change must identify replacement_classification_role {replacement_role!r}"
+                )
+            replacement_entry = new_entries.get((class_id, replacement_role))
+            if (
+                replacement_entry is None
+                or replacement_entry.get("supersedes_classification_role") != old_role
+                or not non_empty(replacement_entry.get("reason"))
+            ):
+                errors.append(
+                    f"new mapping {class_id} + {replacement_role} must preserve the role-change link and reason"
+                )
         elif disposition != expected:
             errors.append(
-                f"{class_id} disposition {disposition!r} does not match observed change {expected!r}"
+                f"{class_id} + {old_role} disposition {disposition!r} does not match observed change {expected!r}"
             )
 
     unexplained = set(dispositions) - set(old_mappings)
     if unexplained:
         errors.append(
-            "taxonomy_mapping_dispositions may describe only baseline mappings; "
+            "taxonomy_mapping_dispositions may describe only baseline class_id + classification_role mappings; "
             f"unexpected: {sorted(unexplained)}"
         )
 
     additions = set(new_mappings) - set(old_mappings)
-    new_entries = new_mapping_map(manifest)
-    for class_id in sorted(additions):
-        entry = new_entries.get(class_id)
+    for class_id, role in sorted(additions):
+        entry = new_entries.get((class_id, role))
         if entry is None or not non_empty(entry.get("reason")):
-            errors.append(f"new taxonomy mapping {class_id} requires a reason in new_taxonomy_mappings")
+            errors.append(
+                f"new taxonomy mapping {class_id} + {role} requires a reason in new_taxonomy_mappings"
+            )
+        elif entry.get("supersedes_classification_role") is not None:
+            superseded_role = entry["supersedes_classification_role"]
+            superseded_disposition = dispositions.get((class_id, superseded_role))
+            if (
+                superseded_disposition is None
+                or superseded_disposition.get("disposition") not in {
+                    "role-changed", "role-confidence-changed"
+                }
+                or superseded_disposition.get("replacement_classification_role") != role
+            ):
+                errors.append(
+                    f"new taxonomy mapping {class_id} + {role} has no reciprocal role-change disposition for {superseded_role}"
+                )
     stale_new = set(new_entries) - additions
     if stale_new:
         errors.append(
-            f"new_taxonomy_mappings contains classes not newly added: {sorted(stale_new)}"
+            f"new_taxonomy_mappings contains mappings not newly added: {sorted(stale_new)}"
         )
 
     old_sources = sources(baseline)
