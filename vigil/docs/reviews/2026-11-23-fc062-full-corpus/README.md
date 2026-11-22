@@ -10,7 +10,7 @@
 
 The canonical corpus contains **233 Incident JSON records** on the baseline ref. The machine-readable ledger records all 233, their record taxonomy version, any current canonical FC-062 mapping, existing clause relationships explicitly linked to FC-062, and exact source-record references attached to those relationships. Source references for unmapped candidate episodes are left unasserted until screening.
 
-Initial bounded control screen: INC-001, INC-003, INC-056 and INC-218. Their decisions, condition-level screening, exclusions, competing classes and limits are in `BATCH-01-ESTABLISHED-CONTROLS.json`. This batch reuses the prior bounded review packet on the amendment branch and is **not** a fresh review of every primary source. These four ledger rows remain marked incomplete pending a full-incident source-first pass. The remaining **229 Incidents are not screened**. No corpus-completion claim is made.
+Initial bounded control screen: INC-001, INC-003, INC-056 and INC-218. Their decisions, condition-level screening, exclusions, competing classes and limits are in `BATCH-01-ESTABLISHED-CONTROLS.json`. This batch reuses the prior bounded review packet on the amendment branch and is **not** a fresh review of every primary source. These four ledger rows remain marked incomplete pending a full-incident source-first pass. Batch 02 adds bounded source-grounded screens of unmapped INC-085, INC-112, INC-130 and INC-138. It identifies one candidate failure for authorised FC-062 reconciliation (INC-085), leaves INC-138 unresolved between provenance-only and content-assurance defect, rejects an FC-062 addition for INC-112 on current evidence, and records INC-130 as unresolved on case-specific downstream adoption. These are candidate dispositions, not canonical mappings. The remaining **225 Incidents are not screened**, and all eight completed cases still need full-Incident review. No corpus-completion claim is made.
 
 The amendment branch contains proposed FC-062 wording changes and bounded edits/review for INC-001, INC-003 and INC-218. It is not a pre-existing full-corpus review. PR #195 and `research/perception-calibration-evaluation-20261123` are related candidate research, not a canonical FC-062 corpus review. Neither source is incorporated as published authority or as evidence in an Incident unless present on baseline `main`.
 
@@ -20,7 +20,7 @@ The amendment branch contains proposed FC-062 wording changes and bounded edits/
 - Records with a current canonical FC-062 mapping: 36
 - Current canonical FC-062 mapping rows: 36
 - Clause-level FC-062 relationships found: 61
-- Review dispositions completed: 0 full reviews; four bounded initial screens only
+- Review dispositions completed: 0 full reviews; eight bounded screens (four initial controls and four independent candidates)
 - New canonical FC-062 mappings proposed in this packet: 0
 
 Mapping and clause counts are structural inventory results, not semantic review results. A validator or inventory cannot establish source-grounded classification completeness.
@@ -35,4 +35,5 @@ Do not amend Incident records, taxonomy, generated outputs, or website data in t
 
 - `BASELINE-INVENTORY.json` — one explicit ledger entry per canonical Incident.
 - `BATCH-01-ESTABLISHED-CONTROLS.json` — initial bounded screen and its limits.
-- `CHANGE-AUDIT.json` — baseline-to-candidate changes; initialized with no canonical changes.
+- `BATCH-02-INDEPENDENT-CANDIDATES.json` — four unmapped candidate/control screens, recognition-condition findings, exclusions and competing classes.
+- `CHANGE-AUDIT.json` — baseline-to-candidate changes; no canonical changes.
