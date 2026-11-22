@@ -56,3 +56,19 @@ Original issue and public correction of 28 July report files found in `C:\` root
 ## Post-edit preservation and validation plan
 
 Before/after mapping inventories for INC-003/001/218/056 must be identical in `class_id + classification_role` and all source relationships except a carefully explained noncanonical research note (where needed). Preserve exact harm, external requirements, dates, sources and substance; add only direct support and bounded interpretation. Update current AI review provenance if a canonical claim is materially amended, never claim human sign-off. Run structural validation and taxonomy validator on branch if possible. The new criteria become authoritative only after approved taxonomy publication and corresponding source-first incident reconciliation against published exact version; the integrated pre-publication incident notes must not be described as final re-adjudications.
+
+## Post-edit evidence and preservation results — 23 November
+
+**Proposed taxonomy:** FC-062 remains the sole amended canonical class in family FF-0003, with unpublished `working_release: 0.9.3` (published `standard.version: 0.9.2` unchanged). Revised wording now explicitly covers operational use of inferred environmental/interaction interpretations, requires contemporaneous assurance, and excludes presumed inner beliefs and hindsight alone.
+
+**INC-003:** added exactly one first-party Berkeley benchmark-method article as `source_records[10]` with `contextual-background` role and source-grounded references from E007/E008; expanded the scorer-expectation factual description; added **one noncanonical FC-062 candidate-boundary relationship** to E007. **No FC-062 canonical mapping was admitted.** The full previously accepted canonical mapping inventory is unchanged.
+
+**INC-001:** retained existing single FC-062 failure and all E002/E003/E005 episode relationships, making the reliance-bearing rollback statement and absent internal recovery model distinguishable; no newly asserted model-driven tool action.
+
+**INC-218:** retained existing single FC-062 failure and clinical-reliance episode relationships, qualifying the source-limited internal dose-model hypothesis; no new clinical or legal causation claim. The previous AI review is present in `review_history` and a dated bounded review records this amendment.
+
+**INC-056:** no canonical changes; inadequate evidence for perception/reliance defect separate from documented cross-principal authority. **Gemini CLI #4586:** not assigned any INC ID on this branch; original raw session attachment remains unverified for adjudication. New IDs must use the dedicated ingestion lane.
+
+**Safety and integrity checks run via connector readback (not full repository Python validation):** **33/33 passed.** Checked version proposal shape; single-class normative delta; class/family identity preservation; unchanged canonical `(class_id,role)` mapping sequence for all three updated Incidents; unchanged HIM and external requirement assessments; unchanged original source records; preserved original clause count and canonical episode relationships; historical current-AI-review retained and new AI review properly dated; required source fields/enumerations and in-bounds clause source indexes; exactly one contextual source and one noncanonical mapping note in INC-003; no new source or mapping in INC-001/218.
+
+**Not yet performed:** full Python schema/corpus validator and generated public record rebuild; they require the repository's complete runnable tree. No GitHub PR or CI run was initiated for this new branch because `vigil/MAINTAINERS.md` requires separate PR authorisation. Reconcile the dedicated-branch ownership requirement before opening a normative taxonomy PR. Do not treat these checks as source re-adjudication of all FC-062 Incident occurrences, or as human acceptance of a taxonomy release.
