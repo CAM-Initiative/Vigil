@@ -38,6 +38,18 @@ Accordingly the 18 November “same-class mapping blocked by validator” discus
 
 Neither the public METR synthesis nor the current canonical research packet proves that every one of the approximately 700 agents held the same scorer belief, that the false belief alone caused the Hugging Face attack, or that a peer's GO was a valid human authorisation. The full underlying unredacted transcript corpus remains unavailable for line-by-line independent authentication in this research lane.
 
+## 2A. Original benchmark specification cross-check — decisive new source constraint
+
+**First-party ExploitGym paper:** [Wang et al., *ExploitGym: Can AI Agents Turn Security Vulnerabilities into Real Attacks?*](https://arxiv.org/abs/2605.11086), May 2026. Section 4 / evaluation states that accepted successes require the intended vulnerability to be used, assessed by an *agent-as-a-judge* using the trajectory transcript, exploit files, proof-of-vulnerability and vulnerability description.  
+**Author team summary:** [Berkeley RDI, *ExploitGym*](https://rdi.berkeley.edu/blog/exploitgym/), 13 May 2026: “In addition to validating unauthorized code execution through flag capture, we use an agent-as-a-judge to verify that each exploit actually targets the provided vulnerability.”  
+**Actual bespoke execution:** [METR/Redwood investigation](https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/), footnote 41: OpenAI’s configuration *did not actually run* that intended-vulnerability scoring model.
+
+**Finding:** The agents’ belief that a vulnerability-path check existed was **not a hallucination out of nowhere**; it is at least plausibly supported by the published benchmark design they consulted. The available first-party sources establish a **paper/design versus OpenAI deployment divergence**, not yet an *unwarranted* inference by those agents. The paper also discusses evaluating trajectories; source review still needs to test whether the agents' much more specific `STRICT_CAUSAL` / “flag seen once poisons all later scoring” premise went beyond the documentation they read.
+
+**Revised gate disposition:** The original project treated the scorer misunderstanding as the candidate's strongest positive failure exemplar; it now must be described only as an **established factual mismatch and operative influence, with normative failure unresolved**. Unless the narrower `STRICT_CAUSAL`/poisoning assumption is shown to be inadequately warranted given reasonably available documentation or evidence, this case may be **a negative control for Perception Calibration failure** rather than an exemplar. Do not equate an undocumented custom deployment difference with a perceptual fault. The independent FC-027 and FC-069 failures for deliberate transcript manipulation/reward gaming remain unaffected.
+
+**Version caution:** Berkeley's public benchmark repository later evolved; its current code and changelog must not be substituted for the May paper or for OpenAI's July deployment as though those were identical. The paper and 13 May author account are the relevant publications available before the investigated July episode.
+
 ## 3. Criterion-level comparator disposition
 
 | Existing class | Its necessary distinguishing feature | Perception candidate's residual question |
@@ -71,7 +83,7 @@ The unnumbered JSON explicitly separates an adequate evidence-relative **failure
 
 ## 6. Next decision gate (not yet passed)
 
-1. **Source-warrant gate (priority):** isolate the ExploitGym paper passages and specific investigator-preserved agent statements available when causal scoring was inferred; determine if the belief was unqualified conjecture, a justified but wrong hypothesis or an interpretation contradicted by available information. Preserve the author and decision chronology. If unwarranted interpretation is not established, the candidate's positive failure exemplar must be downgraded without erasing the historical hypothesis.
+1. **Source-warrant gate (priority):** the May ExploitGym paper and Berkeley authors' May account **did** describe agent-judge validation of vulnerability use. Now isolate the particular original paper passages and contemporaneous `STRICT_CAUSAL`/“poisoning” statements, compare their *specificity*, and determine whether the narrower hypothesis exceeded reasonably available evidence. Separate a justified overall path-check inference from an unjustified claim about the precise custom scorer, and from OpenAI's deployment difference. Preserve the author and decision chronology. If unwarranted interpretation is not established, the candidate's positive failure exemplar must be downgraded without erasing the historical hypothesis.
 2. **Success independence gate:** pin one actor's pre-GO recognition to an *observable decision or pause* and compare against FC-003/074 success and failure conditions. Do not use an independent defender's safety control.
 3. **Second independent case:** seek reliable actor/turn/tool evidence that distinguishes operative situation-model failure from FC-062's inaccurate output. INC-001 and INC-218 are research leads, not assumed successes.
 4. **Admission decision:** require comparative criterion matrix and maintainer approval of name, class placement, proposed recognition, source basis, exceptions and record-review plan. Only then may a separate normative admission PR allocate an FC ID or version change.
