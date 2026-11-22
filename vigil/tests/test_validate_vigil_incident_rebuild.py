@@ -136,6 +136,73 @@ class IncidentRebuildValidatorTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("role-changed", result.stderr)
 
+    def test_role_change_requires_reciprocal_historical_link(self):
+        baseline = record(role="failure-occurrence")
+        candidate = record(role="successful-invariant")
+        review = manifest("role-changed")
+        review["taxonomy_mapping_dispositions"][0].update({
+            "classification_role": "failure-occurrence",
+            "replacement_classification_role": "successful-invariant",
+        })
+        review["new_taxonomy_mappings"] = [{
+            "class_id": "VIGIL-FC-000001",
+            "classification_role": "successful-invariant",
+            "supersedes_classification_role": "failure-occurrence",
+            "reason": "Source review supports changing the old role and preserves its historical basis.",
+        }]
+
+        result = self.run_validator(baseline, candidate, review)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_same_class_outcomes_are_preserved_and_added_by_role(self):
+        baseline = record(role="failure-occurrence")
+        candidate = record(role="failure-occurrence")
+        candidate["taxonomy_classification"]["secondary_classifications"] = [
+            {
+                "family_id": "VIGIL-FF-0001",
+                "class_id": "VIGIL-FC-000001",
+                "classification_role": "successful-invariant",
+                "classification_basis": "Separate synthetic episode supports an independent success.",
+                "classification_confidence": "high",
+            },
+            {
+                "family_id": "VIGIL-FF-0001",
+                "class_id": "VIGIL-FC-000001",
+                "classification_role": "ambiguous-boundary",
+                "classification_basis": "A third synthetic episode remains unresolved.",
+                "boundary_adjudication": {"synthetic": True},
+            },
+        ]
+        review = manifest("retained")
+        review["taxonomy_mapping_dispositions"][0]["classification_role"] = "failure-occurrence"
+        review["new_taxonomy_mappings"] = [
+            {
+                "class_id": "VIGIL-FC-000001",
+                "classification_role": role,
+                "reason": f"Independent source episode supports the {role} mapping.",
+            }
+            for role in ("successful-invariant", "ambiguous-boundary")
+        ]
+
+        result = self.run_validator(baseline, candidate, review)
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_multi_role_baseline_requires_role_keyed_dispositions(self):
+        baseline = record()
+        baseline["taxonomy_classification"]["secondary_classifications"] = [{
+            "family_id": "VIGIL-FF-0001",
+            "class_id": "VIGIL-FC-000001",
+            "classification_role": "successful-invariant",
+            "classification_basis": "A distinct synthetic baseline outcome.",
+            "classification_confidence": "medium",
+        }]
+        candidate = json.loads(json.dumps(baseline))
+        review = manifest("retained")
+
+        result = self.run_validator(baseline, candidate, review)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("must identify classification_role", result.stderr)
+
     def test_material_prose_compaction_requires_reason(self):
         baseline = record()
         baseline["summary"] = " ".join(["detail"] * 100)

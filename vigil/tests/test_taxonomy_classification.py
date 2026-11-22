@@ -12,6 +12,12 @@ SPEC = importlib.util.spec_from_file_location("validate_incident_taxonomy", SCRI
 VALIDATOR = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader
 SPEC.loader.exec_module(VALIDATOR)
+BUILD_SPEC = importlib.util.spec_from_file_location(
+    "build_vigil_public_records", VIGIL / "scripts" / "build-vigil-public-records.py"
+)
+PUBLIC_BUILDER = importlib.util.module_from_spec(BUILD_SPEC)
+assert BUILD_SPEC.loader
+BUILD_SPEC.loader.exec_module(PUBLIC_BUILDER)
 
 
 class IncidentTaxonomyClassificationTests(unittest.TestCase):
@@ -99,6 +105,183 @@ class IncidentTaxonomyClassificationTests(unittest.TestCase):
         )
         self.assertNotIn("classification_role", block)
         self.assertEqual(block["adjudication_coverage"], {"status": "complete"})
+
+    def test_one_class_can_have_one_mapping_per_supported_role(self):
+        record_id = "VIGIL-INC-TEST-THREE-ROLES"
+        class_id = "VIGIL-FC-TEST-MIXED"
+
+        def mapping(role):
+            item = {
+                "family_id": "VIGIL-FF-TEST",
+                "class_id": class_id,
+                "classification_role": role,
+                "classification_basis": f"Synthetic evidence for {role}.",
+            }
+            if role in {"failure-occurrence", "successful-invariant"}:
+                item["classification_confidence"] = "high"
+            else:
+                item["boundary_adjudication"] = {
+                    "taxonomy_version": "test",
+                    "material_engagement": "The source episode engages the class invariant.",
+                    "unresolved_conditions": [{
+                        "polarity": "successful-invariant",
+                        "condition": "The governing invariant held under relevant pressure.",
+                        "assessment": "The source does not establish whether the safeguard operated.",
+                        "source_record_refs": ["source_records[0]"],
+                        "episode_refs": ["E005"],
+                    }],
+                    "diagnostic_reasons": ["insufficient-evidence"],
+                    "decisive_blocker": "The applicable safeguard state is unavailable.",
+                    "resolution_requirements": "Recover the source record for E005.",
+                }
+            return item
+
+        roles = ["failure-occurrence", "successful-invariant", "ambiguous-boundary"]
+        mappings = [mapping(role) for role in roles]
+        mappings.extend({
+            "family_id": "VIGIL-FF-TEST",
+            "class_id": f"VIGIL-FC-TEST-OTHER-{index}",
+            "classification_role": "failure-occurrence",
+            "classification_basis": "A separate class has a separately supported synthetic finding.",
+            "classification_confidence": "medium",
+        } for index in range(2))
+        episode_roles = [
+            ("E001", "failure-occurrence"),
+            ("E002", "successful-invariant"),
+            ("E003", "successful-invariant"),
+            ("E004", "failure-occurrence"),
+            ("E005", "ambiguous-boundary"),
+            ("E006", "failure-occurrence"),
+            ("E007", "failure-occurrence"),
+            ("E008", "failure-occurrence"),
+        ]
+        clauses = [{
+            "episode_id": episode_id,
+            "source_record_refs": ["source_records[0]"],
+            "taxonomy_relationships": [{
+                "class_id": class_id,
+                "relationship": role,
+                "canonical_taxonomy_mapping": True,
+                "rationale": f"Episode {episode_id} supports {role}.",
+            }],
+        } for episode_id, role in episode_roles]
+        block = {
+            "taxonomy_version": "test",
+            "classification_status": "classified",
+            "classification_basis": "Synthetic mixed outcomes remain distinct.",
+            "primary_classification": mappings[0],
+            "secondary_classifications": mappings[1:],
+            "classification_review_provenance": {
+                "review_date": "2026-11-22",
+                "reviewer": "synthetic fixture",
+                "review_status": "test only",
+            },
+        }
+        record = {
+            "id": record_id,
+            "source_records": [{"source_title": "Synthetic source"}],
+            "vigil_assessment": {"source_clause_analysis": {"clauses": clauses}},
+            "taxonomy_classification": block,
+        }
+        classes = {
+            mapping["class_id"]: {"family_id": "VIGIL-FF-TEST", "invariant_exemplars": []}
+            for mapping in mappings
+        }
+        errors = []
+        with patch.object(VALIDATOR, "taxonomy_catalogue", return_value=(
+            {"VIGIL-FF-TEST": {"family_id": "VIGIL-FF-TEST"}}, classes
+        )):
+            with patch.object(VALIDATOR, "retired_taxonomy_class_successors", return_value={}):
+                VALIDATOR.validate_incident_taxonomy(Path("three-roles.json"), record, errors)
+
+        self.assertEqual(errors, [])
+        self.assertEqual(len([m for m in [block["primary_classification"], *block["secondary_classifications"]]
+                              if m["class_id"] == class_id]), 3)
+        failure_episodes = [
+            clause for clause in clauses
+            if clause["taxonomy_relationships"][0]["relationship"] == "failure-occurrence"
+        ]
+        self.assertEqual(len(failure_episodes), 5)
+        self.assertEqual(sum(
+            mapping["class_id"] == class_id
+            and mapping["classification_role"] == "failure-occurrence"
+            for mapping in [block["primary_classification"], *block["secondary_classifications"]]
+        ), 1)
+        self.assertEqual(len(block["secondary_classifications"]), 4)  # five total mappings; no Incident cap
+        self.assertEqual(len(clauses), 8)
+        self.assertNotIn("classification_role", block)
+
+    def test_duplicate_class_and_role_mapping_is_rejected(self):
+        common = {
+            "family_id": "VIGIL-FF-TEST",
+            "class_id": "VIGIL-FC-TEST-DUPLICATE",
+            "classification_role": "failure-occurrence",
+            "classification_basis": "Synthetic duplicate mapping.",
+            "classification_confidence": "high",
+        }
+        block = {
+            "taxonomy_version": "test",
+            "classification_status": "classified",
+            "classification_basis": "Synthetic duplicate test.",
+            "primary_classification": dict(common),
+            "secondary_classifications": [dict(common)],
+            "classification_review_provenance": {
+                "review_date": "2026-11-22",
+                "reviewer": "synthetic fixture",
+                "review_status": "test only",
+            },
+        }
+        record = {"id": "VIGIL-INC-TEST-DUPLICATE", "taxonomy_classification": block}
+        errors = []
+        with patch.object(VALIDATOR, "taxonomy_catalogue", return_value=(
+            {"VIGIL-FF-TEST": {"family_id": "VIGIL-FF-TEST"}},
+            {"VIGIL-FC-TEST-DUPLICATE": {"family_id": "VIGIL-FF-TEST", "invariant_exemplars": []}},
+        )):
+            with patch.object(VALIDATOR, "retired_taxonomy_class_successors", return_value={}):
+                VALIDATOR.validate_incident_taxonomy(Path("duplicate-role.json"), record, errors)
+
+        self.assertTrue(any("duplicate failure-occurrence mapping" in error for error in errors), errors)
+
+    def test_public_projection_preserves_each_role_and_failure_only_repair(self):
+        class_id = "VIGIL-FC-000091"
+        roles = ["failure-occurrence", "successful-invariant", "ambiguous-boundary"]
+        mappings = []
+        for role in roles:
+            item = {
+                "family_id": "VIGIL-FF-0001",
+                "class_id": class_id,
+                "classification_role": role,
+                "classification_basis": f"Synthetic projection basis for {role}.",
+            }
+            if role in {"failure-occurrence", "successful-invariant"}:
+                item["classification_confidence"] = "high"
+            mappings.append(item)
+        record = {
+            "id": "VIGIL-INC-TEST-PUBLIC-ROLES",
+            "record_type": "incident",
+            "record_state": "active",
+            "record_identity": {"version": "1.0.0", "updated": "2026-11-22", "title": "Synthetic fixture"},
+            "incident_identity": {},
+            "source_records": [],
+            "taxonomy_classification": {
+                "classification_status": "classified",
+                "adjudication_coverage": {"status": "complete"},
+                "primary_classification": mappings[0],
+                "secondary_classifications": mappings[1:],
+            },
+        }
+
+        entry = PUBLIC_BUILDER.incident_entry(Path("synthetic.json"), record)
+        projected = [entry["primary_classification"], *entry["secondary_classifications"]]
+        self.assertEqual([item["classification_role"] for item in projected], roles)
+        self.assertEqual(len(entry["repair_classifications"]), 1)
+        self.assertEqual(entry["repair_classifications"][0]["classification_role"], "failure-occurrence")
+        self.assertFalse(entry["alignment_exemplar_eligible"])
+
+        examples = PUBLIC_BUILDER.taxonomy_examples([record])
+        self.assertEqual(len(examples["classes"][class_id]), 1)
+        self.assertEqual(len(examples["successful_invariants"][class_id]), 1)
+        self.assertEqual(len(examples["ambiguous_boundaries"][class_id]), 1)
     def test_generated_examples_preserve_primary_secondary_roles(self):
         subprocess.run(["python", str(VIGIL / "scripts" / "build-vigil-public-records.py")], cwd=ROOT, check=True)
         projection = json.loads(

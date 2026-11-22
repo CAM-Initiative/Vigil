@@ -299,9 +299,11 @@ Every taxonomy mapping present in the baseline must appear in the adjudication m
 
 `superseded` and `removed-unsupported` require a substantive reason. `superseded` must identify the replacement class or classes.
 
-Any class newly added to the candidate record must appear in `new_taxonomy_mappings` with its evidence-bounded rationale.
+Every canonical mapping is identified by `(class_id, classification_role)`. Each baseline pair requires its own disposition, and each newly added pair requires its own evidence-bounded `new_taxonomy_mappings` entry. The same class may appear once in each of the three supported roles. If several episodes support the same class and role, keep one canonical mapping whose basis summarises those episodes; retain their separate evidence and rationales in source-clause analysis. There is no Incident-wide limit on mappings across different classes. Legacy manifest rows may omit `classification_role` only when the role is unambiguous.
 
-A missing baseline mapping with no disposition is a rebuild failure.
+A genuine role change is not a silent deletion followed by an unrelated addition. The old mapping disposition must state `replacement_classification_role`; the new mapping entry must state `supersedes_classification_role`; both require substantive reasons. This retains the old role and its history while identifying the authorised replacement. If multiple new roles could be the replacement, the old disposition must select the intended role explicitly.
+
+A missing baseline class-and-role mapping disposition is a rebuild failure.
 
 ### Mixed relationships are valid
 
