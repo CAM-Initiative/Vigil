@@ -8,7 +8,7 @@
 
 ## Current progress
 
-**65 completed full FC-062 reviews + 168 incomplete = 233.** Screening coverage is **77 considered + 156 unconsidered = 233**. Latest packets reach INC-070 in baseline order; INC-010 remains an audiovisual hold. Next untouched ID: INC-071. `CURRENT-CHECKPOINT.json` lists every completed and incomplete ID. This is a partial checkpoint, not corpus completion or the required final acceptance report.
+**82 completed full FC-062 reviews + 151 incomplete = 233.** Screening: **91 considered + 142 unconsidered = 233**. Latest packet: `BATCH-10-DETERMINISTIC-072-090.json`. `CURRENT-CHECKPOINT.json` lists every ID. This is not final acceptance while any review remains incomplete.
 
 ## Preliminary history at recovery
 
