@@ -8,7 +8,7 @@
 
 ## Status
 
-The canonical corpus contains **233 Incident JSON records** on the baseline ref. The machine-readable ledger records all 233, their record taxonomy version, any current canonical FC-062 mapping, existing clause relationships explicitly linked to FC-062, and exact source-record references attached to those relationships. Source references for unmapped candidate episodes are left unasserted until screening.
+The canonical corpus contains **233 Incident JSON records** on the baseline ref. The machine-readable ledger records all 233 in a compact columnar JSON format (`columns` defines each row field), including record taxonomy version, current canonical FC-062 mapping details, linked clause relationships, and each reviewed disposition. Exact source/episode references are retained in clause relationships and batch decisions; candidate source references are not asserted before screening.
 
 Initial bounded control screen: INC-001, INC-003, INC-056 and INC-218. Their decisions, condition-level screening, exclusions, competing classes and limits are in `BATCH-01-ESTABLISHED-CONTROLS.json`. This batch reuses the prior bounded review packet on the amendment branch and is **not** a fresh review of every primary source. These four ledger rows remain marked incomplete pending a full-incident source-first pass. Batch 02 adds bounded source-grounded screens of unmapped INC-085, INC-112, INC-130 and INC-138. It identifies one candidate failure for authorised FC-062 reconciliation (INC-085), leaves INC-138 unresolved between provenance-only and content-assurance defect, rejects an FC-062 addition for INC-112 on current evidence, and records INC-130 as unresolved on case-specific downstream adoption. These are candidate dispositions, not canonical mappings. The remaining **225 Incidents are not screened**, and all eight completed cases still need full-Incident review. No corpus-completion claim is made.
 
@@ -33,7 +33,7 @@ Do not amend Incident records, taxonomy, generated outputs, or website data in t
 
 ## Files
 
-- `BASELINE-INVENTORY.json` — one explicit ledger entry per canonical Incident.
+- `BASELINE-INVENTORY.json` — one explicit columnar ledger row per canonical Incident; mapping bases, confidence/role and FC-062 clause relationships are preserved.
 - `BATCH-01-ESTABLISHED-CONTROLS.json` — initial bounded screen and its limits.
 - `BATCH-02-INDEPENDENT-CANDIDATES.json` — four unmapped candidate/control screens, recognition-condition findings, exclusions and competing classes.
 - `CHANGE-AUDIT.json` — baseline-to-candidate changes; no canonical changes.
