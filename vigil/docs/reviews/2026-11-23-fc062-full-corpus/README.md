@@ -6,7 +6,7 @@
 **Published taxonomy authority:** VIGIL v0.9.2 (published 15 November 2026)  
 **Comparator only:** proposed v0.9.3 on `work/fc062-operative-reliance-incident-reconciliation-20261123`; unpublished and unapproved at this review start.
 
-## Status
+## Preliminary history at recovery
 
 The canonical corpus contains **233 Incident JSON records** on the baseline ref. The machine-readable ledger records all 233 in a compact columnar JSON format (`columns` defines each row field), including record taxonomy version, current canonical FC-062 mapping details, linked clause relationships, and each reviewed disposition. Exact source/episode references are retained in clause relationships and batch decisions; candidate source references are not asserted before screening.
 
@@ -20,7 +20,7 @@ The amendment branch contains proposed FC-062 wording changes and bounded edits/
 - Records with a current canonical FC-062 mapping: 36
 - Current canonical FC-062 mapping rows: 36
 - Clause-level FC-062 relationships found: 61
-- Review dispositions completed: 0 full reviews; fourteen bounded screens (four initial controls, four Batch 02 candidates, three Batch 03 screens and three Batch 04 cases)
+- Baseline preliminary history: 0 full reviews and fourteen bounded screens at recovery; see current checkpoint below.
 - New canonical FC-062 mappings proposed in this packet: 0
 
 Mapping and clause counts are structural inventory results, not semantic review results. A validator or inventory cannot establish source-grounded classification completeness.
@@ -47,3 +47,9 @@ Batch 05 proceeds in baseline order through INC-001–010. Nine evidence-bounded
 `BATCH-05-DETERMINISTIC-001-010.json` records published-condition tests, comparator limits, source access/recovery, competing properties and preserved prior findings. INC-008 is a new Boundary candidate; no canonical mapping is added.
 
 Batch 06 continues through the next thirteen baseline IDs, INC-012–025 (INC-011/017 do not exist in this baseline). **22 completed + 211 incomplete = 233**; screening coverage **35 considered + 198 unconsidered = 233**. INC-010 remains the named available-audio hold. INC-024 has a new failure candidate limited to false quota information; access failures elsewhere are not assumed epistemic beliefs.
+
+## Current checkpoint after Batch 07
+
+**36 completed full FC-062 reviews + 197 incomplete = 233.** Screening coverage: **49 considered + 184 not yet considered = 233**. Batch 07 covers the fourteen baseline IDs from INC-026 through INC-040 (INC-036 absent). INC-010 remains an available-audio review hold; all other incomplete IDs are explicitly represented in the ledger. Next untouched baseline record: INC-041. This is a partial checkpoint, not the final acceptance report.
+
+Source/control comparison corrected the INC-003 scorer candidate to **ambiguous-boundary**: concrete interpretation and reliance establish engagement; unknown contemporaneous assurance blocks polarity, not admission. No canonical role is changed.
