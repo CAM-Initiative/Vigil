@@ -8,7 +8,7 @@
 
 ## Current progress
 
-**122 completed full FC-062 reviews + 111 incomplete = 233.** Screening: **128 considered + 105 unconsidered = 233**. Latest packet: `BATCH-13-DETERMINISTIC-111-130.json`. `CURRENT-CHECKPOINT.json` lists every ID. This is not final acceptance while any review remains incomplete.
+**141 completed full FC-062 reviews + 92 incomplete = 233.** Screening: **145 considered + 88 unconsidered = 233**. Latest packet: `BATCH-14-DETERMINISTIC-131-150.json`. `CURRENT-CHECKPOINT.json` lists every ID. This is not final acceptance while any review remains incomplete.
 
 ## Preliminary history at recovery
 
