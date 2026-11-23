@@ -8,7 +8,7 @@
 
 ## Current progress
 
-**83 completed full FC-062 reviews + 150 incomplete = 233.** Screening: **91 considered + 142 unconsidered = 233**. Latest packet: `BATCH-11-INC010-AUDIO-RECOVERY.json`. `CURRENT-CHECKPOINT.json` lists every ID. This is not final acceptance while any review remains incomplete.
+**103 completed full FC-062 reviews + 130 incomplete = 233.** Screening: **111 considered + 122 unconsidered = 233**. Latest packet: `BATCH-12-DETERMINISTIC-091-110.json`. `CURRENT-CHECKPOINT.json` lists every ID. This is not final acceptance while any review remains incomplete.
 
 ## Preliminary history at recovery
 
