@@ -45,3 +45,5 @@ Do not amend Incident records, taxonomy, generated outputs, or website data in t
 Batch 05 proceeds in baseline order through INC-001–010. Nine evidence-bounded substantive dispositions are complete; INC-010 remains incomplete because the recovered MP4 audio/whole interaction has not been assessed. **9 completed + 224 incomplete = 233**. Screening coverage now considers **22 / 233** (including preserved screens); 211 have not yet been considered. Prior batches remain preliminary history, not completion certificates.
 
 `BATCH-05-DETERMINISTIC-001-010.json` records published-condition tests, comparator limits, source access/recovery, competing properties and preserved prior findings. INC-008 is a new Boundary candidate; no canonical mapping is added.
+
+Batch 06 continues through the next thirteen baseline IDs, INC-012–025 (INC-011/017 do not exist in this baseline). **22 completed + 211 incomplete = 233**; screening coverage **35 considered + 198 unconsidered = 233**. INC-010 remains the named available-audio hold. INC-024 has a new failure candidate limited to false quota information; access failures elsewhere are not assumed epistemic beliefs.
