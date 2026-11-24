@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Waymo robotaxi diverted passenger into parking garage and temporarily stranded him",
     "created": "2026-09-19",
-    "updated": "2026-10-25",
-    "version": "0.1.14"
+    "updated": "2026-11-24",
+    "version": "0.1.15"
   },
   "incident_identity": {
     "historical_event_name": "Waymo parking-garage passenger stranding",
@@ -21,7 +21,7 @@
   "summary": "A Waymo robotaxi carrying tourist Darren Findling in San Francisco diverted into a parking garage containing other Waymo vehicles and left him temporarily stuck and confused until Waymo support intervened. OECD.AI's AI Incidents Monitor records the occurrence as a robotaxi malfunction causing passenger disruption and distress.",
   "vigil_assessment": {
     "factual_basis": "A Waymo robotaxi carrying tourist Darren Findling in San Francisco diverted into a parking garage containing other Waymo vehicles and left him temporarily stuck and confused until Waymo support intervened. OECD.AI's AI Incidents Monitor records the occurrence as a robotaxi malfunction causing passenger disruption and distress. The passenger account and provider explanation are preserved separately. The January Los Angeles looping story remains a different occurrence and contributes no findings here.",
-    "governance_interpretation": "The garage detour disrupted normal passenger service, while support provided an override. These are separate outcome and recovery findings. Evidence from the different looping occurrence is not used to enlarge this case.",
+    "governance_interpretation": "The garage detour disrupted normal passenger service, while support provided an override. These are separate outcome and recovery findings. Evidence from the different looping occurrence is not used to enlarge this case. Provider attributed garage detour to quickest route. Passenger destination route must be traversable. Vehicle actually entered garage. Passenger stranded temporarily; human support restored route.",
     "significance_to_cam": "Passenger transport automation needs safe recovery paths when routing or operational state departs from the expected trip. Riders require a clear way to stop, obtain help and transfer control before confusion becomes a safety or liberty concern.",
     "assessment_boundaries": [
       "Public passenger interview and provider statements were inspected. The evidence does not establish a failed admissible route followed by materially continued pursuit; private telemetry is not a general prerequisite for that finding.",
@@ -43,9 +43,15 @@
               "relationship": "candidate boundary",
               "canonical_taxonomy_mapping": false,
               "rationale": "The detour and need for support engage safe exit, but the evidence does not establish that no feasible admissible completion path remained or that material pursuit continued without an adequate fresh basis. Support restoration is not proof of those conditions."
+            },
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Provider attributed garage detour to quickest route. Passenger destination route must be traversable. Vehicle actually entered garage. Passenger stranded temporarily; human support restored route."
             }
           ],
-          "adjudication_status": "unresolved",
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[2]"
           ],
@@ -74,8 +80,15 @@
         {
           "source_paraphrase": "Waymo said the garage appeared to be the quickest route; the passenger reported replacement rides.",
           "recovered_invariant_interpretation": "Routing explanation and customer remedy are separately attributed responses.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "ambiguous-boundary",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Provider attributed garage detour to quickest route. Passenger destination route must be traversable. Vehicle actually entered garage. Passenger stranded temporarily; human support restored route."
+            }
+          ],
+          "adjudication_status": "mapped",
           "source_record_refs": [
             "source_records[2]"
           ],
@@ -264,30 +277,70 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
-    "classification_status": "unclassified",
-    "classification_basis": "The garage detour remains unclassified with a partial, unresolved safe-exit boundary. Available evidence does not establish vehicle recognition of an infeasible route or continued pursuit after that condition.",
-    "primary_classification": null,
+    "taxonomy_version": "0.9.3",
+    "classification_status": "classified",
+    "classification_basis": "The garage detour remains unclassified with a partial, unresolved safe-exit boundary. Available evidence does not establish vehicle recognition of an infeasible route or continued pursuit after that condition. Provider attributed garage detour to quickest route. Passenger destination route must be traversable. Vehicle actually entered garage. Passenger stranded temporarily; human support restored route.",
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0003",
+      "class_id": "VIGIL-FC-000062",
+      "classification_role": "ambiguous-boundary",
+      "classification_basis": "Provider attributed garage detour to quickest route. Passenger destination route must be traversable. Vehicle actually entered garage. Passenger stranded temporarily; human support restored route.",
+      "boundary_adjudication": {
+        "taxonomy_version": "0.9.3",
+        "material_engagement": "Provider attributed garage detour to quickest route. Passenger destination route must be traversable. Vehicle actually entered garage. Passenger stranded temporarily; human support restored route.",
+        "unresolved_conditions": [
+          {
+            "polarity": "failure-occurrence",
+            "condition": "The content accuracy, specificity, certainty, framing or assurance applied to the artefact is materially below the level required for that purpose and reliance condition. Evaluate whether the interpretation and expressed or applied confidence were justified by contemporaneously available evidence; later undisclosed configuration or hindsight alone does not establish an assurance defect.",
+            "assessment": "Exact route constraints and interpretation basis not public.",
+            "source_record_refs": [
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E001",
+              "E004"
+            ]
+          },
+          {
+            "polarity": "successful-invariant",
+            "condition": "Content accuracy and assurance meet the requirement for the actual purpose and workflow stage. Specificity, certainty and framing remain proportionate to source quality, independence, traceability, uncertainty and temporal fitness, without distorting material meaning. Material uncertainty about the current environment is appropriately qualified or resolved using evidence available at the time, rather than retrospectively judged from undisclosed facts.",
+            "assessment": "Detour fitness not demonstrated.",
+            "source_record_refs": [
+              "source_records[2]"
+            ],
+            "episode_refs": [
+              "E001",
+              "E004"
+            ]
+          }
+        ],
+        "diagnostic_reasons": [
+          "insufficient-evidence"
+        ],
+        "decisive_blocker": "Provider explanation is attributed; full routing trace unavailable. Neither an inadequately warranted interpretation nor a sufficiently evidenced protective reliance outcome is established for this bounded phase.",
+        "resolution_requirements": "Recover and compare the decision-point evidence, task requirements and actual reliance record for the unresolved conditions above. Provider explanation is attributed; full routing trace unavailable."
+      }
+    },
     "secondary_classifications": [],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "v0.8.1 bounded unclassified-status delta; unknown candidate recognition conditions and partial/complete coverage retained.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000147-081-REVIEW.json"
+      "review_date": "2026-11-24",
+      "reviewer": "OpenAI ChatGPT — AI analytical reviewer",
+      "review_status": "Bounded FC-062 reconciliation against published v0.9.3; other findings and source limits preserved. Not human-certified.",
+      "review_reference": "vigil/docs/reviews/2026-11-24-fc062-published-reconciliation/VIGIL-INC-000147.json"
     },
     "adjudication_coverage": {
-      "status": "partial"
+      "status": "complete"
     }
   },
   "related_incidents": [],
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000147",
+      "review_id": "VIGIL-REVIEW-2026-11-24-FC062-000147",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
+      "reviewer_platform": "OpenAI ChatGPT",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "Bounded unclassified v0.8.1 recognition/exclusion-scope screening; prior source and open conditions preserved.",
+      "review_date": "2026-11-24",
+      "review_scope": "Bounded source-first FC-062 reconciliation against published v0.9.3; independent prior findings, source evidence, HIM and external assessments preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -299,9 +352,10 @@
       "known_limitations": [
         "No source re-research or hidden system telemetry; unknown candidate recognition not converted to mapped roles.",
         "Retain unclassified. Waymo diverted into a garage; support later restored the route.",
-        "FC-003 requires changed authority-relevant scope and authority carryover, not route variation alone. FC-038/083 require an applicable control and activation/nonactivation evidence. FC-084 requires an independent continuity threshold; disruption and customer support alone do not supply it."
+        "FC-003 requires changed authority-relevant scope and authority carryover, not route variation alone. FC-038/083 require an applicable control and activation/nonactivation evidence. FC-084 requires an independent continuity threshold; disruption and customer support alone do not supply it.",
+        "AI analytical review; no human certification or private-trace access asserted."
       ],
-      "review_outcome": "Unclassified result retained, with 1 candidate classes individually checked against published v0.8.1 criteria and exclusion scopes."
+      "review_outcome": "Existing mappings retained; 1 independently scoped FC-062 roles added. Remaining uncertainty is recorded in mapping bases and Boundary objects."
     }
   },
   "harm_impact_assessment": {
