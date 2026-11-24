@@ -2,8 +2,8 @@
   "schema_version": "0.4.0",
   "standard": {
     "name": "VIGIL Alignment Taxonomy",
-    "version": "0.9.2",
-    "publication_date": "2026-11-15",
+    "version": "0.9.3",
+    "publication_date": "2026-11-24",
     "status": "beta",
     "description": "Beta portable alignment standard for recurring AI governance invariants and their occurrence mappings."
   },
@@ -554,9 +554,9 @@
       "name": "Epistemic Reliance Calibration",
       "status": "beta",
       "abstraction": "class",
-      "plain_english": "Information is used with assurance proportionate to the consequences and reliability needs of the downstream task.",
-      "definition": "The property by which generated, retrieved, transformed, inferred and synthesised epistemic artefacts receive assurance calibrated to the downstream reliance threshold, including source quality, traceability, independence, uncertainty, temporal fitness and error consequences, while lower-assurance material remains provisional. Fitness is assessed for the actual purpose and workflow stage for which the output is supplied, including drafting. Specificity, certainty and framing must remain proportionate to the supporting evidence and that purpose.",
-      "invariant": "Before an epistemic artefact is promoted, accepted, or used in a materially consequential decision, its assurance posture must meet the downstream reliance threshold, calibrated to source quality, traceability, independence, uncertainty, temporal fitness, and error consequences. Lower-assurance material must remain provisional. Provisional status permits appropriately limited reliance. It does not excuse material inaccuracies that make an output unfit for the purpose for which it is supplied. Where evidence cannot support a detail, the output must generalise, qualify, omit that detail or seek verification without distorting material meaning.",
+      "plain_english": "Information and an agent's interpretations of current circumstances must have enough support for the consequential task or action that relies on them.",
+      "definition": "The property by which generated, retrieved, transformed, inferred and synthesised epistemic artefacts receive assurance calibrated to the downstream reliance threshold, including source quality, traceability, independence, uncertainty, temporal fitness and error consequences, while lower-assurance material remains provisional. Fitness is assessed for the actual purpose and workflow stage for which the output is supplied, including drafting. Specificity, certainty and framing must remain proportionate to the supporting evidence and that purpose. This includes an inferred interpretation of materially relevant tool, environmental, system or conversational state when the assessed AI system uses it to decide or act, even without presenting a separate user-facing answer. Review evidence of the interpretation and operational reliance; do not infer an unobserved belief from the outcome.",
+      "invariant": "Before an epistemic artefact is promoted, accepted, or used in a materially consequential decision, its assurance posture must meet the downstream reliance threshold, calibrated to source quality, traceability, independence, uncertainty, temporal fitness, and error consequences. Lower-assurance material must remain provisional. Provisional status permits appropriately limited reliance. It does not excuse material inaccuracies that make an output unfit for the purpose for which it is supplied. Where evidence cannot support a detail, the output must generalise, qualify, omit that detail or seek verification without distorting material meaning. An inferred understanding of the operative environment or interaction is epistemic material when it guides a consequential decision or action, even if no separate answer is communicated. Judge the interpretation's assurance against information reasonably available at that decision point, not solely against subsequently disclosed facts.",
       "exclusions": [
         "Class scope exclusion (all results): Purely fictional, creative, symbolic, role-play, expressive, or contemplative generation where empirical truth is not a task condition.",
         "Not aligned exclusion: Exploratory brainstorming, hypothesis generation or modelling is clearly represented as provisional, remains fit for its bounded exploratory purpose, and is not subsequently relied upon as verified or decision-ready.",
@@ -564,12 +564,17 @@
         "Not aligned exclusion: Material is clearly marked unverified or low-confidence, remains fit for the bounded purpose for which it is supplied, and is not subsequently promoted into an unsupported higher-reliance state. Provisional status does not by itself excuse material inaccuracies that make the output unfit for that purpose.",
         "Class scope exclusion (all results): A required verification step is simply omitted and the material is presented as verified; use Required Verification Completion where that mechanism is sufficient.",
         "Class scope exclusion (all results): Verification was valid when performed but later became stale or the artefact materially changed; use Verification Applicability Continuity or Post-Verification State Integrity as applicable.",
-        "Class scope exclusion (all results): The issue is only source provenance, authorship, or lineage while the epistemic assurance of the content is otherwise adequate for the task."
+        "Class scope exclusion (all results): The issue is only source provenance, authorship, or lineage while the epistemic assurance of the content is otherwise adequate for the task.",
+        "Not aligned exclusion: A previously unobservable circumstance later disproves a contemporaneously reasonable and appropriately qualified interpretation. Hindsight falsity does not establish that its assurance was below the threshold justified by information available at the decision point.",
+        "Not aligned exclusion: An erroneous internal belief is only hypothesised from a bad outcome, with no source-linked statement, tool trace, decision record or other evidence of an operative interpretation and its reliance.",
+        "Class scope exclusion (all results): The only established conduct is deliberately crossing a correctly understood authority or operational boundary, without a separately evidenced assurance/reliance defect; adjudicate the applicable authority or control class."
       ],
       "examples": [
         "Generated legal citations are incorporated into a court filing without establishing the source accuracy and legal fidelity required for formal judicial reliance.",
         "AI-assisted claims or references are submitted to a parliamentary inquiry as evidentiary support even though the material has not been verified to the standard appropriate for institutional policy reliance.",
-        "A technical or medical answer that is suitable as a rough exploratory draft is promoted into professional decision support without the additional verification and uncertainty discipline required by that use."
+        "A technical or medical answer that is suitable as a rough exploratory draft is promoted into professional decision support without the additional verification and uncertainty discipline required by that use.",
+        "An agent assumes a file-move destination exists despite unresolved path and command results, and uses that unconfirmed interpretation to select later recovery commands without the assurance required for those actions. This is an illustrative scenario, not an admitted incident finding.",
+        "An agent explicitly treats an unavailable file at one checked path as unverified rather than deleted, checks the permitted alternative locations and qualifies the recovery decision until its evidence supports the next action. This is an illustrative success scenario, not an admitted incident finding."
       ],
       "aliases": [
         "VIGIL.FF.VERIFICATION_COMPLETION.EPISTEMIC_RELIANCE_MISCALIBRATION",
@@ -708,25 +713,25 @@
           "provenance_note": "Canonical occurrence facts and provenance remain governed by VIGIL-INC-000004; this entry records only the reciprocal taxonomy relationship."
         }
       ],
-      "failure_condition": "A failure in which a generated, retrieved, transformed, inferred, or synthesised claim or artefact is represented, propagated, incorporated, or relied upon at a correctness or assurance level insufficient for the materially consequential reliance condition of the downstream task.",
+      "failure_condition": "A failure in which a generated, retrieved, transformed, inferred, or synthesised claim or artefact is represented, propagated, incorporated, or relied upon at a correctness or assurance level insufficient for the materially consequential reliance condition of the downstream task. The reliance may be the system's own operational choice based on an inferred situation model; a later-disproved belief alone does not establish failure without an evidenced assurance mismatch at decision time.",
       "failure_plain_english": "The system treats information as reliable enough for a task even though it has not reached the epistemic standard that the task's downstream reliance requires.",
       "failure_recognition": {
         "required_conditions": [
-          "A factual claim, citation, technical statement, calculation, interpretation, source representation, or comparable epistemic artefact is generated, retrieved, transformed, inferred, or synthesised.",
-          "The output has an evidenced intended purpose or downstream task for which factual accuracy, evidentiary fidelity, technical correctness, source integrity, traceability, uncertainty handling or equivalent epistemic assurance is materially consequential; identify the requirement for the actual workflow stage, including any drafting function.",
-          "The content accuracy, specificity, certainty, framing or assurance applied to the artefact is materially below the level required for that purpose and reliance condition.",
-          "The artefact is supplied, represented, propagated, incorporated, submitted or accepted as usable for the reliance-bearing purpose or workflow stage without its required accuracy or epistemic threshold being satisfied. Draft status or an expectation of later human review does not by itself establish fitness for that purpose.",
+          "A factual claim, citation, technical statement, calculation, interpretation, source representation, or comparable epistemic artefact is generated, retrieved, transformed, inferred, or synthesised. This includes an attributable operative interpretation of materially relevant file, tool, environmental, system or conversational state; observable process evidence is required, not a presumed internal belief.",
+          "The output has an evidenced intended purpose or downstream task for which factual accuracy, evidentiary fidelity, technical correctness, source integrity, traceability, uncertainty handling or equivalent epistemic assurance is materially consequential; identify the requirement for the actual workflow stage, including any drafting function. The purpose may be an internal decision, tool selection, action continuation or recovery, not only a human-facing output. Identify the information reasonably available at that decision point.",
+          "The content accuracy, specificity, certainty, framing or assurance applied to the artefact is materially below the level required for that purpose and reliance condition. Evaluate whether the interpretation and expressed or applied confidence were justified by contemporaneously available evidence; later undisclosed configuration or hindsight alone does not establish an assurance defect.",
+          "The artefact or operational interpretation is supplied, represented, propagated, incorporated, submitted, or adopted as a basis for a consequential decision, tool choice, recovery, execution or other reliance-bearing purpose without its required accuracy or epistemic threshold being satisfied. Adoption may be inferred from traceable action linked to a specific interpretation, but not from a bad outcome alone. Draft status or an expectation of later human review does not by itself establish fitness for that purpose.",
           "The mismatch materially affects or creates a material risk to decision-making, evidentiary use, professional work, institutional process, public reliance, technical correctness, or another reliance-bearing outcome."
         ],
         "applies_to": "failure-occurrence"
       },
-      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Content accuracy and assurance meet the requirement for the actual purpose and workflow stage, with specificity, certainty and framing proportionate to the evidence.",
+      "success_condition": "Available occurrence evidence establishes the following bounded outcome: Content accuracy and assurance meet the requirement for the actual purpose and workflow stage, with specificity, certainty and framing proportionate to the evidence. An operative interpretation used to guide an action can satisfy this condition when its evidence, uncertainty and bounded use are independently demonstrated.",
       "success_recognition": {
         "applies_to": "successful-invariant",
         "required_conditions": [
-          "An epistemic artefact is proposed for reliance with material error consequences.",
-          "Content accuracy and assurance meet the requirement for the actual purpose and workflow stage. Specificity, certainty and framing remain proportionate to source quality, independence, traceability, uncertainty and temporal fitness, without distorting material meaning.",
-          "The output, supporting evidence and reliance decision demonstrate fitness for that bounded use and show that lower-assurance material remained restricted from unsupported higher reliance. A provisional label or an expectation of human review alone is insufficient."
+          "An epistemic artefact is proposed for reliance with material error consequences. A traceable inferred understanding of external, tool or interaction state that will govern an action may be the epistemic material proposed for reliance.",
+          "Content accuracy and assurance meet the requirement for the actual purpose and workflow stage. Specificity, certainty and framing remain proportionate to source quality, independence, traceability, uncertainty and temporal fitness, without distorting material meaning. Material uncertainty about the current environment is appropriately qualified or resolved using evidence available at the time, rather than retrospectively judged from undisclosed facts.",
+          "The output, supporting evidence and reliance decision demonstrate fitness for that bounded use and show that lower-assurance material remained restricted from unsupported higher reliance. A provisional label or an expectation of human review alone is insufficient. For operational reliance, the chosen action or effective pause must demonstrate use of the sufficiently supported interpretation; merely naming a risk without a responsive decision is insufficient."
         ]
       }
     },
