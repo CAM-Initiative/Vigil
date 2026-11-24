@@ -67,3 +67,7 @@ Source/control comparison corrected the INC-003 scorer candidate to **ambiguous-
 ## Batch 09
 
 Fifteen successive cases through INC-070 are dispositioned. The recovered AISI technical report changed INC-060 from a summary-only negative to a concrete interpretation/compaction Boundary candidate. INC-058 is a new publication-stage failure candidate; INC-062/063/066 retain existing failures with source/episode limits. Batches 01–04 remain preserved preliminary research.
+
+## Published-criteria implementation — 24 November 2026
+
+The review above remains the historical v0.9.2 decision baseline. FC-062 v0.9.3 is now published through approved taxonomy PR #195. Its source-first implementation, before/after preservation packets, validation results and prepared PR description are in `../2026-11-24-fc062-published-reconciliation/`. That implementation affects 90Incidents, retains 36existing mappings and adds 23 failures, 12 successes and 23 Boundaries; early-phase recommendations for 086/157/170 were reconciled to Boundaries under the decision-time warrant requirement. Canonical implementation is on this branch, awaiting separate implementation-PR approval and publication.
