@@ -1,9 +1,9 @@
 # FC-062 full-corpus source-first reconciliation
 
-**Review date:** 23 November 2026  
-**Review branch:** `work/fc062-full-corpus-source-first-review-20261123`  
-**Baseline:** `origin/main` at `0a340103cd84715232b3f20584331083db4c6be1`  
-**Published taxonomy authority:** VIGIL v0.9.2 (published 15 November 2026)  
+**Review date:** 23 November 2026
+**Review branch:** `work/fc062-full-corpus-source-first-review-20261123`
+**Baseline:** `origin/main` at `0a340103cd84715232b3f20584331083db4c6be1`
+**Published taxonomy authority:** VIGIL v0.9.2 (published 15 November 2026)
 **Comparator only:** proposed v0.9.3 on `work/fc062-operative-reliance-incident-reconciliation-20261123`; unpublished and unapproved at this review start.
 
 ## Current progress

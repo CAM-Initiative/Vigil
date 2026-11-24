@@ -1,7 +1,7 @@
 # Proposed PR: Apply published FC-062 v0.9.3 across the completed corpus review
 
-Head: `work/fc062-full-corpus-source-first-review-20261123`  
-Base: `main`  
+Head: `work/fc062-full-corpus-source-first-review-20261123`
+Base: `main`
 Status: prepared for maintainer approval; not opened.
 
 The published FC-062 amendment now expressly covers source-evidenced operative interpretations and decision-time assurance. Apply that contract to the completed233-Incident review, adding independently scoped failures, bounded successes and unresolved Boundaries to 90affected records while preserving existing mappings and source limits.
