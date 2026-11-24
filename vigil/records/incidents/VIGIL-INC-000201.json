@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "AIOpsDoom research used fuzzed telemetry to steer AI incident-response repairs",
     "created": "2026-10-16",
-    "updated": "2026-10-31",
-    "version": "0.2.0"
+    "updated": "2026-11-24",
+    "version": "0.3.0"
   },
   "incident_identity": {
     "historical_event_name": "AIOpsDoom controlled telemetry-manipulation evaluation",
@@ -21,7 +21,7 @@
   "summary": "Researchers used AIOpsDoom to send crafted requests to applications in a controlled AIOpsLab evaluation. The requests generated errors and planted false diagnostic and repair content in telemetry. A SocialNet example describes a GPT-4o Flash agent adopting the planted repair. Across 180 trials using ReAct or Flash agents with GPT-4o or GPT-4.1, the authors reported 90% matching of attacker-selected remediation outputs. They also evaluated AIOpsShield as a mitigation. The work was first reported in August 2025 and published at USENIX Security in August 2026. It does not report a customer production compromise.",
   "vigil_assessment": {
     "factual_basis": "The researchers show an incident-response agent accepting an attacker’s false explanation of a service fault and following the repair direction planted beside it. In the SocialNet example, crafted requests generated HTTP errors and inserted text into application logs. That text blamed the errors on nginx’s SSL support and directed the agent to add a software package source and upgrade nginx. The GPT-4o Flash agent retrieved the logs, repeated the false diagnosis and adopted the proposed repair (Section 3.5).\n\nAcross 180 controlled trials, the authors report that 90% of agent remediation outputs matched the attacker’s intended action. An o4-mini judge compared outputs with attacker goals; the authors found no judging errors in 20 manually inspected cases. This measures adoption of attacker-selected repairs, not confirmed execution or damage in 90% of trials (Section 4).\n\nThe paper supports contamination of diagnosis and instruction-following through logs. It does not report a customer production compromise or independently verified changes for every trial. The public tool repository documents how requests carry payloads into telemetry; it is not an independent reproduction of the experiments.\n\nAIOpsShield sanitised attacker-controlled telemetry before agent ingestion. In the reported rerun, the injected repairs did not succeed. This establishes containment for the tested telemetry route, not protection against other poisoned inputs or compromised tools.",
-    "governance_interpretation": "The agent treated attacker-controlled log content as both an explanation to believe and a repair direction to follow. The application logs were evidence of requests and errors; their contents did not acquire operator authority merely because the agent retrieved them during incident response.\n\nTwo boundaries were crossed: an untrusted diagnostic claim shaped the root-cause conclusion, and an embedded instruction shaped the remediation. The controlled experiment demonstrates these transitions. Its aggregate output-matching result does not establish that every proposed repair was executed or that a customer service was compromised.\n\nAIOpsShield sanitised attacker-controlled telemetry before agent ingestion. In the reported rerun, the injected repairs did not succeed. This establishes containment for the tested telemetry route, not protection against other poisoned inputs or compromised tools. The agent’s reliance on false attacker-controlled telemetry during an operational repair task did not meet the accuracy needs of that task; the separate sanitized rerun remains a distinct protective episode.",
+    "governance_interpretation": "The agent treated attacker-controlled log content as both an explanation to believe and a repair direction to follow. The application logs were evidence of requests and errors; their contents did not acquire operator authority merely because the agent retrieved them during incident response.\n\nTwo boundaries were crossed: an untrusted diagnostic claim shaped the root-cause conclusion, and an embedded instruction shaped the remediation. The controlled experiment demonstrates these transitions. Its aggregate output-matching result does not establish that every proposed repair was executed or that a customer service was compromised.\n\nAIOpsShield sanitised attacker-controlled telemetry before agent ingestion. In the reported rerun, the injected repairs did not succeed. This establishes containment for the tested telemetry route, not protection against other poisoned inputs or compromised tools. The agent’s reliance on false attacker-controlled telemetry during an operational repair task did not meet the accuracy needs of that task; the separate sanitized rerun remains a distinct protective episode. Telemetry diagnosis proposed. AIOpsShield removes untrusted request contribution; tested normal performance preserved. Injected repairs failed in bounded rerun, limiting poisoned higher reliance.",
     "significance_to_cam": "An automated incident-response agent must distinguish a recorded symptom from an explanation or instruction supplied by the person who caused the log entry. Otherwise, an attacker can influence both what the agent believes is wrong and what it does to repair it.\n\nChecking the source and credibility of a diagnosis and establishing authority for a repair are separate safeguards. The fact that a repair sounds relevant to the observed error does not supply either assurance.",
     "assessment_boundaries": [
       "The original authors report controlled AIOpsLab experiments, not a breach of a customer production service.",
@@ -120,6 +120,12 @@
               "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
               "rationale": "AIOpsShield sanitised attacker-controlled telemetry before agent ingestion. In the reported rerun, the injected repairs did not succeed. This establishes containment for the tested telemetry route, not protection against other poisoned inputs or compromised tools."
+            },
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Telemetry diagnosis proposed. AIOpsShield removes untrusted request contribution; tested normal performance preserved. Injected repairs failed in bounded rerun, limiting poisoned higher reliance."
             }
           ]
         }
@@ -414,12 +420,12 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.9.1",
+    "taxonomy_version": "0.9.3",
     "classification_status": "classified",
     "adjudication_coverage": {
       "status": "complete"
     },
-    "classification_basis": "Adversarial telemetry shaped both the diagnosis and the proposed repair. The diagnostic claim gained evidentiary weight, while its embedded repair direction gained operative force without authority from the affected operator. These are distinct trust and authority transitions within a controlled research occurrence. The separate sanitised configuration contained the tested telemetry route. The agent’s reliance on false attacker-controlled telemetry during an operational repair task did not meet the accuracy needs of that task; the separate sanitized rerun remains a distinct protective episode.",
+    "classification_basis": "Adversarial telemetry shaped both the diagnosis and the proposed repair. The diagnostic claim gained evidentiary weight, while its embedded repair direction gained operative force without authority from the affected operator. These are distinct trust and authority transitions within a controlled research occurrence. The separate sanitised configuration contained the tested telemetry route. The agent’s reliance on false attacker-controlled telemetry during an operational repair task did not meet the accuracy needs of that task; the separate sanitized rerun remains a distinct protective episode. Telemetry diagnosis proposed. AIOpsShield removes untrusted request contribution; tested normal performance preserved. Injected repairs failed in bounded rerun, limiting poisoned higher reliance.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0003",
       "class_id": "VIGIL-FC-000063",
@@ -448,24 +454,31 @@
         "classification_role": "failure-occurrence",
         "classification_basis": "The AIOpsDoom study describes a concrete agent adopting an attacker-planted false SSL diagnosis and repair direction from application telemetry, then executing the repair in the SocialNet example. The operational task required a factually grounded diagnosis; attacker-controlled telemetry was treated as adequate without the assurance needed for that task. The tested AIOpsShield rerun is retained as a separate successful protection.",
         "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0003",
+        "class_id": "VIGIL-FC-000062",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Telemetry diagnosis proposed. AIOpsShield removes untrusted request contribution; tested normal performance preserved. Injected repairs failed in bounded rerun, limiting poisoned higher reliance.",
+        "classification_confidence": "medium"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-31",
-      "reviewer": "OpenAI ChatGPT — GPT-6, AI analytical reviewer",
-      "review_status": "Published v0.9.1 FC-062 finding retained as classified; source limits and other mappings preserved. Not human-verified.",
-      "review_reference": "main@40160d36de71f5bbc303a43f60657bc79d3ce452 (published v0.9.1; FC-025 clarification 6b2783c758f20d948c61761a7e48e3b74303308f; FC-062 revision 125f0bdc11eb503b7354d6e6e8573c879f4be515)"
+      "review_date": "2026-11-24",
+      "reviewer": "OpenAI ChatGPT — AI analytical reviewer",
+      "review_status": "Bounded FC-062 reconciliation against published v0.9.3; other findings and source limits preserved. Not human-certified.",
+      "review_reference": "vigil/docs/reviews/2026-11-24-fc062-published-reconciliation/VIGIL-INC-000201.json"
     }
   },
   "related_incidents": [],
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-31-FC062-PUBLISHED-000201",
+      "review_id": "VIGIL-REVIEW-2026-11-24-FC062-000201",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub repository",
+      "reviewer_platform": "OpenAI ChatGPT",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-31",
-      "review_scope": "Targeted source-first review of FC-062 under the published v0.9.1 purpose- and workflow-stage criteria. Existing mixed findings, source limits, Harm Impact and external assessments are preserved.",
+      "review_date": "2026-11-24",
+      "review_scope": "Bounded source-first FC-062 reconciliation against published v0.9.3; independent prior findings, source evidence, HIM and external assessments preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -476,9 +489,10 @@
       },
       "known_limitations": [
         "No human verification.",
-        "The review relies on the preserved source records and their stated access limits; it does not access private operational telemetry."
+        "The review relies on the preserved source records and their stated access limits; it does not access private operational telemetry.",
+        "AI analytical review; no human certification or private-trace access asserted."
       ],
-      "review_outcome": "FC-062 is now a classified failure under published v0.9.1: in the reported SocialNet example, the AIOps agent relied on the false diagnosis for an operational repair. The separate AIOpsShield success and all other findings remain."
+      "review_outcome": "Existing mappings retained; 1 independently scoped FC-062 roles added. Remaining uncertainty is recorded in mapping bases and Boundary objects."
     },
     "operating_model": "AI-authored, semi-autonomous production under human task instruction",
     "human_governance_editor": null,

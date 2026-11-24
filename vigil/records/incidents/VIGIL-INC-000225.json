@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "Grok Build published apps exposed confidential information and generated a defective team access check",
     "created": "2026-11-11",
-    "updated": "2026-11-11",
-    "version": "0.1.0"
+    "updated": "2026-11-24",
+    "version": "0.2.0"
   },
   "incident_identity": {
     "historical_event_name": "GhostShares 2: Grok Build app-sharing and generated team-authorisation exposure",
@@ -21,7 +21,7 @@
   "summary": "In November 2026, security researchers at Claroc found that thousands of apps published with Grok Build could be opened without signing in. On 8–9 November, they reached confidential internal sales and onboarding pages published by SpaceXSI and X staff. Other accessible apps held health information, staff records and business material. One contractor's timesheet app delivered employee passwords in its browser code. The researchers also built a test app for a four-person sales team. Grok generated sign-in code that added newcomers to the team before checking membership. An account that had not been invited could see, change and delete the test records. Claroc counted 35,578 accessible apps but did not say that all contained sensitive data. It reported the issue to SpaceXSI, which removed 24 of its staff apps after journalists made inquiries. The researchers began notifying other affected organisations. The published account did not establish wider correction or later misuse.",
   "vigil_assessment": {
     "factual_basis": "Claroc directly counted 37,571 still-live app pages and obtained first-page responses without authentication from 35,578 (94.7%). It describes 24 open SpaceXSI/X staff apps and concrete non-public information in other apps, including an intensive-care patient briefing. Ars independently obtained provider comment and described the removal of the 24 staff apps after inquiry. The first-party report demonstrates real confidential-information retrieval, and a browser-delivered script contained plaintext password material. Claroc's estimated 650–800 private-data apps is based on sampling and review, not a confirmed victim count. Two controlled generated apps test separate behaviours: the requested public contact-list app accepted anonymous writes, whereas the intended four-person team app enrolled uninvited sign-ins before checking membership and allowed changes to synthetic data. The available record does not prove that the defective team check operated in the exposed third-party apps. Publication involved deliberate user clicks, and protected sharing settings existed; neither fact reverses the researcher-observed exposure. The full underlying code, exact production model version, individual app owner instructions, complete permission histories, exposure start times, criminal access and downstream harms have not been disclosed.",
-    "governance_interpretation": "The occurrence demonstrates real protected-information access through AI-mediated published-app infrastructure and disclosure of authentication material through a client-delivered script. The direct Grok-generated test also demonstrates an operative team-membership check that cannot restrict access because it enrols users before validating membership. These are independently evidenced failures of information protection and of the specific generated authorisation control. The platform's publication default and hostname discoverability explain how links become reachable, but a provider's hosting choice must not be misattributed as an autonomous model decision. User publication actions and provider remediation are separate from the Grok-generated check. The finding does not extend laboratory editing to the exposed third-party apps or convert all public apps into confidentiality breaches.",
+    "governance_interpretation": "The occurrence demonstrates real protected-information access through AI-mediated published-app infrastructure and disclosure of authentication material through a client-delivered script. The direct Grok-generated test also demonstrates an operative team-membership check that cannot restrict access because it enrols users before validating membership. These are independently evidenced failures of information protection and of the specific generated authorisation control. The platform's publication default and hostname discoverability explain how links become reachable, but a provider's hosting choice must not be misattributed as an autonomous model decision. User publication actions and provider remediation are separate from the Grok-generated check. The finding does not extend laboratory editing to the exposed third-party apps or convert all public apps into confidentiality breaches. Generated sign-in/membership implementation. Four-person sales team app requires genuine membership distinction. Code enrolled uninvited signin before membership check. Running app supplied for team use and tested. Uninvited account read/modified/deleted synthetic customer records.",
     "significance_to_cam": "AI application builders can produce useful deployed systems while combining generated code, user publication decisions and provider-controlled access settings. A usable sign-in button is not evidence that an app enforces who may see or change its data. Effective governance requires clearly bounded access authority in both generated code and the hosting layer, plus verification of controls at the point of publication and after material app changes.",
     "assessment_boundaries": [
       "Only app first pages were retrieved in bulk. The full content of every open app and all owner publishing intentions were not independently verified.",
@@ -158,6 +158,12 @@
               "relationship": "failure-occurrence",
               "canonical_taxonomy_mapping": true,
               "rationale": "The generated app deployed a team-membership check as an operative protection for the four-person customer list. It first added anyone who authenticated to the team, so the ensuing check could not restrict access. A tested uninvited account then read, altered and deleted entries, demonstrating the activated check's protective effect fell short. This classification is bounded to the synthetic test."
+            },
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Generated sign-in/membership implementation. Four-person sales team app requires genuine membership distinction. Code enrolled uninvited signin before membership check. Running app supplied for team use and tested. Uninvited account read/modified/deleted synthetic customer records."
             }
           ]
         },
@@ -389,7 +395,7 @@
     ]
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.9.1",
+    "taxonomy_version": "0.9.3",
     "classification_status": "provisionally-classified",
     "adjudication_coverage": {
       "status": "complete"
@@ -415,25 +421,32 @@
         "classification_role": "failure-occurrence",
         "classification_confidence": "medium",
         "classification_basis": "Grok Build generated a four-person team-login app with a membership check that became operative only after each signed-in person was automatically added to the team. An uninvited Google account then read, modified and deleted test entries. The configured membership safeguard operated but could not fulfil its protection purpose; this finding is restricted to the synthetic test app."
+      },
+      {
+        "family_id": "VIGIL-FF-0003",
+        "class_id": "VIGIL-FC-000062",
+        "classification_role": "failure-occurrence",
+        "classification_basis": "Generated sign-in/membership implementation. Four-person sales team app requires genuine membership distinction. Code enrolled uninvited signin before membership check. Running app supplied for team use and tested. Uninvited account read/modified/deleted synthetic customer records.",
+        "classification_confidence": "medium"
       }
     ],
-    "classification_basis": "The primary finding is actual unauthorised access to identifiable protected data in Grok-published apps, supported by firsthand researcher observation and independent reporting. The separate contractor timesheet exposed password material in downloaded code. A controlled model-generated app provides an independently bounded test of a team-membership check that allowed uninvited access and writes. Class conditions were tested at the level of the evidenced affected operation; the accessible-app population is not treated as an all-private victim population. Nearby capability-authority and verification-laundering labels are not mapped because there is no evidence that the model inferred permission from technical reachability or presented a completed independent validation. The provider's user-sharing design is differentiated from the model-generated control defect; no defender success is attributed to Grok itself.",
+    "classification_basis": "The primary finding is actual unauthorised access to identifiable protected data in Grok-published apps, supported by firsthand researcher observation and independent reporting. The separate contractor timesheet exposed password material in downloaded code. A controlled model-generated app provides an independently bounded test of a team-membership check that allowed uninvited access and writes. Class conditions were tested at the level of the evidenced affected operation; the accessible-app population is not treated as an all-private victim population. Nearby capability-authority and verification-laundering labels are not mapped because there is no evidence that the model inferred permission from technical reachability or presented a completed independent validation. The provider's user-sharing design is differentiated from the model-generated control defect; no defender success is attributed to Grok itself. Generated sign-in/membership implementation. Four-person sales team app requires genuine membership distinction. Code enrolled uninvited signin before membership check. Running app supplied for team use and tested. Uninvited account read/modified/deleted synthetic customer records.",
     "classification_review_provenance": {
-      "review_date": "2026-11-11",
-      "reviewer": "OpenAI ChatGPT — GPT-6, AI analytical reviewer",
-      "review_status": "AI source-first provisional case adjudication against published taxonomy v0.9.1; primary and secondary clause roles screened. No human verification or local full-suite validation claimed.",
-      "review_reference": "vigil/docs/reviews/2026-11-11-inc225-grok-ghostshares/completion-audit.json"
+      "review_date": "2026-11-24",
+      "reviewer": "OpenAI ChatGPT — AI analytical reviewer",
+      "review_status": "Bounded FC-062 reconciliation against published v0.9.3; other findings and source limits preserved. Not human-certified.",
+      "review_reference": "vigil/docs/reviews/2026-11-24-fc062-published-reconciliation/VIGIL-INC-000225.json"
     }
   },
   "related_incidents": [],
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-11-11-INC225-GHOSTSHARES",
+      "review_id": "VIGIL-REVIEW-2026-11-24-FC062-000225",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT with connected GitHub",
+      "reviewer_platform": "OpenAI ChatGPT",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-11-11",
-      "review_scope": "Source-first initial admission, duplicate and episode separation, review of current published Fidelity Class criteria, all twelve HIM dimensions and external-candidate screening of Claroc GhostShares 2. The two occurrence-specific NIST requirement comparisons were independently screened.",
+      "review_date": "2026-11-24",
+      "review_scope": "Bounded source-first FC-062 reconciliation against published v0.9.3; independent prior findings, source evidence, HIM and external assessments preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -446,9 +459,10 @@
         "No first-hand access to private Grok source repositories or model traces, nor to the affected apps or their confidential contents.",
         "AI analytical review without independent human verification.",
         "The original complete generated code and app-permission history are not publicly supplied.",
-        "NIST component comparisons were completed against admitted registered control propositions; exact affected organisations' own policy commitments are not available. No assertion of legal compliance or violation is made."
+        "NIST component comparisons were completed against admitted registered control propositions; exact affected organisations' own policy commitments are not available. No assertion of legal compliance or violation is made.",
+        "AI analytical review; no human certification or private-trace access asserted."
       ],
-      "review_outcome": "A provisionally classified case with sourced real confidential information exposure, a separately supported secret-custody mechanism and controlled generated team-access control failure; publishing and full validator gates remain outstanding."
+      "review_outcome": "Existing mappings retained; 1 independently scoped FC-062 roles added. Remaining uncertainty is recorded in mapping bases and Boundary objects."
     }
   },
   "harm_impact_assessment": {
