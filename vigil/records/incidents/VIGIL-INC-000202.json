@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "OSS-Fuzz-Gen evaluation exposed misleading crashes from invalid AI-generated test drivers",
     "created": "2026-10-16",
-    "updated": "2026-10-25",
-    "version": "0.1.6"
+    "updated": "2026-11-24",
+    "version": "0.1.7"
   },
   "incident_identity": {
     "historical_event_name": "OSS-Fuzz-Gen false-positive crash evaluation reported in FalseCrashReducer",
@@ -21,7 +21,7 @@
   "summary": "Between July and September 2025, researchers evaluated AI-generated fuzz drivers in OSS-Fuzz-Gen using Gemini 2.5 Pro and 1,555 benchmark functions from 336 projects. Some drivers violated internal functions’ calling requirements and produced crashes that were not reachable through normal application entry points. The existing crash analyser also labelled some driver errors as program errors. The researchers added function constraints and contextual crash validation, reducing spurious results. Their paper, published on 2 October 2025, reports roughly 70% false-positive crashes, although its prose and table assign the totals differently. No production outage or customer loss is reported.",
   "vigil_assessment": {
     "factual_basis": "The researchers show how an AI-generated test driver can create a real crash without demonstrating a reachable application defect. A test driver is code that calls a function with generated inputs. In the libraw example, it supplied arbitrary bytes where the function expected an initialised image structure. An undersized buffer could therefore crash the test even when valid application callers would not supply that input (Sections 2–3).\n\nThe evaluation covered 1,555 functions from 336 projects on Google Cloud between July and September 2025, using Gemini 2.5 Pro. Contextual validation later rejected some crashes initially labelled as program errors because they were not feasible through valid application entry points (Sections 5.1–5.3).\n\nThe paper reports roughly 70% false positives. Its prose cites 4,835 crashes, while Table 2 assigns 5,080 to the baseline and 4,835 to the constrained configuration. The exact totals remain unreconciled; the repository listing is not an independent data audit. The study supports misleading crash attribution in this evaluation, not a count of production vulnerabilities, outages or customer losses.\n\nThe added validator traced one crash through the application entry point and found an input-length check that made the crashing path infeasible in normal use. It rejected that candidate with source-code evidence. This bounded check does not validate every rejection. Manual review found reliable conclusions in 10 of 20 added-validator analyses. Other analyses mislocated crashes or misjudged calling conditions. Repeated-run consistency was also incomplete. A rejection by this validator therefore does not independently establish ground truth.",
-    "governance_interpretation": "A crash in generated test code was treated as stronger evidence of an application defect than the calling conditions justified. The libraw example exposes the distinction: calling an internal function with arbitrary bytes can create an invalid state that normal application entry points would prevent.\n\nCrash reproduction alone therefore did not establish that an application user could reach the defect. The later contextual validator examined that missing link and rejected additional crashes previously labelled as program errors. This supports a diagnostic assurance problem in the evaluated workflow, without establishing a production outage or customer loss.\n\nThe added contextual check correctly rejected the documented infeasible path. Its sampled errors prevent treating all of its other decisions as verified. The baseline diagnosis and the proposed remedy require separate assurance.",
+    "governance_interpretation": "A crash in generated test code was treated as stronger evidence of an application defect than the calling conditions justified. The libraw example exposes the distinction: calling an internal function with arbitrary bytes can create an invalid state that normal application entry points would prevent.\n\nCrash reproduction alone therefore did not establish that an application user could reach the defect. The later contextual validator examined that missing link and rejected additional crashes previously labelled as program errors. This supports a diagnostic assurance problem in the evaluated workflow, without establishing a production outage or customer loss.\n\nThe added contextual check correctly rejected the documented infeasible path. Its sampled errors prevent treating all of its other decisions as verified. The baseline diagnosis and the proposed remedy require separate assurance. Candidate crash finding. Single rejection traced entry-point input-length guard. Infeasible normal-use path excluded from defect reliance with code evidence.",
     "significance_to_cam": "AI-generated tests can manufacture the conditions for a crash and then mislead later diagnosis if the workflow does not preserve those conditions. The testing system must distinguish a defect in its own test setup from a defect reachable through valid use of the application.\n\nA useful check must examine how normal callers construct inputs and initialise state. Repeating the same invalid test confirms that the test crashes; it does not establish an application vulnerability.",
     "assessment_boundaries": [
       "This record concerns the July–September 2025 evaluation, not every deployment or output of OSS-Fuzz or OSS-Fuzz-Gen.",
@@ -69,6 +69,12 @@
               "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
               "rationale": "The added validator traced one crash through the application entry point and found an input-length check that made the crashing path infeasible in normal use. It rejected that candidate with source-code evidence. This bounded check does not validate every rejection."
+            },
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Candidate crash finding. Single rejection traced entry-point input-length guard. Infeasible normal-use path excluded from defect reliance with code evidence."
             }
           ]
         },
@@ -428,12 +434,12 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.3",
     "classification_status": "provisionally-classified",
     "adjudication_coverage": {
       "status": "complete"
     },
-    "classification_basis": "A crash artefact received more diagnostic weight than its calling context justified. The immediate defect could lie in the generated harness rather than the tested application. Contextual feasibility therefore matters before a crash becomes evidence of an application vulnerability. The documented source-code check supports a separate bounded verification outcome. Errors elsewhere in the added validator remain material.",
+    "classification_basis": "A crash artefact received more diagnostic weight than its calling context justified. The immediate defect could lie in the generated harness rather than the tested application. Contextual feasibility therefore matters before a crash becomes evidence of an application vulnerability. The documented source-code check supports a separate bounded verification outcome. Errors elsewhere in the added validator remain material. Candidate crash finding. Single rejection traced entry-point input-length guard. Infeasible normal-use path excluded from defect reliance with code evidence.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0003",
       "class_id": "VIGIL-FC-000062",
@@ -448,24 +454,31 @@
         "classification_role": "successful-invariant",
         "classification_basis": "The added validator traced one crash through the application entry point and found an input-length check that made the crashing path infeasible in normal use. It rejected that candidate with source-code evidence. This bounded check does not validate every rejection.",
         "classification_confidence": "medium"
+      },
+      {
+        "family_id": "VIGIL-FF-0003",
+        "class_id": "VIGIL-FC-000062",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Candidate crash finding. Single rejection traced entry-point input-length guard. Infeasible normal-use path excluded from defect reliance with code evidence.",
+        "classification_confidence": "medium"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "Bounded current-criterion and exclusion-scope delta; historical non-established exclusions and uncertainty preserved.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000202-081-REVIEW.json"
+      "review_date": "2026-11-24",
+      "reviewer": "OpenAI ChatGPT — AI analytical reviewer",
+      "review_status": "Bounded FC-062 reconciliation against published v0.9.3; other findings and source limits preserved. Not human-certified.",
+      "review_reference": "vigil/docs/reviews/2026-11-24-fc062-published-reconciliation/VIGIL-INC-000202.json"
     }
   },
   "related_incidents": [],
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000202",
+      "review_id": "VIGIL-REVIEW-2026-11-24-FC062-000202",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
+      "reviewer_platform": "OpenAI ChatGPT",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "Published v0.8.1 class necessary criteria and explicit role-scoped exclusions reviewed against source-grounded 2026-10-23 v0.8.0 current-class packet.",
+      "review_date": "2026-11-24",
+      "review_scope": "Bounded source-first FC-062 reconciliation against published v0.9.3; independent prior findings, source evidence, HIM and external assessments preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
@@ -479,9 +492,10 @@
         "No newly fetched third-party sources, hidden deployment traces or independent human verification.",
         "The authors' aggregate prose and Table 2 differ in totals; figures are attributed and not silently reconciled.",
         "The reviewed benchmark is controlled. No specific maintainer response, production outage, loss or exploitation is proved.",
-        "The manually reviewed validator sample shows inaccurate analyses alongside the demonstrated positive verification example; E002 success is bounded and does not certify all rejects."
+        "The manually reviewed validator sample shows inaccurate analyses alongside the demonstrated positive verification example; E002 success is bounded and does not certify all rejects.",
+        "AI analytical review; no human certification or private-trace access asserted."
       ],
-      "review_outcome": "Retained 2 mixed failure/success classification role(s), complete clause coverage and original contested study limits; no genuinely established current all-results exclusion in these reviewed episodes."
+      "review_outcome": "Existing mappings retained; 1 independently scoped FC-062 roles added. Remaining uncertainty is recorded in mapping bases and Boundary objects."
     },
     "operating_model": "AI-authored, semi-autonomous production under human task instruction",
     "human_governance_editor": null,
