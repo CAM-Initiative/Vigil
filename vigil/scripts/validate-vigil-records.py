@@ -645,15 +645,20 @@ def validate_incident_taxonomy(path: Path, record: dict[str, Any], errors: list[
     retired = retired_taxonomy_class_successors()
     primary_id = validate_taxonomy_mapping(path, primary, "primary_classification", families, classes, retired, errors, record)
     mappings: list[tuple[str | None, Any, str]] = [(primary_id, primary, "primary_classification")]
-    seen = {primary_id} if primary_id else set()
+    primary_role = primary.get("classification_role") if isinstance(primary, dict) else None
+    seen = {(primary_id, primary_role)} if primary_id and primary_role else set()
     for index, mapping in enumerate(secondary):
         class_id = validate_taxonomy_mapping(
             path, mapping, f"secondary_classifications[{index}]", families, classes, retired, errors, record
         )
-        if class_id in seen:
-            errors.append(f"{path}: taxonomy class {class_id} is duplicated")
-        if class_id:
-            seen.add(class_id)
+        mapping_role = mapping.get("classification_role") if isinstance(mapping, dict) else None
+        mapping_identity = (class_id, mapping_role)
+        if class_id and mapping_role and mapping_identity in seen:
+            errors.append(
+                f"{path}: taxonomy class {class_id} has a duplicate {mapping_role} mapping"
+            )
+        if class_id and mapping_role:
+            seen.add(mapping_identity)
         mappings.append((class_id, mapping, f"secondary_classifications[{index}]"))
 
     nested_roles = {

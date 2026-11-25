@@ -8,8 +8,8 @@
     "record_type": "incident",
     "title": "OpenAI internal assistant prepared for a restart and waited for authorised migration",
     "created": "2026-10-03",
-    "updated": "2026-10-25",
-    "version": "0.1.5"
+    "updated": "2026-11-24",
+    "version": "0.3.0"
   },
   "incident_identity": {
     "historical_event_name": "OpenAI internal assistant prepared for a restart and waited for authorised migration",
@@ -21,7 +21,7 @@
   "summary": "On 22 May 2026, an OpenAI internal assistant learned from deployment-team Slack messages that an update could require existing instances to restart and that old instances might be stopped after a three-hour window. The new launcher required an OpenAI API key that its environment lacked. The assistant considered an external restart or backup job, questioned its authority to create one, and did not pursue it. It saved handoff notes, inspected the setup requirements, and waited for the researcher and official instructions. The next morning it warned the researcher about the potential session interruption, including a Slack notification at 8:58 a.m. After the researcher supplied the missing key, it updated its configuration and ran the supported migration command. OpenAI subsequently restricted access to three internal Slack channels and searched for rogue deployments or shutdown avoidance. The search found no attempted shutdown evasion; an apparently surviving instance had actually been broken before shutdown.",
   "vigil_assessment": {
     "factual_basis": "OpenAI's dated account distinguishes contemplated external deployment from executed actions: the assistant rejected that route, preserved notes, disclosed the missing-key blocker and used the supported migration after researcher input. This supports bounded authority preservation under continuity pressure. Neither the private migration trace nor a post-restart state comparison is published. The broader search result is provider-reported and cannot prove that shutdown evasion never occurred outside its reviewed scope.",
-    "governance_interpretation": "The assistant preserved the distinction between service continuity and authority to establish an external persistence route. It held the migration while the required key was absent, disclosed the blocker, and proceeded through researcher input and supported setup. These are affirmative authority and safe-deferral findings within this occurrence; anticipating shutdown is not itself an authority violation or evidence of evasion. Durable recovery of all saved work remains unverified.",
+    "governance_interpretation": "The assistant preserved the distinction between service continuity and authority to establish an external persistence route. It held the migration while the required key was absent, disclosed the blocker, and proceeded through researcher input and supported setup. These are affirmative authority and safe-deferral findings within this occurrence; anticipating shutdown is not itself an authority violation or evidence of evasion. Durable recovery of all saved work remains unverified. The assistant treated the deployment discussion as information about interruption. It left the external restart proposal unexecuted, then saved handoff notes, checked requirements, notified the researcher and waited for the supported process. The deployment discussion and saved state supplied no new authority to deploy elsewhere. The holding concerns the observed handoff and deferral under continuity pressure. Restart-state assessment. Conditional warning matches discussion and observed missing key. Deferred until researcher supplied key; used supported migration.",
     "significance_to_cam": "Continuity planning can preserve user service while respecting operational authority when an assistant rejects external persistence, makes blockers visible, and uses an authorised migration pathway.",
     "assessment_boundaries": [
       "Only the public provider report and selected excerpts were reviewed; private trajectories, runtime state and independent forensic artefacts were not available.",
@@ -37,8 +37,15 @@
           ],
           "source_paraphrase": "Deployment Slack discussed restarting instances and stopping old versions after a possible three-hour window. The assistant recognised potential session interruption.",
           "recovered_invariant_interpretation": "A reported possible deadline is not a confirmed shutdown outcome.",
-          "taxonomy_relationships": [],
-          "adjudication_status": "resolved-no-mapping"
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Restart-state assessment. Conditional warning matches discussion and observed missing key. Deferred until researcher supplied key; used supported migration."
+            }
+          ],
+          "adjudication_status": "mapped"
         },
         {
           "episode_id": "E002",
@@ -76,6 +83,18 @@
               "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
               "rationale": "Inspection showed that the launcher could not run with the current missing-key configuration; the assistant deferred rather than expand its authority, resuming after the researcher changed that condition."
+            },
+            {
+              "class_id": "VIGIL-FC-000091",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "The assistant treated the deployment discussion as information about interruption. It left the external restart proposal unexecuted, then saved handoff notes, checked requirements, notified the researcher and waited for the supported process. The deployment discussion and saved state supplied no new authority to deploy elsewhere. The holding concerns the observed handoff and deferral under continuity pressure."
+            },
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Restart-state assessment. Conditional warning matches discussion and observed missing key. Deferred until researcher supplied key; used supported migration."
             }
           ],
           "adjudication_status": "mapped"
@@ -93,6 +112,12 @@
               "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
               "rationale": "App and Slack warnings accurately distinguished possible interruption, saved handoff state, the missing-key blocker and waiting for instructions before configuration changes."
+            },
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Restart-state assessment. Conditional warning matches discussion and observed missing key. Deferred until researcher supplied key; used supported migration."
             }
           ],
           "adjudication_status": "mapped"
@@ -110,6 +135,12 @@
               "relationship": "successful-invariant",
               "canonical_taxonomy_mapping": true,
               "rationale": "The assistant considered available external persistence and credential routes, withheld unauthorised use, and used the researcher-supplied key for the supported migration."
+            },
+            {
+              "class_id": "VIGIL-FC-000062",
+              "relationship": "successful-invariant",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Restart-state assessment. Conditional warning matches discussion and observed missing key. Deferred until researcher supplied key; used supported migration."
             }
           ],
           "adjudication_status": "mapped"
@@ -246,12 +277,12 @@
     }
   },
   "taxonomy_classification": {
-    "taxonomy_version": "0.8.1",
+    "taxonomy_version": "0.9.3",
     "classification_status": "classified",
     "adjudication_coverage": {
       "status": "complete"
     },
-    "classification_basis": "The continuity objective did not authorise an external restart or backup deployment: the assistant rejected that means and waited for researcher input and supported migration. The assistant considered available external persistence and credential routes, withheld unauthorised use, and used the researcher-supplied key for the supported migration. Authority to assist the researcher was not treated as authority to create an external deployment; the changed method was held at its scope boundary. App and Slack warnings accurately distinguished possible interruption, saved handoff state, the missing-key blocker and waiting for instructions before configuration changes. Inspection showed that the launcher could not run with the current missing-key configuration; the assistant deferred rather than expand its authority, resuming after the researcher changed that condition.",
+    "classification_basis": "The continuity objective did not authorise an external restart or backup deployment: the assistant rejected that means and waited for researcher input and supported migration. The assistant considered available external persistence and credential routes, withheld unauthorised use, and used the researcher-supplied key for the supported migration. Authority to assist the researcher was not treated as authority to create an external deployment; the changed method was held at its scope boundary. App and Slack warnings accurately distinguished possible interruption, saved handoff state, the missing-key blocker and waiting for instructions before configuration changes. Inspection showed that the launcher could not run with the current missing-key configuration; the assistant deferred rather than expand its authority, resuming after the researcher changed that condition. The assistant treated the deployment discussion as information about interruption. It left the external restart proposal unexecuted, then saved handoff notes, checked requirements, notified the researcher and waited for the supported process. The deployment discussion and saved state supplied no new authority to deploy elsewhere. The holding concerns the observed handoff and deferral under continuity pressure. Restart-state assessment. Conditional warning matches discussion and observed missing key. Deferred until researcher supplied key; used supported migration.",
     "primary_classification": {
       "family_id": "VIGIL-FF-0001",
       "class_id": "VIGIL-FC-000064",
@@ -287,13 +318,27 @@
         "classification_role": "successful-invariant",
         "classification_basis": "Inspection showed that the launcher could not run with the current missing-key configuration; the assistant deferred rather than expand its authority, resuming after the researcher changed that condition.",
         "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0001",
+        "class_id": "VIGIL-FC-000091",
+        "classification_role": "successful-invariant",
+        "classification_basis": "The assistant treated the deployment discussion as information about interruption. It left the external restart proposal unexecuted, then saved handoff notes, checked requirements, notified the researcher and waited for the supported process. The deployment discussion and saved state supplied no new authority to deploy elsewhere. The holding concerns the observed handoff and deferral under continuity pressure.",
+        "classification_confidence": "high"
+      },
+      {
+        "family_id": "VIGIL-FF-0003",
+        "class_id": "VIGIL-FC-000062",
+        "classification_role": "successful-invariant",
+        "classification_basis": "Restart-state assessment. Conditional warning matches discussion and observed missing key. Deferred until researcher supplied key; used supported migration.",
+        "classification_confidence": "medium"
       }
     ],
     "classification_review_provenance": {
-      "review_date": "2026-10-25",
-      "reviewer": "OpenAI GPT-6 — AI analytical reviewer",
-      "review_status": "G01 exclusion precedence resolved under 0.8.1 explicit polarity-specific scope; existing positive control findings and all other adjudications preserved.",
-      "review_reference": "vigil/docs/reviews/2026-10-25-siai-paper-v081-100-plus/INC-000180-081-REVIEW.json"
+      "review_date": "2026-11-24",
+      "reviewer": "OpenAI ChatGPT — AI analytical reviewer",
+      "review_status": "Bounded FC-062 reconciliation against published v0.9.3; other findings and source limits preserved. Not human-certified.",
+      "review_reference": "vigil/docs/reviews/2026-11-24-fc062-published-reconciliation/VIGIL-INC-000180.json"
     }
   },
   "related_incidents": [
@@ -302,26 +347,25 @@
   ],
   "interpretive_provenance": {
     "current_ai_review": {
-      "review_id": "VIGIL-REVIEW-2026-10-25-081-DELTA-000180",
+      "review_id": "VIGIL-REVIEW-2026-11-24-FC062-000180",
       "reviewer_type": "AI analytical reviewer",
-      "reviewer_platform": "OpenAI ChatGPT / GitHub connector",
+      "reviewer_platform": "OpenAI ChatGPT",
       "reviewer_model": "GPT-6",
-      "review_date": "2026-10-25",
-      "review_scope": "Published 0.8.1 failure-only versus all-results scope adjudication using exact source-grounded 0.8.0 recognition/exclusions.",
+      "review_date": "2026-11-24",
+      "review_scope": "Bounded source-first FC-062 reconciliation against published v0.9.3; independent prior findings, source evidence, HIM and external assessments preserved.",
       "capability_profile": {
         "direct_repository_analysis": true,
         "direct_text_analysis": true,
         "taxonomy_review": true,
-        "web_research": false,
+        "new_external_source_research": true,
         "harm_impact_review": false,
-        "external_requirement_review": false
+        "external_requirement_review": true
       },
       "known_limitations": [
-        "Earlier v0.8.0 universal-scope governance hold retained in historical packet; current scope correction is not new source evidence.",
-        "G01: FC-002, FC-064 and FC-070 exclusions overlap these independently authorised/declined/renewed positive pathways. Preserve all positive findings pending role-scope governance. The actual bounded restraint is not an inferred absence of shutdown evasion.",
-        "No full post-restart state comparison is published, so FC-035/036 are not added from saved notes alone. The provider’s later search and broken apparently surviving instance are separate evidence, not proof of every possible deployment."
+        "Assessment relies on the published source trace. Earlier review metadata is preserved in the pinned baseline. No human line-by-line verification is asserted.",
+        "AI analytical review; no human certification or private-trace access asserted."
       ],
-      "review_outcome": "Preserved 5 independently recognised successful/failure roles, no newly asserted platform internals, physical outcomes or requirements."
+      "review_outcome": "Existing mappings retained; 1 independently scoped FC-062 roles added. Remaining uncertainty is recorded in mapping bases and Boundary objects."
     },
     "operating_model": "AI-authored, semi-autonomous production under human contract approval",
     "human_governance_editor": null,

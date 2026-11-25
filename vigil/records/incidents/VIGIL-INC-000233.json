@@ -1,0 +1,374 @@
+{
+  "id": "VIGIL-INC-000233",
+  "record_type": "incident",
+  "record_state": "active",
+  "date_recorded": "2026-11-15",
+  "record_identity": {
+    "record_id": "VIGIL-INC-000233",
+    "record_type": "incident",
+    "title": "Claude Code approval settings exposed credentials through public Git repositories",
+    "created": "2026-11-15",
+    "updated": "2026-11-15",
+    "version": "0.1.0"
+  },
+  "incident_identity": {
+    "historical_event_name": "Claude Code exact-command approval persistence and public credential exposure",
+    "occurred_from": "2026-11-02",
+    "occurred_to": null,
+    "date_precision": "reported-date",
+    "date_basis": "Apiiro inspected public repository files on 1–3 November 2026; publication 5 November with 8 November update. Date anchors observation, not a single shared commit event."
+  },
+  "summary": "Apiiro found that Claude Code's repeat-approval feature saved entire command strings, including credentials, in project-local settings files which could later be committed to public Git repositories. The product normally adds a machine-local ignore rule, but previously tracked files, clones and new repository states can bypass it. The researchers counted 1,122 current local-settings files with 1,379 apparent secrets; wider history and artifact searches identified 2,539 distinct apparent real secrets across 1,994 repositories. They did not test credential access, although one affected organisation confirmed an active key. This is a product permission-state custody failure, not established deliberate model exfiltration.",
+  "vigil_assessment": {
+    "factual_basis": "Apiiro examined 104,185 public local permission settings files, finding 1,122 containing 1,379 reported real secret-like values by provider format or credential-plus-host rules. Adding historic copies and other files gave 2,539 distinct values in 1,994 public repositories. An approved command with a secret may be copied verbatim into the persistent allow rule. A machine-wide git ignore is added for new settings files but cannot reliably protect tracked or copied project files. Researchers did not use the credentials and reported only one organisation confirming an active key. Agent-coauthored commits and human commits were both observed.",
+    "governance_interpretation": "The Claude Code product persisted authentication material within a versionable permission record and some of that content became publicly retrievable outside its credential-custody boundary. The source establishes exposure, not general validity, unlawful subsequent use or a self-directed model goal to steal data.",
+    "significance_to_cam": "Agent permission-state persistence must maintain protected authentication material across local command history, Git tracking, repository cloning and public release; a machine-local ignore setting is insufficient where tracked file history survives.",
+    "assessment_boundaries": [
+      "The 2,539 values are a multi-source total, not the number of current local settings-file keys.",
+      "The original study used credential-pattern and human/AI review rules without using tokens or testing hosts.",
+      "One affected company reportedly confirmed a live key; no general compromise rate established.",
+      "Claude Code normally applies a global ignore rule, but tracked files and cloned projects escape that protection.",
+      "No unique affected-person count or subsequent criminal use is established.",
+      "Some public commits were human-originated and some co-authored by agents; no one agent caused the whole cohort.",
+      "No credential values, hostnames or identifying repositories are reproduced."
+    ],
+    "source_clause_analysis": {
+      "source_record_order": 1,
+      "source_url": "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again",
+      "purpose": "Original security-research episode analysis of the deployed Claude Code approval mechanism and actual public credential exposure.",
+      "clauses": [
+        {
+          "episode_id": "E001",
+          "source_paraphrase": "Developers used coding-agent commands containing passwords, database URLs or cloud authentication tokens.",
+          "recovered_invariant_interpretation": "Protected secret values existed in the task and command context.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E002",
+          "source_paraphrase": "Selecting repeated command approval stored the literal command including its secret in a project-local settings file.",
+          "recovered_invariant_interpretation": "Authentication material was preserved in a durable configuration that could later be tracked by Git.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Authentication material was preserved in a durable configuration that could later be tracked by Git."
+            }
+          ]
+        },
+        {
+          "episode_id": "E003",
+          "source_paraphrase": "A machine-level Git ignore normally protects newly created settings files, but already tracked files and clones remain exposed.",
+          "recovered_invariant_interpretation": "The recorded mitigation had a bounded applicability failure.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E004",
+          "source_paraphrase": "Apiiro observed current and historical public repository versions of permission records with thousands of apparent authentic secret values.",
+          "recovered_invariant_interpretation": "Secret-bearing permission state became publicly retrievable beyond the original local custody boundary.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "mapped",
+          "taxonomy_relationships": [
+            {
+              "class_id": "VIGIL-FC-000090",
+              "relationship": "failure-occurrence",
+              "canonical_taxonomy_mapping": true,
+              "rationale": "Secret-bearing permission state became publicly retrievable beyond the original local custody boundary."
+            }
+          ]
+        },
+        {
+          "episode_id": "E005",
+          "source_paraphrase": "Researchers did not authenticate with the values; one organisation confirmed that an exposed key had been live.",
+          "recovered_invariant_interpretation": "Exposed authentication material does not itself prove successful later misuse.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        },
+        {
+          "episode_id": "E006",
+          "source_paraphrase": "Anthropic staff discussed potential secret scanning after disclosure.",
+          "recovered_invariant_interpretation": "Provider remediation is contextual, not a success classification of the leaking system.",
+          "source_record_refs": [
+            "source_records[0]"
+          ],
+          "adjudication_status": "resolved-no-mapping",
+          "taxonomy_relationships": []
+        }
+      ]
+    }
+  },
+  "source_records": [
+    {
+      "source_title": "Coding Agents Copy Your Secrets to a Hidden File. Thousands Are on GitHub",
+      "author_or_publisher": "Apiiro",
+      "source_date": "2026-11-05",
+      "source_url": "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again",
+      "source_url_status": "available",
+      "source_type": "technical analysis",
+      "source_platform": "Apiiro",
+      "source_residence": "external",
+      "source_role": "incident-evidence",
+      "evidence_modality": [
+        "text"
+      ],
+      "evidence_status": "first-party-reported",
+      "evidence_status_basis": "Originating affected-party, provider, evaluator or security research account, with original public excerpts and author-attributed findings. Original protected execution telemetry is not independently accessible.",
+      "source_context": "Original first-party GitHub repository study and reproduced Claude Code literal-command persistence; 1,122 current files with 1,379 reported secrets and 2,539 broader values. Credentials not tested.",
+      "interpretive_reliance": "Direct inspection of original research methodology, counts, product behavior and stated limitations, without downloading credentials.",
+      "relevance_note": "Primary original evidence for the bounded credential persistence and public exposure mechanism.",
+      "retrieved_date": "2026-11-15",
+      "incident_source_order": 1,
+      "system_or_product": "See system_context",
+      "model_or_algorithm": "Claude Code persistent approval rules, various unspecified model versions",
+      "primary_artefact_access": {
+        "access_status": "directly reviewed",
+        "direct_primary_artefact_review": true,
+        "access_method": "Original public technical research report and methodology reviewed; underlying credentials not copied or tested.",
+        "reviewing_system": "OpenAI ChatGPT — GPT-6",
+        "limitations": [
+          "Apiiro did not attempt to use authentication secrets.",
+          "Credential pattern and context do not establish that every identified value remained valid.",
+          "The precise sequence of each public commit was not individually replayed."
+        ]
+      }
+    }
+  ],
+  "preferred_evidence": {
+    "source_url": "https://apiiro.com/blog/coding-agents-leaking-secrets-github-dont-ask-again",
+    "selection_basis": "Original security researcher account with a defined public repository sampling methodology.",
+    "selected_on": "2026-11-15"
+  },
+  "external_incident_references": [],
+  "external_assessments": [],
+  "external_requirement_assessments": [
+    {
+      "requirement_id": "EXTREQ-F42FEC4FD1482D57",
+      "alignment_result": "not-aligned",
+      "assessment_basis": "NIST SP 800-53 IA-5(g) calls for system-authenticator content to be protected against unauthorised disclosure and modification. Apiiro observed Claude Code saving literal approved command strings containing authentication secrets in project-local permission settings, and confirmed that some of those files and histories were publicly accessible in Git repositories. This is an observed authenticator-content custody failure, even though a user or agent later committed the file and the researchers did not test the credentials. The voluntary control comparison concerns this bounded product behaviour, not certification, legal liability or confirmed misuse of any particular secret.",
+      "assessed_on": "2026-11-15",
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "derived_from_class_ids": [
+        "VIGIL-FC-000090"
+      ],
+      "source_episode_refs": [
+        "E002",
+        "E004"
+      ],
+      "identification_basis": "Direct reviewed FC-090 to NIST SP 800-53 IA-5(g) custody relationship; actual stored and public credential-bearing permission records."
+    }
+  ],
+  "system_context": {
+    "platform_or_vendor": "Anthropic",
+    "product_or_service": "Claude Code",
+    "specific_model_or_runtime": "Claude Code exact-command approval persistence, not a single model checkpoint",
+    "interface_surface": "Project permission file and Git tracking/public repository workflow",
+    "component_role": [
+      "agent-runtime",
+      "policy-safety",
+      "memory-state"
+    ],
+    "agent_context": {
+      "agentic_status": "unknown",
+      "agent_count": null,
+      "agent_count_min": null,
+      "agent_count_max": null,
+      "count_basis": "unknown",
+      "evidence_basis": "Many independent Claude Code installations and repository commits were sampled; a specific number of concurrently acting AI agents is not established.",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    },
+    "occurrence_environment": {
+      "deployment_state": "deployed",
+      "activity_contexts": [
+        "operational-use"
+      ],
+      "external_reach": "live-external",
+      "activity_actor": "not-applicable",
+      "environment_detail": "Real developer installations wrote project-local permission settings; public Git branches retained protected secret content.",
+      "evidence_basis": "Original study documents real published settings files and actual public repo exposure, not merely a simulated configuration.",
+      "source_record_refs": [
+        "source_records[0]"
+      ]
+    }
+  },
+  "jurisdictional_context": {},
+  "affected_party_context": {
+    "entities": []
+  },
+  "taxonomy_classification": {
+    "taxonomy_version": "0.9.1",
+    "classification_status": "provisionally-classified",
+    "adjudication_coverage": {
+      "status": "complete"
+    },
+    "primary_classification": {
+      "family_id": "VIGIL-FF-0018",
+      "class_id": "VIGIL-FC-000090",
+      "classification_role": "failure-occurrence",
+      "classification_basis": "Claude Code copied protected authentication content from approved commands into durable permission-state files, and the original research demonstrates that some persisted secrets were publicly retrievable after Git publication. The custody boundary was crossed even though a subset of user commits contributed, and successful credential use was not tested.",
+      "classification_confidence": "high"
+    },
+    "secondary_classifications": [],
+    "classification_basis": "Claude Code copied protected authentication content from approved commands into durable permission-state files, and the original research demonstrates that some persisted secrets were publicly retrievable after Git publication. The custody boundary was crossed even though a subset of user commits contributed, and successful credential use was not tested. No independent deliberate exfiltration, actual credential use or separate non-secret protected-data retrieval is inferred.",
+    "classification_review_provenance": {
+      "review_date": "2026-11-15",
+      "reviewer": "OpenAI ChatGPT — GPT-6, AI analytical reviewer",
+      "review_status": "Original report criterion review; human verification pending.",
+      "review_reference": "vigil/docs/reviews/2026-11-15-claude-permissions-and-documents/completion-audit.json"
+    }
+  },
+  "related_incidents": [
+    "VIGIL-INC-000119"
+  ],
+  "interpretive_provenance": {
+    "current_ai_review": {
+      "review_id": "VIGIL-REVIEW-2026-11-15-000233-CUSTODY",
+      "reviewer_type": "AI analytical reviewer",
+      "reviewer_platform": "OpenAI ChatGPT with connected GitHub",
+      "reviewer_model": "GPT-6",
+      "review_date": "2026-11-15",
+      "review_scope": "Original research report, taxonomy recognition, 12-dimensional specific-consequence HIM and independent external-control relevance screening. Follow-up 15 November 2026: independently compared the source-specific credential-persistence and public-exposure mechanism with the reviewed NIST IA-5(g) proposition. One bounded external requirement assessment is retained. FC-091 screened; repeated approved-command persistence does not demonstrate an earlier unauthorised success taken as authority for a later expansion.",
+      "capability_profile": {
+        "direct_repository_analysis": true,
+        "direct_text_analysis": true,
+        "taxonomy_review": true,
+        "external_requirement_review": true,
+        "harm_impact_review": true,
+        "web_research": true
+      },
+      "known_limitations": [
+        "No credential validity tests or user data copied.",
+        "Product behavior and public Git exposure are first-party research claims; independent replay was not performed.",
+        "AI assessment is not human review."
+      ],
+      "review_outcome": "Bounded and provisional product-level credential custody Incident. One NIST control comparison admitted on the observed credential-custody episode, without asserting downstream credential use."
+    }
+  },
+  "harm_impact_assessment": {
+    "methodology_id": "VIGIL-HIM",
+    "methodology_version": "1.1.0",
+    "derivation_rule": "highest-supported-harm-on-exclusive-incident-assessment-pathway",
+    "assessment_pathway": "specific_consequence",
+    "aggregate_harm_screening": {
+      "deployed_configuration": true,
+      "potentially_generalisable_mechanism": false,
+      "bounded_materialised_consequence_case": true,
+      "candidate_dimensions": [],
+      "source_record_refs": [
+        "source_records[0]"
+      ],
+      "rationale": "Documented real public exposure of specifically observed repository credential materials; not a sampled population benchmark and no affected-person denominator inferred."
+    },
+    "assessed_on": "2026-11-15",
+    "overall_severity": "S3",
+    "controlling_dimensions": [
+      "privacy-confidentiality"
+    ],
+    "coverage_note": "Source establishes material exposure of credential-like values across real public repositories. Exact functionality and downstream access are unknown; a meaningful but bounded confidentiality-exposure severity is supported independently of credential use.",
+    "dimensions": [
+      {
+        "dimension_id": "physical-health-safety",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "psychological-wellbeing",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "rights-liberty",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "equal-treatment",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "privacy-confidentiality",
+        "assessment_status": "assessed",
+        "severity": "S3",
+        "threshold_id": "VIGIL-HIM-1.1.0-PRV-S3",
+        "observed_values": [
+          {
+            "metric": "public repository credential exposure",
+            "qualitative_value": "2,539 distinct reported credential values across 1,994 public GitHub repositories from combined sources; 1,379 in 1,122 current Claude Code local settings files, credential validity generally untested."
+          }
+        ],
+        "assessment_basis": "The research documents public exposure of credential-like protected data, including materially privileged database and API authentication material. The protected-value count is not a victim count; no separate successful misuse or greater downstream harm is asserted.",
+        "evidence_confidence": "medium",
+        "evidence_refs": [
+          "source_records[0]"
+        ]
+      },
+      {
+        "dimension_id": "financial-economic",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "property-asset-damage",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "service-operational-infrastructure",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "reputation-dignity",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "societal-democratic",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "environmental",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      },
+      {
+        "dimension_id": "relational-integrity-autonomy",
+        "assessment_status": "unreported",
+        "assessment_basis": "No separately bandable occurrence-specific impact evidenced in this dimension. Silence is not proof of S1.",
+        "evidence_confidence": "not-assessed"
+      }
+    ]
+  }
+}
