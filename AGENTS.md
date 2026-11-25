@@ -26,6 +26,16 @@ python vigil/scripts/validate-authorship-provenance.py
 
 Run retained-subsystem tests when taxonomy, external governance or CAM assessment is touched. Do not manually edit generated indexes, fabricate evidence or review state, expose private material, or modify CAM/Caelestis instruments without explicit instruction.
 
+## Cross-repository operational dependency closure
+
+Repository boundaries do not define the boundary of operational consequences. Before changing a published schema, generated index, mapping semantics, taxonomy publication format, evidence reference contract or sidecar consumed by another component, identify affected downstream consumers, including `CAM-Initiative/cam-governance-catalogue`. Record impact, compatibility, release order and the linked downstream issue or PR in the upstream change record. A change that has no downstream impact should record the reason; do not infer compatibility merely from a passing corpus validator.
+
+Where the downstream website is affected, reconcile its data contract and renderer through the website repository's own approval and publication process. Verify its rebuilt publication before release and the actual live service after deployment, including relevant browser interactions and degraded-mode behaviour. Link the verification run and deployed commit. Successful build, registry synchronisation, HTTP status or notification to the maintainer is not operational closure.
+
+If downstream authority or access is unavailable, explicitly retain the dependency as an open obligation with a named responsible role and blocker. Do not silently expand authority, change another repository without approval, or describe the affected operational change as complete. When an upstream release must precede downstream reconciliation, record the approved exception, compatibility safeguards and outstanding verification requirement. Website operational health evidence is separate from canonical Incident adjudication and does not change any mapping or recognition criteria.
+
+See [website operational resilience procedure](https://github.com/CAM-Initiative/cam-governance-catalogue/blob/main/WEBSITE-OPERATIONS.md), subject to publication of the linked website change.
+
 ## Canonical Boundary adjudication — approved 19 October 2026
 
 Every admitted `ambiguous-boundary` primary or secondary taxonomy mapping MUST contain a completed `boundary_adjudication` object in the Incident itself. A dated audit packet is supporting review history, never a substitute for the canonical explanation. Use `vigil/templates/boundary-adjudication-template.json`; the authoritative shape is `boundary_adjudication_contract` in `vigil/VIGIL.Schema.json`.
