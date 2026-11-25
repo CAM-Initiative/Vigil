@@ -90,13 +90,6 @@ jobs:
             vigil/external_governance/requirements/derivative-crosswalk-index.json \
             vigil/external_governance/requirements/DERIVATIVE-CROSSWALKS.md; then
             echo "External governance generated outputs are stale."
-            # Temporary PR #186 recovery: emit only the two public generated files.
-            # Keep the freshness check failing until the exact native outputs are committed.
-            for f in vigil/external_governance/sources/SOURCE-CATALOGUE.md vigil/external_governance/sources/source-review-queue.json; do
-              printf 'VIGIL_REGEN_BEGIN %s %s\n' "$f" "$(git hash-object "$f")"
-              base64 -w 2048 "$f" | sed 's/^/VIGIL_REGEN_DATA /'
-              printf 'VIGIL_REGEN_END %s\n' "$f"
-            done
             git diff --stat -- vigil/external_governance/sources vigil/external_governance/requirements
             exit 1
           fi
